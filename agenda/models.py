@@ -71,8 +71,6 @@ class CitaMedica(models.Model):
 
     paciente = models.ForeignKey(usuarios.Paciente)
     procedimiento = models.ForeignKey(ProcedimientoMedico)
-    inicio = models.DateTimeField()
-    fin = models.DateTimeField()
     entidad = models.IntegerField(choices=choices)
     reprogramar = models.BooleanField(default=False)
     cancelar = models.BooleanField(default=False)
@@ -100,12 +98,20 @@ class CitaMedica(models.Model):
     # end def
 # end def
 
+class AsignacionCita(models.Model):
+    fecha = models.DateTimeField(auto_now_add=True)
+    cita  = models.ForeignKey(CitaMedica)
+    calendario = models.ForeignKey(CalendarioCita)
+    cancelado = models.BooleanField()
+# end class
+
+
 class CitaReprogramada(models.Model):
     choices = (
         (False, "Medico"),
         (True, "Paciente")
     )
-    cita = models.ForeignKey(CitaMedica)
+    cita = models.ForeignKey(AsignacionCita)
     motivo = models.TextField()
     responsable_cambio = models.BooleanField("Responsable del cambio", choices=choices)
 
@@ -125,7 +131,7 @@ class CitaCancelada(models.Model):
         (2, "Sin tiempo"),
         (3, "Otro motivo")
     )
-    cita = models.ForeignKey(CitaMedica)
+    cita = models.ForeignKey(AsignacionCita)
     motivo = models.IntegerField(choices=choices)
 
     class Meta:
