@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block css %}
+{% endblock %}
+
+{% block body %}
+<style>
+.parent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    height: 500px;
+}
+</style>
+<div class="row parent">
+    <div class="col s12 m6 l6 center-align">
+        <div class="card">
+            <div class="card-content">
+                {% if nuevo %}
+                <h4>{{mensaje}}</h4>
+                <a href="/usuarios/nueva/confirmacion/" class="btn">Generar nueva confirmación</a>
+                {% else %}
+                <h4>{{mensaje}}</h4>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

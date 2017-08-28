@@ -24,12 +24,18 @@ class Medico(User):
     telefono = models.CharField(
         max_length=15, verbose_name="Teléfono celular")
     especialidad = models.CharField(max_length=120)
+    activado = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "Médico"
+        verbose_name_plural = "Médicos"
+    # end class
 
     def __unicode__(self):
         return u"%s %s"%(self.first_name, self.last_name)
     # end def
 
-    def get_tipo(self):
+    def _tipo(self):
         if self.tipo == 1:
             tipo = "Cédula"
         elif self.tipo == 2:
@@ -58,7 +64,14 @@ class Paciente(User):
     nombre_a = models.CharField("Nombre completo acudiente", max_length=120, blank=True, null=True)
     cedula_a = models.CharField("Cedula acudiente", max_length=120, blank=True, null=True)
     telefono = models.CharField("Teléfono celular", max_length=15, blank=True, null=True)
-    
+    activado = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "Paciente"
+        verbose_name_plural = "Pacientes"
+    # end class
+
+
     def __unicode__(self):
         return u"%s %s"%(self.first_name, self.last_name)
     # end def
@@ -75,4 +88,17 @@ class Paciente(User):
         # end if
         return tipo
     # end def
+# end class
+
+
+class ActivacionUser(models.Model):
+    choices = (
+        (1, "Medico"),
+        (2, "Paciente")
+    )
+    email = models.EmailField()
+    key1 = models.CharField(max_length=100)
+    key2 = models.CharField(max_length=100)
+    fecha = models.DateTimeField(auto_now_add=True)
+    tipo = models.IntegerField(choices=choices)
 # end class
