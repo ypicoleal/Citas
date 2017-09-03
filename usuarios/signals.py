@@ -10,6 +10,5 @@ sys.setdefaultencoding('utf-8')
 
 @receiver(post_save, sender=models.Medico)
 def correoConfirmacion(sender, instance, **kwargRemembers):
-    print "entrooo"
     emailConfirmation(instance.email, 1)
 # end def

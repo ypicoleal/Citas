@@ -41,8 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'usuarios.apps.UsuariosConfig',
-    'agenda',
-    'adb',
+    'agenda.apps.AgendaConfig',
+    'adb.apps.AdbConfig',
 ]
 
 MIDDLEWARE = [

@@ -16,10 +16,10 @@ class Medico(User):
     )
     tipo = models.IntegerField("Tipo de identificación", choices=choices)
     identificacion = models.CharField(
-        "Número de indentificación", max_length=120, unique=True)
+        "N° de indentificación", max_length=120, unique=True)
     fecha_nacimiento = models.DateField()
     numero_registro = models.CharField(
-        "Número de registro profesional", max_length=120)
+        "N° registro profesional", max_length=120)
     nombre_u = models.CharField("Nombre de universidad", max_length=120)
     telefono = models.CharField(
         max_length=15, verbose_name="Teléfono celular")
@@ -60,7 +60,7 @@ class Paciente(User):
         "Número de indentificación", max_length=120, unique=True)
     fecha_nacimiento = models.DateField()
     estado_civil = models.CharField(max_length=120)
-    profesion = models.CharField("Profesión", max_length=120)
+    profesion = models.CharField("Profesión", max_length=120, blank=True, null=True)
     nombre_a = models.CharField("Nombre completo acudiente", max_length=120, blank=True, null=True)
     cedula_a = models.CharField("Cedula acudiente", max_length=120, blank=True, null=True)
     telefono = models.CharField("Teléfono celular", max_length=15, blank=True, null=True)
@@ -76,7 +76,7 @@ class Paciente(User):
         return u"%s %s"%(self.first_name, self.last_name)
     # end def
 
-    def get_tipo(self):
+    def _tipo(self):
         if self.tipo == 1:
             tipo = "Cédula"
         elif self.tipo == 2:
