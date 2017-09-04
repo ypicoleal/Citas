@@ -35,7 +35,7 @@ class Medico(User):
         return u"%s %s"%(self.first_name, self.last_name)
     # end def
 
-    def _tipo(self):
+    def _Tipo(self):
         if self.tipo == 1:
             tipo = "Cédula"
         elif self.tipo == 2:
@@ -76,7 +76,7 @@ class Paciente(User):
         return u"%s %s"%(self.first_name, self.last_name)
     # end def
 
-    def _tipo(self):
+    def _Tipo(self):
         if self.tipo == 1:
             tipo = "Cédula"
         elif self.tipo == 2:

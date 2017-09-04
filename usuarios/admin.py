@@ -8,7 +8,7 @@ import forms
 
 @admin.register(usuarios.Medico)
 class MedicoAdmin(admin.ModelAdmin):
-    list_display = ('identificacion', 'first_name', 'last_name', '_tipo', 'email', 'fecha_nacimiento', 'numero_registro', 'nombre_u', 'telefono', 'especialidad')
+    list_display = ('identificacion', 'first_name', 'last_name', '_Tipo', 'email', 'fecha_nacimiento', 'numero_registro', 'nombre_u', 'telefono', 'especialidad')
     search_fields = ('username', 'email', 'first_name',
                      'last_name', 'identificacion')
     icon = '<i class="material-icons">person_outline</i>'
@@ -17,7 +17,11 @@ class MedicoAdmin(admin.ModelAdmin):
 
 @admin.register(usuarios.Paciente)
 class PacienteAdmin(admin.ModelAdmin):
-    list_display = ('identificacion', 'first_name', 'last_name', '_tipo', 'email', 'fecha_nacimiento', 'estado_civil', 'profesion', 'telefono', 'nombre_a', 'cedula_a')
+    list_display = ('identificacion', 'first_name', 'last_name', '_Tipo', 'email', 'fecha_nacimiento', 'estado_civil', 'profesion', 'telefono',)
     search_fields = ('username', 'email', 'first_name', 'last_name', 'identificacion', 'cedula_a', 'telefono')
     icon = '<i class="material-icons">person_outline</i>'
+    form = forms.PacienteAdmin
+
+    class Media:
+        js = ("usuarios/paciente.js", )
 # end class
