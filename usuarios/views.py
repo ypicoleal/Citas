@@ -7,7 +7,18 @@ from django.http import HttpResponseNotFound
 import models
 from forms import ConfirmacionForm
 from emails import emailConfirmation
+from Citas.settings import ORIGIN
+from supra import views as supra
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.contrib.auth import login, logout, authenticate
 
+supra.SupraConf.ACCECC_CONTROL["allow"] = True
+supra.SupraConf.ACCECC_CONTROL["origin"] = ORIGIN
+supra.SupraConf.ACCECC_CONTROL["credentials"] = "true"
+supra.SupraConf.ACCECC_CONTROL["headers"] = "origin, content-type, accept"
+supra.SupraConf.ACCECC_CONTROL["methods"] = "POST, GET, PUT, DELETE ,OPTIONS"
+supra.SupraConf.body = True
 # Create your views here.
 
 def confirmacion(request):
@@ -64,4 +75,21 @@ def generarConfirmacion(request):
         return render(request, 'usuarios/nuevaconfirmacion.html', {'form': form, 'exito': False})
     # end if
     return render(request, 'usuarios/nuevaconfirmacion.html', {'form': ConfirmacionForm(), 'exito': False})
-# end if
+# end def
+
+
+class LoginU(supra.SupraSession):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        a = super(LoginU, self).dispatch(request, *args, **kwargs)
+        return a
+    # end def
+# end class
+
+
+@supra.access_control
+def logoutUser(request):
+    logout(request)
+    return HttpResponse(status=200)
+# end def

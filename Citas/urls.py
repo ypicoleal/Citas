@@ -21,6 +21,7 @@ import settings
 urlpatterns = [
     url(r'^dashboard/', admin.site.urls),
     url(r'^usuarios/', include('usuarios.urls')),
+    url(r'^publicidad/', include('adb.urls')),
 ]
 
 if settings.DEBUG:

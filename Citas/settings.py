@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+ORIGIN = "*"
 
 # Application definition
 
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'usuarios.apps.UsuariosConfig',
     'agenda.apps.AgendaConfig',
     'adb.apps.AdbConfig',
+    'supra'
 ]
 
 MIDDLEWARE = [
