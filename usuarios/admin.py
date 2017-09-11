@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.contrib import admin
 from usuarios import models as usuarios
 import forms
+admin.site.site_url = None
 # Register your models here.
 
 @admin.register(usuarios.Medico)

@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^dashboard/', admin.site.urls),
     url(r'^usuarios/', include('usuarios.urls')),
     url(r'^publicidad/', include('adb.urls')),
+    url(r'^agenda/', include('agenda.urls')),
 ]
 
 if settings.DEBUG:

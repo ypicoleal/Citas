@@ -2,6 +2,9 @@
 from django import forms
 import models as usuarios
 
+from django.contrib.auth.models import User
+from django.contrib.auth.models import Permission, Group
+
 
 class ConfirmacionForm(forms.Form):
     email = forms.EmailField()
@@ -22,6 +25,31 @@ class ConfirmacionForm(forms.Form):
 class MedicoForm(forms.ModelForm):
     identificacion2 = forms.CharField(widget=forms.NumberInput() , label="Verificar número identificación")
 
+    def clean_identificacion(self):
+        identificacion = self.cleaned_data['identificacion']
+        if identificacion:
+            user = User.objects.filter(username=identificacion).first()
+            medico = usuarios.Medico.objects.filter(identificacion=identificacion).first()
+            if hasattr(self, 'instance') and self.instance.pk:
+                if user.id != self.instance.id:
+                    raise forms.ValidationError('Ya existe un usuario con este username')
+                # end if
+                if medico != self.instance:
+                    raise forms.ValidationError('Ya existe un usuario con esta identificación')
+                # end if
+                return identificacion
+            else:
+                if user:
+                    raise forms.ValidationError('Ya existe un usuario con este username')
+                # end if
+                if medico:
+                    raise forms.ValidationError('Ya existe un usuario con esta identificación')
+                # end if
+                return identificacion
+        # end if
+        raise forms.ValidationError('Este campo es requerido')
+    # end def
+
     def clean_identificacion2(self):
         identificacion = self.cleaned_data.get('identificacion', False)
         identificacion2 = self.cleaned_data.get('identificacion2', False)
@@ -34,6 +62,7 @@ class MedicoForm(forms.ModelForm):
         else:
             raise forms.ValidationError("Este campo es requerido")
         # end if
+
     # end def
 
     def __init__(self, *args, **kwargs):
@@ -57,7 +86,12 @@ class MedicoForm(forms.ModelForm):
         medico.is_staff = True
         medico.username = medico.identificacion
         medico.set_password(raw_password=medico.identificacion)
+        grupo, created = Group.objects.get_or_create(name="Medico")
+        if created:
+            permisos = Permission.objects.all().exclude(codename__contains="log").exclude(codename__contains="group").exclude(codename__contains="permission").exclude(codename__contains="user").exclude(codename__contains="content type").exclude(codename__contains="session")
+            grupo.permissions.set(permisos)
         medico.save()
+        medico.groups.add(grupo)
         return medico
     # end def
 # end class
@@ -65,6 +99,31 @@ class MedicoForm(forms.ModelForm):
 class PacienteAdmin(forms.ModelForm):
 
     identificacion2 = forms.CharField(widget=forms.NumberInput() , label="Verificar número identificación")
+
+    def clean_identificacion(self):
+        identificacion = self.cleaned_data['identificacion']
+        if identificacion:
+            user = User.objects.filter(username=identificacion).first()
+            paciente = usuarios.Paciente.objects.filter(identificacion=identificacion).first()
+            if hasattr(self, 'instance') and self.instance.pk:
+                if user.id != self.instance.id:
+                    raise forms.ValidationError('Ya existe un usuario con este username')
+                # end if
+                if paciente != self.instance:
+                    raise forms.ValidationError('Ya existe un usuario con esta identificación')
+                # end if
+                return identificacion
+            else:
+                if user:
+                    raise forms.ValidationError('Ya existe un usuario con este username')
+                # end if
+                if paciente:
+                    raise forms.ValidationError('Ya existe un usuario con esta identificación')
+                # end if
+                return identificacion
+        # end if
+        raise forms.ValidationError('Este campo es requerido')
+    # end def
 
     def clean_identificacion2(self):
         identificacion = self.cleaned_data.get('identificacion', False)
@@ -108,6 +167,7 @@ class PacienteAdmin(forms.ModelForm):
     def save(self, commit=False):
         paciente = super(PacienteAdmin, self).save(commit)
         paciente.username = paciente.identificacion
+        paciente.activado = True
         paciente.set_password(raw_password=paciente.identificacion)
         paciente.save()
         return paciente

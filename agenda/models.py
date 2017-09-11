@@ -49,6 +49,13 @@ class CalendarioCita(models.Model):
         verbose_name = "Calendario cita"
         verbose_name_plural = "Calendarios de cita"
     # end class
+
+    def __unicode__(self):
+        if self.almuerzo:
+            fecha = u"Hora almuerzo %s %s" % (self.inicio.strftime('%Y-%m-%d %H:%M:%S'), self.fin.strftime('%Y-%m-%d %H:%M:%S'))
+        else:
+            fecha = u"%s %s" % (self.inicio.strftime('%Y-%m-%d %H:%M:%S'), self.fin.strftime('%Y-%m-%d %H:%M:%S'))
+        return fecha
 # end class
 
 

@@ -7,6 +7,6 @@ import models
 
 @admin.register(models.PublicidadMovil)
 class PublicidadAdmin(admin.ModelAdmin):
-    list_display = ('url', 'imagen')
+    list_display = ('url', 'image')
     search_fields = ('url', )
 # end class

@@ -9,10 +9,13 @@ from django.contrib.auth.models import User
 
 
 class Medico(User):
+    CEDULA = 1
+    PASAPORTE = 2
+    C_EXTRANJERIA = 3
     choices = (
-        (1, 'Cédula'),
-        (2, 'Pasaporte'),
-        (3, 'Cédula de extranjeria')
+        (CEDULA, 'Cédula'),
+        (PASAPORTE, 'Pasaporte'),
+        (C_EXTRANJERIA, 'Cédula de extranjeria')
     )
     tipo = models.IntegerField("Tipo de identificación", choices=choices)
     identificacion = models.CharField(
@@ -36,9 +39,9 @@ class Medico(User):
     # end def
 
     def _Tipo(self):
-        if self.tipo == 1:
+        if self.tipo == self.CEDULA:
             tipo = "Cédula"
-        elif self.tipo == 2:
+        elif self.tipo == self.PASAPORTE:
             tipo = "Pasaporte"
         else:
             tipo = "Cédula de extranjeria"
@@ -49,11 +52,15 @@ class Medico(User):
 
 
 class Paciente(User):
+    CEDULA = 1
+    T_IDENTIDAD = 2
+    C_EXTRANJERIA = 3
+    REGISTROCIVIL = 4
     choices = (
-        (1, 'Cédula'),
-        (2, 'Tarjeta de identidad'),
-        (3, 'Cédula de extranjeria'),
-        (4, 'Registro Civil'),
+        (CEDULA, 'Cédula'),
+        (T_IDENTIDAD, 'Tarjeta de identidad'),
+        (C_EXTRANJERIA, 'Cédula de extranjeria'),
+        (REGISTROCIVIL, 'Registro Civil'),
     )
     tipo = models.IntegerField("Tipo de identificación", choices=choices)
     identificacion = models.CharField(
@@ -77,11 +84,11 @@ class Paciente(User):
     # end def
 
     def _Tipo(self):
-        if self.tipo == 1:
+        if self.tipo == self.CEDULA:
             tipo = "Cédula"
-        elif self.tipo == 2:
+        elif self.tipo == self.T_IDENTIDAD:
             tipo = "Tarjeta de identidad"
-        elif self.tipo == 3:
+        elif self.tipo == self.C_EXTRANJERIA:
             tipo = "Cédula de extranjeria"
         else:
             tipo = "Registro Civil"
@@ -92,9 +99,11 @@ class Paciente(User):
 
 
 class ActivacionUser(models.Model):
+    MEDICO = 1
+    PACIENTE = 2
     choices = (
-        (1, "Medico"),
-        (2, "Paciente")
+        (MEDICO, "Medico"),
+        (PACIENTE, "Paciente")
     )
     email = models.EmailField()
     key1 = models.CharField(max_length=100)
