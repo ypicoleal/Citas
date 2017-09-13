@@ -44,6 +44,7 @@ class CalendarioCita(models.Model):
     inicio = models.DateTimeField()
     fin = models.DateTimeField()
     almuerzo = models.BooleanField(default=False)
+    admin = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Calendario cita"

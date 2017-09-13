@@ -20,7 +20,7 @@ class CalendarioCitaForm(forms.ModelForm):
         fin = cleaned_data.get('fin', False)
         hoy = datetime.date.today()
         if inicio and fin:
-            calendario = models.CalendarioCita.objects.filter(inicio=inicio, fin=fin).first()
+            calendario = models.CalendarioCita.objects.filter(Q(inicio=inicio, fin=fin)| Q(inicio__lt=fin, fin__gt=inicio)).first()
             if calendario:
                 raise forms.ValidationError("Ya existe una cita en ese este rango de fechas")
         if inicio:

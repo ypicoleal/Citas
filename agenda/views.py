@@ -13,7 +13,7 @@ supra.SupraConf.body = True
 
 class CalendarioCitaList(supra.SupraListView):
     model = models.CalendarioCita
-    list_display = ['id', 'title', 'start', 'end', 'almuerzo']
+    list_display = ['id', 'title', 'start', 'end', 'color', 'almuerzo']
     list_filter = ['inicio__year', 'inicio__month']
 
     def title(self, obj, row):
@@ -24,6 +24,12 @@ class CalendarioCitaList(supra.SupraListView):
 
     def end(self, obj, now):
         return obj.fin.strftime('%Y-%m-%d %H:%M:%S')
+
+    def color(self, obj, now):
+        color = "#2196f3"
+        if obj.almuerzo:
+            color = "#f44336"
+        return color
 
     @method_decorator(check_login)
     def dispatch(self, request, *args, **kwargs):

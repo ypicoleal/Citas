@@ -1,51 +1,79 @@
 $(document).ready(function() {
-    $(".right-panel").prepend('<div class="card"><div class="card-content"><a style="width: 100%;" href="#calendario" class="btn btn-primary import">Calendario</a></div></div>');
-    addMOdal();
+    //$(".right-panel").prepend('<div class="card"><div class="card-content"><a style="width: 100%;" href="#calendario" class="btn btn-primary import">Calendario</a></div></div>');
+    //addMOdal();
+    $(".right-panel").remove();
+    var cont = $(".left-panel div div div div div");
+    cont.html("<div id='calendar'></div>");
+    cargando(cont);
+    calendario();
 });
 
-
-function addMOdal() {
-    var cont = "<div id='calendario' class='modal'>" +
-        "<div class='modal-content'>" +
-        "<div id='calendar'>" +
-        "</div>" +
-        "</div>" +
-        "</div>";
-    $("body").append(cont);
-    $('.modal').modal({
-        ready: function(modal, trigger) {
-            calendario();
-        }
-    });
+function cargando(query) {
+    var loading = `<div class="full-height"><div class="preloader-wrapper big active">
+        <div class="spinner-layer spinner-purple-only">
+            <div class="circle-clipper left">
+                <div class="circle">
+                </div>
+            </div>
+            <div class="gap-patch">
+                <div class="circle">
+                </div>
+            </div>
+            <div class="circle-clipper right">
+                <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>`;
+    query.prepend(loading);
 }
 
-function formModal(id) {
-    var formTemplete = '<div class="modal" id="formModal">' +
-        '<div class="modal-content">' +
-        '<div class="row">' +
-        '<form action="/agenda/calendario/form/' + id + '/" method="POST" class="col s12">' +
-        '<div class="input-field col s12">' +
-        '<input type="checkbox" name="almuerzo" value="" id="id_almuerzo">' +
-        '<label for="id_almuerzo">Hora de almuerzo</label>' +
-        '</div>' +
-        '<div class="input-field col s6">' +
-        '<a class="waves-effect waves-light btn"><i class="material-icons right">delete</i>Eliminar</a>' +
-        '</div>' +
-        '<div class="input-field col s6">' +
-        '<button class="btn waves-effect waves-light" type="submit" name="action">Guardar' +
-        '<i class="material-icons right">send</i>' +
-        '</button>' +
-        '</div>' +
-        '</form>' +
-        '</div>' +
-        '</div>' +
-        '</div>';
+
+
+function formModal(id, self) {
+    var url = "/agenda/calendario/form/' + id + '/";
+
+    var formTemplete = `<div class="modal modal-c" id="formModal">
+    <div class="modal-content">
+    <div class="row row-no-mb">
+        <div class="col s6">
+            <a href="#" class="row row-no-mb tooltipped" data-tooltip="Asignar Almuerzo">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="/static/img/almuerzo.svg">
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col s6">
+            <a href="#" class="row row-no-mb tooltipped" data-tooltip="Asignar cita">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="/static/img/cita.svg" alt="">
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    </div>
+    </div>`;
 
     if ($("#formModal").length === 0) {
         console.log("entrooo a if");
         $("body").append(formTemplete);
     }
-    $("#formModal").modal();
+    $("#formModal").modal({
+        ready: function(modal, trigger) {
+            $('.tooltipped').tooltip({
+                delay: 50,
+                position: 'right'
+            });
+        }
+    });
     $('#formModal').modal('open');
 }
 
@@ -75,7 +103,7 @@ function calendario() {
                     inicio: start.format('Y-MM-DD hh:mm:ss'),
                     fin: end.format('Y-MM-DD hh:mm:ss')
                 };
-                Materialize.toast('Guardando', 2000);
+                $(".full-height").show();
                 $.ajax({
                         url: '/agenda/calendario/form/',
                         type: 'POST',
@@ -89,10 +117,13 @@ function calendario() {
                             id: response.id,
                             almuerzo: response.almuerzo,
                             title: 'Espacio para cita',
+                            color: '#2196f3',
                             start: start,
                             end: end
                         };
-                        $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = t
+                        $('#calendar').fullCalendar('renderEvent', eventData, true);
+                        Materialize.toast('Guardado exitoso.', 2000);
+
                     })
                     .fail(function(response) {
                         console.log(response);
@@ -108,6 +139,8 @@ function calendario() {
                                 alert(response.responseJSON.__all__[0])
                             }
                         }
+                    }).always(function() {
+                        $(".full-height").hide();
                     });
             } else {
                 Materialize.toast('Rango de fecha inválido, superior a 30 minutos.', 4000);
@@ -125,9 +158,9 @@ function calendario() {
         eventLimit: true, // allow "more" link when too many events
         eventClick: function(calEvent, jsEvent, view) {
             console.log(calEvent);
-            formModal(calEvent.id)
+            formModal(calEvent.id, this);
             // change the border color just for fun
-            $(this).css('border-color', 'red');
+            //$(this).css('border-color', 'red');
 
         },
         events: function(start, end, timezone, callback) {
@@ -148,9 +181,10 @@ function calendario() {
                 .fail(function(response) {
                     console.log("error");
                     console.log(response);
+
                 })
                 .always(function() {
-                    console.log("complete");
+                    $(".full-height").hide();
                 });
         }
     });

@@ -42,7 +42,7 @@ class CalendarioCita(admin.ModelAdmin):
 
     def get_queryset(self, request):
         queryset = super(CalendarioCita, self).get_queryset(request)
-        return queryset.exclude()
+        return queryset.exclude(admin=False)
     # end def
 # end class
 

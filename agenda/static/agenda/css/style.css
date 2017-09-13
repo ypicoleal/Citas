@@ -10,12 +10,34 @@
 }
 
 
-.modal{
-    max-height: 90%;
-    width: 60%;
-}
-
-
 .fc-center h2{
     font-size: 2.56rem;
+}
+
+.left-panel{
+    flex-basis: 100%;
+}
+
+.full-height{
+    display: flex;
+    background: rgba(241, 241, 241, 0);
+    opacity: 1;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    will-change: opacity;
+}
+
+.modal-c{
+    width: 25% !important;
+}
+
+.row-no-mb{
+    margin-bottom: inherit !important;
 }
