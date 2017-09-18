@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from datetime import timedelta
 from django.core.signing import TimestampSigner
 from django.shortcuts import render
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, HttpResponse
 import models
 from forms import ConfirmacionForm
 from emails import emailConfirmation

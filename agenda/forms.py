@@ -3,11 +3,15 @@ from django import forms
 from django.db.models import Q
 import models
 import datetime
+import calendar
 
 def getTimeDifference(TimeStart, TimeEnd):
     timeDiff = TimeEnd - TimeStart
     return timeDiff.total_seconds() / 60
 
+"""
+    Calendario
+"""
 class CalendarioCitaForm(forms.ModelForm):
 
     class Meta:
@@ -20,29 +24,99 @@ class CalendarioCitaForm(forms.ModelForm):
         fin = cleaned_data.get('fin', False)
         hoy = datetime.date.today()
         if inicio and fin:
-            calendario = models.CalendarioCita.objects.filter(Q(inicio=inicio, fin=fin)| Q(inicio__lt=fin, fin__gt=inicio)).first()
+            calendario = models.CalendarioCita.objects.filter(Q(inicio=inicio, fin=fin, eliminado=False)| Q(inicio__lt=fin, fin__gt=inicio, eliminado=False)).first()
             if calendario:
                 raise forms.ValidationError("Ya existe una cita en ese este rango de fechas")
         if inicio:
             if inicio.date() <= hoy:
-                raise forms.ValidationError("Solo puede crear calendarios para dias futuros")
+                raise forms.ValidationError("No se pueden crear calendarios de citas para días anteriores o iguales a la fecha actual")
 
     def clean_fin(self):
         fin = self.cleaned_data['fin']
         inicio = self.cleaned_data.get('inicio', False)
-        if fin:
-            if inicio:
-                if inicio >= fin:
-                    raise forms.ValidationError("Fin debe ser mayor a inicio")
-                elif getTimeDifference(inicio, fin) > 30:
-                    raise forms.ValidationError("El rango de fecha no puede superar los 30 minutos")
-
-            return fin
-        else:
+        if not fin:
             raise forms.ValidationError("Este campo es requerido")
+
+        if inicio:
+            print inicio, fin
+            if inicio >= fin:
+                raise forms.ValidationError("Fin debe ser mayor a inicio")
+            elif getTimeDifference(inicio, fin) > 30:
+                raise forms.ValidationError("El rango de fecha no puede superar los 30 minutos")
+
+        return fin
+
 
 class CalendarioCitaFormEdit(forms.ModelForm):
 
     class Meta:
         model = models.CalendarioCita
         exclude = ('inicio', 'fin')
+
+
+"""
+    Cita Medica
+"""
+
+
+class CitaMedicaForm(forms.ModelForm):
+    fecha_ = forms.DateField(label="Filtro de fecha")
+
+    def __init__(self, *args, **kwargs):
+        super(CitaMedicaForm, self).__init__(*args, **kwargs)
+        procedimiento = self.fields['procedimiento']
+        procedimiento.queryset = models.ProcedimientoMedico.objects.filter(modalidad=1)
+        procedimiento.widget.can_add_related = False
+        procedimiento.widget.can_change_related = False
+
+        calendario = self.fields['calendario']
+        calendario.widget.can_add_related = False
+        calendario.widget.can_change_related = False
+        calendario.widget.attrs['disabled'] = True
+
+        if hasattr(self, 'instance') and self.instance.pk:
+            calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=self.instance.calendario.inicio.year, inicio__month=self.instance.calendario.inicio.month)
+            self.fields['fecha_'].value = self.instance.calendario.inicio.strftime('%Y-%m-%d')
+        else:
+            calendario.queryset = models.CalendarioCita.objects.filter(admin=True)
+
+    class Meta:
+        model = models.CitaMedica
+        fields = ['paciente', 'procedimiento', 'entidad', 'fecha_', 'calendario']
+
+
+    def clean_entidad(self):
+        entidad = self.cleaned_data['entidad']
+        calendario = cleaned_data.get('calendario', False)
+        if not entidad:
+            raise forms.ValidationError("Este campo es requerido")
+
+        if calendario:
+            if calendario.inicio.weekday() is 4 and calendario.inicio.hour >= 13 and not entidad is 1:
+                raise forms.ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
+            elif calendario.inicio.weekday() is 5 and not entidad is 1:
+                raise forms.ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
+
+        return entidad
+
+    def clean_calendario(self):
+        calendario = self.cleaned_data['calendario']
+        if not calendario:
+            raise forms.ValidationError("Este campo es requerido")
+
+        hoy = datetime.date.today()
+        consultorio = models.Consultorio.objects.first()
+        if hoy.day + 1 is calendario.inicio.day:
+            if consultorio:
+                if consultorio.hora_maxima.hour >= hoy.hour:
+                    raise forms.ValidationError("Por favor reserve para un dia posterior")
+            elif 17 >= hoy.hour:
+                raise forms.ValidationError("Por favor reserve para un dia posterior")
+
+        if calendario.inicio.date() <= hoy:
+            raise forms.ValidationError("No se pueden asignar citas para días anteriores a la fecha actual")
+
+        return calendario
+
+
+# end class

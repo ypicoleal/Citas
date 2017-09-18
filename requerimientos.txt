@@ -1,0 +1,9 @@
+Django==1.11.4
+django-filter==1.0.4
+django-material==1.0.0
+djangorestframework==3.6.4
+Markdown==2.6.9
+olefile==0.44
+Pillow==4.2.1
+pytz==2017.2
+supra==1.1.60

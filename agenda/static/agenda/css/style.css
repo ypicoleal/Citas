@@ -41,3 +41,8 @@
 .row-no-mb{
     margin-bottom: inherit !important;
 }
+
+.collection-item .material-icons{
+    position: relative;
+    top: 5px;
+}

@@ -27,9 +27,9 @@ def check_login(function):
                     if medico.activado:
                         return function(request, *args, **kwargs)
                     # end if
-            return HttpResponse(simplejson.dumps({"error": "Debes activar tu cuenta"}), 403)
+            return HttpResponse(simplejson.dumps({"error": "Debes activar tu cuenta"}), status=403)
             # end if
-        return HttpResponse(simplejson.dumps({"error": "Debes iniciar sesion"}), 403)
+        return HttpResponse(simplejson.dumps({"error": "Debes iniciar sesion"}), status=403)
     # end def
     return check
 # end def

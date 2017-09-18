@@ -28,42 +28,38 @@ function cargando(query) {
     query.prepend(loading);
 }
 
+function des(estado) {
+    if (estado) {
+        return "Desasignar"
+    }
+    return "Asignar"
+}
 
+function hideCita(estado) {
+    if (estado) {
+        return "none";
+    }
+    return "inherit";
+}
 
-function formModal(id, self) {
-    var url = "/agenda/calendario/form/' + id + '/";
+function formModal(data, self) {
+    console.log(data);
 
     var formTemplete = `<div class="modal modal-c" id="formModal">
     <div class="modal-content">
-    <div class="row row-no-mb">
-        <div class="col s6">
-            <a href="#" class="row row-no-mb tooltipped" data-tooltip="Asignar Almuerzo">
-                <div class="col s12">
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="/static/img/almuerzo.svg">
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col s6">
-            <a href="#" class="row row-no-mb tooltipped" data-tooltip="Asignar cita">
-                <div class="col s12">
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="/static/img/cita.svg" alt="">
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
+    <div class="collection">
+        <a href="#!" class="collection-item"  onclick="asignarAlmuerzo(${data.id}, ${data.almuerzo})"><i class="material-icons">local_dining</i>${des(data.almuerzo)} almuerzo</a>
+        <!--a href="#!" style="display: ${hideCita(data.almuerzo)};" class="collection-item"><i class="material-icons">event</i> Asignar cita</a-->
+        <a href="#!" class="collection-item" onclick="eliminarCalendario(${data.id})"><i class="material-icons">delete</i>Eliminar</a>
     </div>
     </div>
     </div>`;
 
-    if ($("#formModal").length === 0) {
-        console.log("entrooo a if");
+    var query = $("#formModal");
+    if (query.length === 0) {
+        $("body").append(formTemplete);
+    } else {
+        query.remove();
         $("body").append(formTemplete);
     }
     $("#formModal").modal({
@@ -75,6 +71,50 @@ function formModal(id, self) {
         }
     });
     $('#formModal').modal('open');
+}
+
+function eliminarCalendario(id) {
+    $('#formModal').modal('close');
+    if (confirm("¿Está seguro que desea borrar este calendario?") == true) {
+        $.ajax({
+            url: '/agenda/calendario/form/' + id + '/',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                eliminado: true
+            },
+            success: function(response) {
+                $("#calendar").fullCalendar('refetchEvents');
+                Materialize.toast('Borrado exitoso.', 2000);
+            },
+            error: function(response) {
+                if (response.status == 400) {
+                    alert(response.responseJSON.error);
+                }
+            }
+        });
+    }
+}
+
+function asignarAlmuerzo(id, estado) {
+    $('#formModal').modal('close');
+    $.ajax({
+        url: '/agenda/calendario/form/' + id + '/',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            almuerzo: !estado
+        },
+        success: function(response) {
+            $("#calendar").fullCalendar('refetchEvents');
+            Materialize.toast('Guardado exitoso.', 2000);
+        },
+        error: function(response) {
+            if (response.status == 400) {
+                alert(response.responseJSON.error);
+            }
+        }
+    });
 }
 
 function calendario() {
@@ -100,19 +140,17 @@ function calendario() {
                     data;
                 data = {
                     almuerzo: false,
-                    inicio: start.format('Y-MM-DD hh:mm:ss'),
-                    fin: end.format('Y-MM-DD hh:mm:ss')
+                    inicio: start.format('Y-MM-DD HH:mm:ss'),
+                    fin: end.format('Y-MM-DD HH:mm:ss')
                 };
                 $(".full-height").show();
                 $.ajax({
-                        url: '/agenda/calendario/form/',
-                        type: 'POST',
-                        dataType: 'json',
-                        contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify(data)
-                    })
-                    .done(function(response) {
-                        console.log(response);
+                    url: '/agenda/calendario/form/',
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(data),
+                    success: function(response) {
                         eventData = {
                             id: response.id,
                             almuerzo: response.almuerzo,
@@ -122,26 +160,28 @@ function calendario() {
                             end: end
                         };
                         $('#calendar').fullCalendar('renderEvent', eventData, true);
-                        Materialize.toast('Guardado exitoso.', 2000);
+                        Materialize.toast('Guardado exitoso.', 1000);
+                        $(".full-height").hide();
 
-                    })
-                    .fail(function(response) {
-                        console.log(response);
-                        console.log(response.responseJSON);
+                    },
+                    error: function(response) {
                         if (response.status == 400) {
                             if (response.responseJSON.fin) {
                                 alert("Fecha final: " + response.responseJSON.fin[0]);
                             }
                             if (response.responseJSON.inicio) {
-                                alert("Fecha inical: " + response.responseJSON.inicio[0])
+                                alert("Fecha inical: " + response.responseJSON.inicio[0]);
                             }
                             if (response.responseJSON.__all__) {
-                                alert(response.responseJSON.__all__[0])
+                                alert(response.responseJSON.__all__[0]);
                             }
+                        } else if (response.status == 403) {
+                            alert(response.responseJSON.error);
                         }
-                    }).always(function() {
                         $(".full-height").hide();
-                    });
+
+                    }
+                });
             } else {
                 Materialize.toast('Rango de fecha inválido, superior a 30 minutos.', 4000);
             }
@@ -158,35 +198,42 @@ function calendario() {
         eventLimit: true, // allow "more" link when too many events
         eventClick: function(calEvent, jsEvent, view) {
             console.log(calEvent);
-            formModal(calEvent.id, this);
+            formModal(calEvent, this);
             // change the border color just for fun
             //$(this).css('border-color', 'red');
 
         },
         events: function(start, end, timezone, callback) {
-            var today = new Date();
+            $(".full-height").show();
+            var date = new Date($('#calendar').fullCalendar('getDate').format());
             $.ajax({
-                    url: '/agenda/calendario/list/',
-                    type: 'GET',
-                    dataType: 'json',
-                    data: {
-                        inicio__year: today.getFullYear(),
-                        inicio__month: today.getMonth() + 1
-                    }
-                })
-                .done(function(response) {
+                url: '/agenda/calendario/list/',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    inicio__year: date.getFullYear(),
+                    inicio__month: date.getMonth() + 1
+                },
+                success: function(response, status, jqXHR) {
                     var events = response.object_list;
                     callback(events);
-                })
-                .fail(function(response) {
-                    console.log("error");
-                    console.log(response);
-
-                })
-                .always(function() {
                     $(".full-height").hide();
-                });
+                },
+                error: function(response, status, errorThrown) {
+                    if (response.status == 403) {
+                        alert(response.responseJSON.error);
+                    }
+                    $(".full-height").hide();
+
+                }
+            });
         }
     });
+    $('.fc-prev-button').click(function() {
+        $("#calendar").fullCalendar('refetchEvents');
+    });
 
+    $('.fc-next-button').click(function() {
+        $("#calendar").fullCalendar('refetchEvents');
+    });
 }

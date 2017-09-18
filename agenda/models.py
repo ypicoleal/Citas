@@ -11,6 +11,7 @@ class Consultorio(models.Model):
     celular = models.CharField(
         max_length=15, verbose_name="Teléfono celular")
     direccion = models.CharField("Dirección", max_length=120)
+    hora_maxima = models.TimeField("Hora máxima de reserva")
     nit = models.CharField(max_length=120)
     correo = models.EmailField()
 
@@ -21,9 +22,11 @@ class Consultorio(models.Model):
 
 
 class ProcedimientoMedico(models.Model):
+    CONSULTORIO = 1
+    VIRTUAL = 2
     choices = (
-        (1, 'Consultorio'),
-        (2, 'Virtual')
+        (CONSULTORIO, 'Consultorio'),
+        (VIRTUAL, 'Virtual')
     )
     nombre = models.CharField(max_length=120)
     precio = models.IntegerField(default=0, blank=True)
@@ -45,6 +48,7 @@ class CalendarioCita(models.Model):
     fin = models.DateTimeField()
     almuerzo = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
+    eliminado = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Calendario cita"
@@ -80,10 +84,10 @@ class CitaMedica(models.Model):
     paciente = models.ForeignKey(usuarios.Paciente)
     procedimiento = models.ForeignKey(ProcedimientoMedico)
     entidad = models.IntegerField(choices=choices)
-    reprogramar = models.BooleanField(default=False)
-    cancelar = models.BooleanField(default=False)
     estado = models.IntegerField("Estado cita", choices=choices2, default=1)
     confirmacion = models.IntegerField("Confirmación de cita", choices=choices3, blank=True, null=True)
+    fecha = models.DateTimeField(auto_now_add=True)
+    calendario = models.OneToOneField(CalendarioCita)
 
     class Meta:
         verbose_name = "Cita médica"
@@ -106,26 +110,23 @@ class CitaMedica(models.Model):
     # end def
 # end def
 
-class AsignacionCita(models.Model):
-    fecha = models.DateTimeField(auto_now_add=True)
-    cita  = models.ForeignKey(CitaMedica)
-    calendario = models.ForeignKey(CalendarioCita)
-    cancelado = models.BooleanField()
-# end class
-
 
 class CitaReprogramada(models.Model):
+    RESPONSABLE_MEDICO = False
+    RESPONSABLE_PACIENTE = True
+
     choices = (
-        (False, "Medico"),
-        (True, "Paciente")
+        (RESPONSABLE_MEDICO, "Medico"),
+        (RESPONSABLE_PACIENTE, "Paciente")
     )
-    cita = models.ForeignKey(AsignacionCita)
+    cita = models.ForeignKey(CitaMedica)
     motivo = models.TextField()
     responsable_cambio = models.BooleanField("Responsable del cambio", choices=choices)
+    fecha = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = "Cita reprogramada"
-        verbose_name_plural = "Citas reprogramadas"
+        verbose_name = "Reprogramar cita"
+        verbose_name_plural = "Reprogramar cita"
     # end class
 
     def __unicode__(self):
@@ -139,12 +140,13 @@ class CitaCancelada(models.Model):
         (2, "Sin tiempo"),
         (3, "Otro motivo")
     )
-    cita = models.ForeignKey(AsignacionCita)
+    cita = models.ForeignKey(CitaMedica)
     motivo = models.IntegerField(choices=choices)
+    fecha = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = "Cita cancelada"
-        verbose_name_plural = "Citas canceladas"
+        verbose_name = "Cancerlar cita"
+        verbose_name_plural = "Cancelar cita"
     # end class
 
     def __unicode__(self):
@@ -158,7 +160,7 @@ class DuracionCita(models.Model):
 
     class  Meta:
         verbose_name = "Duración cita"
-        verbose_name_plural = "Duraciones de citas"
+        verbose_name_plural = "Duración cita"
     # end class
 
     def __unicode__(self):
