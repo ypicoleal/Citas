@@ -1,0 +1,678 @@
+[{
+    "model": "auth.group",
+    "pk": 3,
+    "fields": {
+        "name": "Medico",
+        "permissions": []
+    }
+}, {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$36000$1Pm3CXz9tmnO$/He/ZpKVHTCC0PtALZBtR4vq7DOIZjI+r3rJqMsXxtQ=",
+        "last_login": "2017-09-17T18:43:23.459Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "admin@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-08-23T05:13:13.408Z",
+        "groups": [],
+        "user_permissions": []
+    }
+}, {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$36000$qhFZAjajYCLQ$1TwJz3R7jThcLMaGpSXeeYEbyD83tZcPyJGYrMXDrj4=",
+        "last_login": "2017-09-17T18:57:06.813Z",
+        "is_superuser": false,
+        "username": "1047457796",
+        "first_name": "Maru",
+        "last_name": "Ramos",
+        "email": "maru.ruzu@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-08-28T00:16:32.192Z",
+        "groups": [3],
+        "user_permissions": []
+    }
+}, {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$36000$91XlNhbMC8G2$8VGNa+K5XAY9O5/wBcbBmWmmm8mHpkjegRaSPTjGJ94=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "984871451",
+        "first_name": "Mario Jos\u00e9",
+        "last_name": "Barrios Pacheco",
+        "email": "mariobarrpach@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2017-09-04T22:11:04.263Z",
+        "groups": [],
+        "user_permissions": []
+    }
+}, {
+    "model": "sessions.session",
+    "pk": "azs0lgwx3zdogskvu9egfpqx7fm8rc5h",
+    "fields": {
+        "session_data": "ODU3MDRlZjRmYzBiYjAwOWU0MjUwMGNjZjEwYTFjYTUzMWExOTE5MDp7Il9hdXRoX3VzZXJfaGFzaCI6IjIxMDhkMDg4N2EyMzUyMjkwNzY1N2E4YTg3NWY5NTQwNjhjNDkxZjEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=",
+        "expire_date": "2017-09-20T03:24:39.359Z"
+    }
+}, {
+    "model": "sessions.session",
+    "pk": "b904pl695urpcaww5hrncp4i5x9jg6mg",
+    "fields": {
+        "session_data": "YmY2ZTdhYTIyN2I1OTliODU4N2I3ZGZkNmMyYzljYzRjOTY4NWViNzp7Il9hdXRoX3VzZXJfaGFzaCI6IjIxMDhkMDg4N2EyMzUyMjkwNzY1N2E4YTg3NWY5NTQwNjhjNDkxZjEiLCJfYXV0aF91c2VyX2lkIjoiMSIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIn0=",
+        "expire_date": "2017-09-18T22:28:54.504Z"
+    }
+}, {
+    "model": "sessions.session",
+    "pk": "dbr8wyvio4p4jsz9xomtvh5y00e0njxa",
+    "fields": {
+        "session_data": "ZDE2YzU0M2Q0OWUyMjAzNTY2YTU4MGJmMTY2ODkzNmE1MTIwMjMyZTp7Il9hdXRoX3VzZXJfaGFzaCI6IjM2ZWI2MjJlNGI3YWE2M2I5OTllOWM5ODc3ODU4NDk2MTJkZjdkNDkiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=",
+        "expire_date": "2017-09-27T03:56:27.946Z"
+    }
+}, {
+    "model": "sessions.session",
+    "pk": "h2h1sk1cfuubgxgcf2ahnwk1zmi3odm7",
+    "fields": {
+        "session_data": "ZDE2YzU0M2Q0OWUyMjAzNTY2YTU4MGJmMTY2ODkzNmE1MTIwMjMyZTp7Il9hdXRoX3VzZXJfaGFzaCI6IjM2ZWI2MjJlNGI3YWE2M2I5OTllOWM5ODc3ODU4NDk2MTJkZjdkNDkiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=",
+        "expire_date": "2017-09-24T20:05:50.440Z"
+    }
+}, {
+    "model": "sessions.session",
+    "pk": "iiuko7cefyugm8bsnatbma97nt0tm1au",
+    "fields": {
+        "session_data": "ODU3MDRlZjRmYzBiYjAwOWU0MjUwMGNjZjEwYTFjYTUzMWExOTE5MDp7Il9hdXRoX3VzZXJfaGFzaCI6IjIxMDhkMDg4N2EyMzUyMjkwNzY1N2E4YTg3NWY5NTQwNjhjNDkxZjEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=",
+        "expire_date": "2017-09-11T00:09:13.154Z"
+    }
+}, {
+    "model": "sessions.session",
+    "pk": "itg54e1itmh4kbtu2sl67sm2wfx0ukvy",
+    "fields": {
+        "session_data": "ODU3MDRlZjRmYzBiYjAwOWU0MjUwMGNjZjEwYTFjYTUzMWExOTE5MDp7Il9hdXRoX3VzZXJfaGFzaCI6IjIxMDhkMDg4N2EyMzUyMjkwNzY1N2E4YTg3NWY5NTQwNjhjNDkxZjEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=",
+        "expire_date": "2017-09-17T17:43:43.046Z"
+    }
+}, {
+    "model": "sessions.session",
+    "pk": "j3jyvsm1p7taeanzy7il4vddjyw3wkkj",
+    "fields": {
+        "session_data": "ZDE2YzU0M2Q0OWUyMjAzNTY2YTU4MGJmMTY2ODkzNmE1MTIwMjMyZTp7Il9hdXRoX3VzZXJfaGFzaCI6IjM2ZWI2MjJlNGI3YWE2M2I5OTllOWM5ODc3ODU4NDk2MTJkZjdkNDkiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=",
+        "expire_date": "2017-10-01T18:57:06.914Z"
+    }
+}, {
+    "model": "sessions.session",
+    "pk": "v8eh1dcd0xg0pptlfy1gpzp9slmjcml1",
+    "fields": {
+        "session_data": "ZDE2YzU0M2Q0OWUyMjAzNTY2YTU4MGJmMTY2ODkzNmE1MTIwMjMyZTp7Il9hdXRoX3VzZXJfaGFzaCI6IjM2ZWI2MjJlNGI3YWE2M2I5OTllOWM5ODc3ODU4NDk2MTJkZjdkNDkiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=",
+        "expire_date": "2017-09-24T20:53:14.480Z"
+    }
+}, {
+    "model": "usuarios.medico",
+    "pk": 2,
+    "fields": {
+        "tipo": 1,
+        "identificacion": "1047457796",
+        "fecha_nacimiento": "1992-12-27",
+        "numero_registro": "11511515",
+        "nombre_u": "Universidad de Cartagena",
+        "telefono": "3156899783",
+        "especialidad": "Anestesi\u00f3loga",
+        "activado": true,
+        "groups": [3],
+        "user_permissions": []
+    }
+}, {
+    "model": "usuarios.paciente",
+    "pk": 3,
+    "fields": {
+        "tipo": 2,
+        "identificacion": "984871451",
+        "fecha_nacimiento": "2009-09-14",
+        "estado_civil": "Bolivar",
+        "profesion": null,
+        "nombre_a": "Enrique  Barrios",
+        "cedula_a": "1584968542",
+        "telefono": "3156899783",
+        "activado": false,
+        "groups": [],
+        "user_permissions": []
+    }
+}, {
+    "model": "usuarios.activacionuser",
+    "pk": 1,
+    "fields": {
+        "email": "maru.ruzu@gmail.com",
+        "key1": "1dm7mb",
+        "key2": "YIrXE1fqpJAhQNy30qONC49QxwI",
+        "fecha": "2017-08-28T00:20:01.917Z",
+        "tipo": 1
+    }
+}, {
+    "model": "usuarios.activacionuser",
+    "pk": 2,
+    "fields": {
+        "email": "maru.ruzu@gmail.com",
+        "key1": "1dm7me",
+        "key2": "_CFcQT9KVptnjF43nvlLspVTDxY",
+        "fecha": "2017-08-28T00:20:04.823Z",
+        "tipo": 1
+    }
+}, {
+    "model": "usuarios.activacionuser",
+    "pk": 3,
+    "fields": {
+        "email": "maru.ruzu@gmail.com",
+        "key1": "1dm83p",
+        "key2": "oleqk3wlLwVV0vUVVyooAQSSP9Y",
+        "fecha": "2017-08-28T00:37:49.226Z",
+        "tipo": 1
+    }
+}, {
+    "model": "usuarios.activacionuser",
+    "pk": 6,
+    "fields": {
+        "email": "maru.ruzu@gmail.com",
+        "key1": "1doZID",
+        "key2": "-KoNlFe4lhkoiti6t4c8h3gMdfc",
+        "fecha": "2017-09-03T18:06:45.623Z",
+        "tipo": 1
+    }
+}, {
+    "model": "usuarios.activacionuser",
+    "pk": 7,
+    "fields": {
+        "email": "maru.ruzu@gmail.com",
+        "key1": "1doZIH",
+        "key2": "Abt77vjTd3arrx04qdQfgRH0Nw8",
+        "fecha": "2017-09-03T18:06:49.047Z",
+        "tipo": 1
+    }
+}, {
+    "model": "usuarios.activacionuser",
+    "pk": 8,
+    "fields": {
+        "email": "maru.ruzu@gmail.com",
+        "key1": "1doa04",
+        "key2": "RIJMxExY3sgxQ_F9SXqVU_bOp2c",
+        "fecha": "2017-09-03T18:52:04.828Z",
+        "tipo": 1
+    }
+}, {
+    "model": "usuarios.activacionuser",
+    "pk": 9,
+    "fields": {
+        "email": "maru.ruzu@gmail.com",
+        "key1": "1doa08",
+        "key2": "YZrnL27RSD63p6LiFaJhyRoRYjU",
+        "fecha": "2017-09-03T18:52:08.268Z",
+        "tipo": 1
+    }
+}, {
+    "model": "usuarios.activacionuser",
+    "pk": 10,
+    "fields": {
+        "email": "maru.ruzu@gmail.com",
+        "key1": "1dr8JO",
+        "key2": "hHK5CU0j4O8AgN1xe8bvBLKoayc",
+        "fecha": "2017-09-10T19:54:34.540Z",
+        "tipo": 1
+    }
+}, {
+    "model": "usuarios.activacionuser",
+    "pk": 11,
+    "fields": {
+        "email": "maru.ruzu@gmail.com",
+        "key1": "1dr8JU",
+        "key2": "xUYEUxBQ2wr_Lp1Kve3Z67RwbK4",
+        "fecha": "2017-09-10T19:54:40.571Z",
+        "tipo": 1
+    }
+}, {
+    "model": "usuarios.activacionuser",
+    "pk": 12,
+    "fields": {
+        "email": "maru.ruzu@gmail.com",
+        "key1": "1dr8SL",
+        "key2": "oi6XYOZnGQur20Cw7dQyOmNKUZc",
+        "fecha": "2017-09-10T20:03:49.556Z",
+        "tipo": 1
+    }
+}, {
+    "model": "usuarios.activacionuser",
+    "pk": 13,
+    "fields": {
+        "email": "maru.ruzu@gmail.com",
+        "key1": "1dr8SN",
+        "key2": "GTL5bDlHsDSAI8R5TcuPT04IEnc",
+        "fecha": "2017-09-10T20:03:51.751Z",
+        "tipo": 1
+    }
+}, {
+    "model": "agenda.consultorio",
+    "pk": 1,
+    "fields": {
+        "nombre": "San Juan 2",
+        "celular": "3156899783",
+        "direccion": "Chile Mz. 2 Lt. 4",
+        "hora_maxima": "17:00:00",
+        "nit": "415549958",
+        "correo": "mariobarrpach@gmail.com"
+    }
+}, {
+    "model": "agenda.procedimientomedico",
+    "pk": 1,
+    "fields": {
+        "nombre": "Cita primera vez",
+        "precio": 160000,
+        "modalidad": 1
+    }
+}, {
+    "model": "agenda.procedimientomedico",
+    "pk": 2,
+    "fields": {
+        "nombre": "Cita control",
+        "precio": 80000,
+        "modalidad": 1
+    }
+}, {
+    "model": "agenda.procedimientomedico",
+    "pk": 3,
+    "fields": {
+        "nombre": "Cita control",
+        "precio": 80000,
+        "modalidad": 2
+    }
+}, {
+    "model": "agenda.procedimientomedico",
+    "pk": 4,
+    "fields": {
+        "nombre": "Cita primera vez",
+        "precio": 160000,
+        "modalidad": 2
+    }
+}, {
+    "model": "agenda.procedimientomedico",
+    "pk": 5,
+    "fields": {
+        "nombre": "Depilacion laser",
+        "precio": 0,
+        "modalidad": 1
+    }
+}, {
+    "model": "agenda.procedimientomedico",
+    "pk": 6,
+    "fields": {
+        "nombre": "Otro procedimiento laser",
+        "precio": 0,
+        "modalidad": 1
+    }
+}, {
+    "model": "agenda.procedimientomedico",
+    "pk": 7,
+    "fields": {
+        "nombre": "inyeccion de botox o acido hialuronicol",
+        "precio": 0,
+        "modalidad": 1
+    }
+}, {
+    "model": "agenda.procedimientomedico",
+    "pk": 9,
+    "fields": {
+        "nombre": "Otro motivo de consulta",
+        "precio": 0,
+        "modalidad": 1
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 1,
+    "fields": {
+        "inicio": "2017-09-12T08:00:00Z",
+        "fin": "2017-09-12T08:30:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": true
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 2,
+    "fields": {
+        "inicio": "2017-09-12T09:00:00Z",
+        "fin": "2017-09-12T09:30:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": true
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 3,
+    "fields": {
+        "inicio": "2017-09-12T08:30:00Z",
+        "fin": "2017-09-12T09:00:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": true
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 4,
+    "fields": {
+        "inicio": "2017-09-12T09:30:00Z",
+        "fin": "2017-09-12T10:00:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": true
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 5,
+    "fields": {
+        "inicio": "2017-09-14T08:00:00Z",
+        "fin": "2017-09-14T08:30:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": true
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 6,
+    "fields": {
+        "inicio": "2017-09-14T08:30:00Z",
+        "fin": "2017-09-14T09:00:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": true
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 7,
+    "fields": {
+        "inicio": "2017-09-14T09:00:00Z",
+        "fin": "2017-09-14T09:30:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": true
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 8,
+    "fields": {
+        "inicio": "2017-10-02T08:00:00Z",
+        "fin": "2017-10-02T08:30:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 9,
+    "fields": {
+        "inicio": "2017-10-02T08:30:00Z",
+        "fin": "2017-10-02T09:00:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 10,
+    "fields": {
+        "inicio": "2017-09-18T08:00:00Z",
+        "fin": "2017-09-18T08:30:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 11,
+    "fields": {
+        "inicio": "2017-09-18T08:30:00Z",
+        "fin": "2017-09-18T09:00:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 12,
+    "fields": {
+        "inicio": "2017-09-18T09:00:00Z",
+        "fin": "2017-09-18T09:30:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 13,
+    "fields": {
+        "inicio": "2017-09-18T09:30:00Z",
+        "fin": "2017-09-18T10:00:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 14,
+    "fields": {
+        "inicio": "2017-09-18T10:00:00Z",
+        "fin": "2017-09-18T10:30:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 15,
+    "fields": {
+        "inicio": "2017-09-18T10:30:00Z",
+        "fin": "2017-09-18T11:00:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 16,
+    "fields": {
+        "inicio": "2017-09-18T11:00:00Z",
+        "fin": "2017-09-18T11:30:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 17,
+    "fields": {
+        "inicio": "2017-09-18T11:30:00Z",
+        "fin": "2017-09-18T12:00:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 18,
+    "fields": {
+        "inicio": "2017-09-18T12:00:00Z",
+        "fin": "2017-09-18T12:30:00Z",
+        "almuerzo": true,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 19,
+    "fields": {
+        "inicio": "2017-09-18T01:00:00Z",
+        "fin": "2017-09-18T01:30:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 20,
+    "fields": {
+        "inicio": "2017-09-18T12:30:00Z",
+        "fin": "2017-09-18T13:00:00Z",
+        "almuerzo": true,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 21,
+    "fields": {
+        "inicio": "2017-09-18T13:00:00Z",
+        "fin": "2017-09-18T13:30:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 22,
+    "fields": {
+        "inicio": "2017-09-18T13:30:00Z",
+        "fin": "2017-09-18T14:00:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 23,
+    "fields": {
+        "inicio": "2017-09-18T14:00:00Z",
+        "fin": "2017-09-18T14:30:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 24,
+    "fields": {
+        "inicio": "2017-09-18T14:30:00Z",
+        "fin": "2017-09-18T15:00:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 25,
+    "fields": {
+        "inicio": "2017-09-18T15:00:00Z",
+        "fin": "2017-09-18T15:30:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 26,
+    "fields": {
+        "inicio": "2017-09-18T15:30:00Z",
+        "fin": "2017-09-18T16:00:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 27,
+    "fields": {
+        "inicio": "2017-09-18T16:00:00Z",
+        "fin": "2017-09-18T16:30:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 28,
+    "fields": {
+        "inicio": "2017-09-18T16:30:00Z",
+        "fin": "2017-09-18T17:00:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 29,
+    "fields": {
+        "inicio": "2017-09-18T17:00:00Z",
+        "fin": "2017-09-18T17:30:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 30,
+    "fields": {
+        "inicio": "2017-09-18T17:30:00Z",
+        "fin": "2017-09-18T18:00:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 31,
+    "fields": {
+        "inicio": "2017-09-18T18:00:00Z",
+        "fin": "2017-09-18T18:30:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 32,
+    "fields": {
+        "inicio": "2017-09-18T18:30:00Z",
+        "fin": "2017-09-18T19:00:00Z",
+        "almuerzo": false,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 33,
+    "fields": {
+        "inicio": "2017-09-19T12:00:00Z",
+        "fin": "2017-09-19T12:30:00Z",
+        "almuerzo": true,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "agenda.calendariocita",
+    "pk": 34,
+    "fields": {
+        "inicio": "2017-09-19T12:30:00Z",
+        "fin": "2017-09-19T13:00:00Z",
+        "almuerzo": true,
+        "admin": false,
+        "eliminado": false
+    }
+}, {
+    "model": "adb.publicidadmovil",
+    "pk": 1,
+    "fields": {
+        "url": "http://soenmusic.com/",
+        "imagen": "publicidad/soen.jpg"
+    }
+}]

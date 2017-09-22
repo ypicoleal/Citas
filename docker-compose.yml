@@ -1,0 +1,16 @@
+version: "2"
+services:
+  db:
+    image: "postgres:latest"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data/
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8010
+    volumes:
+      - .:/citas
+    ports:
+      - "8010:8010"
+    depends_on:
+      - db
