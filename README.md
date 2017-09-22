@@ -9,6 +9,7 @@ Make a new virtualenv for the project, and run::
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Docker installation
+~~~~~~~~~~~~~~~~~~~~~~
 
 Run the app::
   
