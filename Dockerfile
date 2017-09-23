@@ -12,8 +12,8 @@ ADD . /citas
 # Install any needed packages specified in dependencias.txt
 RUN pip install --upgrade pip
 RUN pip install -r requerimientos.txt
-RUN python manage.py makemigrations
-RUN python manage.py migrate
-RUN python manage.py loaddata db.json
+# RUN python manage.py makemigrations
+# RUN python manage.py migrate
+# RUN python manage.py loaddata db.json
 # Run python when the container launches
 # CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
