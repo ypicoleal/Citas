@@ -87,7 +87,7 @@ class CitaMedicaForm(forms.ModelForm):
 
     def clean_entidad(self):
         entidad = self.cleaned_data['entidad']
-        calendario = cleaned_data.get('calendario', False)
+        calendario = self.cleaned_data.get('calendario', False)
         if not entidad:
             raise forms.ValidationError("Este campo es requerido")
 
