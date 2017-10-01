@@ -33,15 +33,17 @@ class CalendarioCitaList(supra.SupraListView):
     def asignacionCita(self, obj, row):
         asignacion = models.CitaMedica.objects.filter(calendario=obj).first()
         if asignacion:
-            return asignacion.values('id')
+            nombre = "%s %s" % (asignacion.paciente.first_name, asignacion.paciente.last_name)
+            return {"id": asignacion.id, "nombre": nombre}
         return None
 
     def title(self, obj, row):
         title = "Espacio para cita"
-        # asignacion = self.asignacionCita(obj, row)
         if obj.almuerzo:
             title = "Almuerzo"
-
+        asignacion = self.asignacionCita(obj, row)
+        if asignacion:
+            title = "Cita: %s" % asignacion["nombre"]
         return title
 
     def color(self, obj, row):
@@ -57,9 +59,15 @@ class CalendarioCitaList(supra.SupraListView):
         return super(CalendarioCitaList, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
+        filtro = self.request.GET.get('citamedica', False)
+        print filtro
         queryset = super(CalendarioCitaList, self).get_queryset()
+        if filtro:
+            queryset = queryset.filter(citamedica=None)
         return queryset.filter(eliminado=False)
     # end def
+# end class
+
 
 class CalandarioCitaForm(supra.SupraFormView):
     model = models.CalendarioCita

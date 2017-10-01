@@ -95,7 +95,7 @@ class CitaMedica(models.Model):
     # end class
 
     def __unicode__(self):
-        return u"%s - %s %s - %s %s" % (self.procedimiento.nombre, self.paciente.first_name, self.paciente.last_name, self.inicio.strftime('%Y-%m-%d %H:%M:%S'), self.fin.strftime('%Y-%m-%d %H:%M:%S'))
+        return u"%s - %s %s - %s %s" % (self.procedimiento.nombre, self.paciente.first_name, self.paciente.last_name, self.calendario.inicio.strftime('%Y-%m-%d %H:%M:%S'), self.calendario.fin.strftime('%H:%M:%S'))
     # end def
 
     def get_entidad(self):

@@ -44,33 +44,35 @@ function hideCita(estado) {
 
 function formModal(data, self) {
     console.log(data);
+    console.log(data.asignacionCita);
+    if (data.asignacionCita == null) {
+        var formTemplete = `<div class="modal modal-c" id="formModal">
+        <div class="modal-content">
+        <div class="collection">
+            <a href="#!" class="collection-item"  onclick="asignarAlmuerzo(${data.id}, ${data.almuerzo})"><i class="material-icons">local_dining</i>${des(data.almuerzo)} almuerzo</a>
+            <!--a href="#!" style="display: ${hideCita(data.almuerzo)};" class="collection-item"><i class="material-icons">event</i> Asignar cita</a-->
+            <a href="#!" class="collection-item" onclick="eliminarCalendario(${data.id})"><i class="material-icons">delete</i>Eliminar</a>
+        </div>
+        </div>
+        </div>`;
 
-    var formTemplete = `<div class="modal modal-c" id="formModal">
-    <div class="modal-content">
-    <div class="collection">
-        <a href="#!" class="collection-item"  onclick="asignarAlmuerzo(${data.id}, ${data.almuerzo})"><i class="material-icons">local_dining</i>${des(data.almuerzo)} almuerzo</a>
-        <!--a href="#!" style="display: ${hideCita(data.almuerzo)};" class="collection-item"><i class="material-icons">event</i> Asignar cita</a-->
-        <a href="#!" class="collection-item" onclick="eliminarCalendario(${data.id})"><i class="material-icons">delete</i>Eliminar</a>
-    </div>
-    </div>
-    </div>`;
-
-    var query = $("#formModal");
-    if (query.length === 0) {
-        $("body").append(formTemplete);
-    } else {
-        query.remove();
-        $("body").append(formTemplete);
-    }
-    $("#formModal").modal({
-        ready: function(modal, trigger) {
-            $('.tooltipped').tooltip({
-                delay: 50,
-                position: 'right'
-            });
+        var query = $("#formModal");
+        if (query.length === 0) {
+            $("body").append(formTemplete);
+        } else {
+            query.remove();
+            $("body").append(formTemplete);
         }
-    });
-    $('#formModal').modal('open');
+        $("#formModal").modal({
+            ready: function(modal, trigger) {
+                $('.tooltipped').tooltip({
+                    delay: 50,
+                    position: 'right'
+                });
+            }
+        });
+        $('#formModal').modal('open');
+    }
 }
 
 function eliminarCalendario(id) {
@@ -84,6 +86,7 @@ function eliminarCalendario(id) {
                 eliminado: true
             },
             success: function(response) {
+                $("#calendar").fullCalendar('removeEvents');
                 $("#calendar").fullCalendar('refetchEvents');
                 Materialize.toast('Borrado exitoso.', 2000);
             },
