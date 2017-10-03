@@ -5,6 +5,7 @@ from django.core.signing import TimestampSigner
 from django.shortcuts import render
 from django.http import HttpResponseNotFound, HttpResponse
 import models
+import forms
 from forms import ConfirmacionForm
 from emails import emailConfirmation
 from Citas.settings import ORIGIN
@@ -83,6 +84,17 @@ class LoginU(supra.SupraSession):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         a = super(LoginU, self).dispatch(request, *args, **kwargs)
+        return a
+    # end def
+# end class
+
+class PacienteSupraForm(supra.SupraFormView):
+    model = models.Paciente
+    form_class = forms.PacienteFormService
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        a = super(PacienteSupraForm, self).dispatch(request, *args, **kwargs)
         return a
     # end def
 # end class

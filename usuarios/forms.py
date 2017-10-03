@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 from django import forms
 import models as usuarios
-
-from django.contrib.auth.models import User
-from django.contrib.auth.models import Permission, Group
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User, Permission, Group
 
 
 class ConfirmacionForm(forms.Form):
@@ -169,6 +168,27 @@ class PacienteAdmin(forms.ModelForm):
         paciente.username = paciente.identificacion
         paciente.activado = True
         paciente.set_password(raw_password=paciente.identificacion)
+        paciente.save()
+        return paciente
+    # end def
+# end class
+
+
+class PacienteFormService(UserCreationForm):
+
+    class Meta:
+        model = usuarios.Paciente
+        fields = ['username', 'password1', 'password2', 'first_name', 'last_name', 'email', 'tipo',
+                  'identificacion', 'fecha_nacimiento', 'estado_civil', 'profesion', 'telefono', 'nombre_a', 'cedula_a']
+
+        widgets = {
+            'identificacion': forms.NumberInput(),
+            'telefono': forms.NumberInput()
+        }
+
+    def save(self, commit=False):
+        paciente = super(PacienteAdmin, self).save(commit)
+        paciente.activado = True
         paciente.save()
         return paciente
     # end def

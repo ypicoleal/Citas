@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^usuarios/', include('usuarios.urls')),
     url(r'^publicidad/', include('adb.urls')),
     url(r'^agenda/', include('agenda.urls')),
+    url('^', include('django.contrib.auth.urls')),
 ]
 
 if settings.DEBUG:
