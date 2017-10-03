@@ -90,7 +90,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '',
         'OPTIONS': {
-           'init_command': 'SET default_storage_engine=INNODB',
+           'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         }
     }
 }
