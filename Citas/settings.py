@@ -83,12 +83,12 @@ WSGI_APPLICATION = 'Citas.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dranilsa_citas',
         'USER': 'dranilsa_user',
         'PASSWORD': 'Citas96522569',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '',
     }
 }
 
