@@ -3,6 +3,7 @@ from django import forms
 import models as usuarios
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Permission, Group
+from emails import emailConfirmation
 
 
 class ConfirmacionForm(forms.Form):
@@ -82,9 +83,13 @@ class MedicoForm(forms.ModelForm):
 
     def save(self, commit=False):
         medico = super(MedicoForm, self).save(commit)
+        if not hasattr(self, 'instance') and not self.instance.pk:
+            emailConfirmation(medico.email, 1)
+        # end if
         medico.is_staff = True
         medico.username = medico.identificacion
         medico.set_password(raw_password=medico.identificacion)
+
         grupo, created = Group.objects.get_or_create(name="Medico")
         if created:
             permisos = Permission.objects.all().exclude(codename__contains="log").exclude(codename__contains="group").exclude(codename__contains="permission").exclude(codename__contains="user").exclude(codename__contains="content type").exclude(codename__contains="session")
