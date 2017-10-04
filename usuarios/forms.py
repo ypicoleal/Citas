@@ -191,10 +191,10 @@ class PacienteFormService(UserCreationForm):
             'telefono': forms.NumberInput()
         }
 
-    def save(self, commit=False):
+    def save(self, commit=True):
         paciente = super(PacienteAdmin, self).save(commit)
-        paciente.activado = True
-        paciente.save()
+        if not hasattr(self, 'instance') and not self.instance.pk:
+            emailConfirmation(medico.email, 2)
         return paciente
     # end def
 # end class
