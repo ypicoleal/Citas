@@ -60,7 +60,6 @@ class CalendarioCitaList(supra.SupraListView):
 
     def get_queryset(self):
         filtro = self.request.GET.get('citamedica', False)
-        print filtro
         queryset = super(CalendarioCitaList, self).get_queryset()
         if filtro:
             queryset = queryset.filter(citamedica=None)
@@ -138,3 +137,20 @@ class CitaMedicaForm(supra.SupraFormView):
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
         return super(CitaMedicaForm, self).dispatch(request, *args, **kwargs)
+
+# end class
+
+"""
+    Procedimientos
+"""
+
+class ProcedimientosList(supra.SupraListView):
+    model = models.ProcedimientoMedico
+    list_display = ['nombre', 'precio', 'modalidad']
+    search_fields = ['nombre', 'precio']
+    list_filter = ['modalidad', ]
+
+    @method_decorator(check_login)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProcedimientosList, self).dispatch(request, *args, **kwargs)
+# end class

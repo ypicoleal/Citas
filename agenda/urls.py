@@ -21,3 +21,12 @@ urlpatterns += [
     url(r'^cita/form/$', views.CitaMedicaForm.as_view(), name="cita_form"),
     url(r'^cita/form/(?P<pk>\d+)/$', views.CitaMedicaForm.as_view(), name="cita_edit"),
 ]
+
+
+"""
+    Procedimiento Medico
+"""
+
+urlpatterns += [
+    url(r'^procedimiento/medico/list/$', views.ProcedimientosList.as_view(), name="procedimiento"),
+]

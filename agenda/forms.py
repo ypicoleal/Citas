@@ -4,6 +4,7 @@ from django.db.models import Q
 import models
 import datetime
 import calendar
+from cuser.middleware import CuserMiddleware
 
 def getTimeDifference(TimeStart, TimeEnd):
     timeDiff = TimeEnd - TimeStart
@@ -118,4 +119,72 @@ class CitaMedicaForm(forms.ModelForm):
 
         return calendario
     # end def
+# end class
+
+
+class CitaMedicaFormSupra(forms.ModelForm):
+
+
+    class Meta:
+        model = models.CitaMedica
+        fields = ['procedimiento', 'entidad', 'calendario']
+
+
+    def clean(self):
+        cleaned_data = super(CalendarioCitaForm, self).clean()
+        if hasattr(self, 'instance') and self.instance.pk:
+            return cleaned_data
+        else:
+            user = CuserMiddleware.get_user()
+            paciente = models.Paciente.objects.filter(id=user.id).first()
+            if not paciente:
+                form.ValidationError("Necesita ser un paciente para crear una cita")
+        # end if
+    # end def
+
+    def clean_entidad(self):
+        entidad = self.cleaned_data['entidad']
+        calendario = self.cleaned_data.get('calendario', False)
+        if not entidad:
+            raise forms.ValidationError("Este campo es requerido")
+
+        if calendario:
+            if calendario.inicio.weekday() is 4 and calendario.inicio.hour >= 13 and not entidad is 1:
+                raise forms.ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
+            elif calendario.inicio.weekday() is 5 and not entidad is 1:
+                raise forms.ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
+
+        return entidad
+
+    def clean_calendario(self):
+        calendario = self.cleaned_data['calendario']
+        if not calendario:
+            raise forms.ValidationError("Este campo es requerido")
+
+        consultorio = models.Consultorio.objects.first()
+        if datetime.datetime.today().day + 1 is calendario.inicio.day:
+            if consultorio:
+                if consultorio.hora_maxima.hour >= datetime.datetime.today().hour:
+                    raise forms.ValidationError("Por favor reserve para un dia posterior")
+            elif 17 >= datetime.datetime.today().hour:
+                raise forms.ValidationError("Por favor reserve para un dia posterior")
+
+        if calendario.inicio.date() <= datetime.date.today():
+            raise forms.ValidationError("No se pueden asignar citas para días anteriores a la fecha actual")
+
+        return calendario
+    # end def
+
+    def save(self, commit=False):
+        cita = super(CitaMedicaFormSupra, self).save(commit)
+        if hasattr(self, 'instance') and self.instance.pk:
+            cita.save()
+        else:
+            user = CuserMiddleware.get_user()
+            paciente = models.Paciente.objects.filter(id=user.id).first()
+            cita.paciente = paciente.id
+            cita.save()
+        # end if
+        return cita
+    # end if
 # end class

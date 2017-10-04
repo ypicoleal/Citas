@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'usuarios.apps.UsuariosConfig',
     'agenda.apps.AgendaConfig',
     'adb.apps.AdbConfig',
-    'supra'
+    'supra',
+    'cuser'
 ]
 
 MIDDLEWARE = [
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'cuser.middleware.CuserMiddleware'
 ]
 
 ROOT_URLCONF = 'Citas.urls'
@@ -143,10 +145,10 @@ ADMINS = [('Mario', 'mariobarrpach@gmail.com')]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'mariobarrpach@gmail.com'
-EMAIL_HOST_PASSWORD = 'yrjsjwmgcepehhlb'
+EMAIL_HOST = 'box5027.bluehost.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'info@dranilsaarias.com'
+EMAIL_HOST_PASSWORD = 'nilsaArias2017@'
 
 
 # Logging
