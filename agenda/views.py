@@ -131,7 +131,7 @@ class CitasMedicasList(supra.SupraListView):
 
 class CitaMedicaForm(supra.SupraFormView):
     model = models.CitaMedica
-    form_class = forms.CitaMedicaForm
+    form_class = forms.CitaMedicaFormSupra
 
     @method_decorator(check_login)
     @csrf_exempt
