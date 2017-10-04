@@ -145,8 +145,8 @@ ADMINS = [('Mario', 'mariobarrpach@gmail.com')]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = False
-EMAIL_HOST = 'box5027.bluehost.com'
-EMAIL_PORT = 465
+#EMAIL_HOST = 'box5027.bluehost.com'
+#EMAIL_PORT = 465
 EMAIL_HOST_USER = 'info@dranilsaarias.com'
 EMAIL_HOST_PASSWORD = 'nilsaArias2017@'
 
