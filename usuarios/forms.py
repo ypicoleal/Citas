@@ -192,7 +192,7 @@ class PacienteFormService(UserCreationForm):
         }
 
     def save(self, commit=True):
-        paciente = super(PacienteAdmin, self).save(commit)
+        paciente = super(PacienteFormService, self).save(commit)
         if not hasattr(self, 'instance') and not self.instance.pk:
             emailConfirmation(medico.email, 2)
         return paciente
