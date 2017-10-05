@@ -193,7 +193,7 @@ class PacienteFormService(UserCreationForm):
 
     def save(self, commit=True):
         paciente = super(PacienteFormService, self).save(commit)
-        emailConfirmation(medico.email, 2)
+        emailConfirmation(paciente.email, 2)
         return paciente
     # end def
 # end class
