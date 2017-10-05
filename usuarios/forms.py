@@ -83,7 +83,7 @@ class MedicoForm(forms.ModelForm):
 
     def save(self, commit=False):
         medico = super(MedicoForm, self).save(commit)
-        if not hasattr(self, 'instance') and not self.instance.pk:
+        if not hasattr(self, 'instance'):
             emailConfirmation(medico.email, 1)
         # end if
         medico.is_staff = True
@@ -193,8 +193,7 @@ class PacienteFormService(UserCreationForm):
 
     def save(self, commit=True):
         paciente = super(PacienteFormService, self).save(commit)
-        if not hasattr(self, 'instance') and not self.instance.pk:
-            emailConfirmation(medico.email, 2)
+        emailConfirmation(medico.email, 2)
         return paciente
     # end def
 # end class
