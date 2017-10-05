@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django import forms
 import models as usuarios
 from django.contrib.auth.forms import UserCreationForm
