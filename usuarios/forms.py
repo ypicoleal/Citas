@@ -83,8 +83,7 @@ class MedicoForm(forms.ModelForm):
 
     def save(self, commit=False):
         medico = super(MedicoForm, self).save(commit)
-        if not hasattr(self, 'instance'):
-            emailConfirmation(medico.email, 1)
+        emailConfirmation(medico.email, 1)
         # end if
         medico.is_staff = True
         medico.username = medico.identificacion
