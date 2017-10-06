@@ -88,7 +88,8 @@ class CitaMedica(models.Model):
     confirmacion = models.IntegerField("Confirmación de cita", choices=choices3, blank=True, null=True)
     fecha = models.DateTimeField(auto_now_add=True)
     calendario = models.OneToOneField(CalendarioCita)
-
+    cancelar = models.BooleanField(default=False)
+    
     class Meta:
         verbose_name = "Cita médica"
         verbose_name_plural = "Citas medicas"

@@ -84,7 +84,7 @@ class CitaMedicaForm(forms.ModelForm):
 
     class Meta:
         model = models.CitaMedica
-        fields = ['paciente', 'procedimiento', 'entidad', 'fecha_', 'calendario']
+        fields = ['paciente', 'procedimiento', 'entidad', 'fecha_', 'calendario', 'cancelar']
 
 
     def clean_entidad(self):
@@ -127,7 +127,7 @@ class CitaMedicaFormSupra(forms.ModelForm):
 
     class Meta:
         model = models.CitaMedica
-        fields = ['procedimiento', 'entidad', 'calendario']
+        fields = ['procedimiento', 'entidad', 'calendario', 'cancelar']
 
 
     def clean(self):
