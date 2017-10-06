@@ -63,11 +63,11 @@ class DuracionCitaStack(admin.TabularInline):
 class CitaReprogramadaStack(admin.TabularInline):
     model = models.CitaReprogramada
     fields = ('motivo', )
-    extra = 0
+    extra = 1
 
 class CitaCanceladaStack(admin.TabularInline):
     model = models.CitaCancelada
-    extra = 0
+    extra = 1
 
 
 @admin.register(models.CitaMedica)
