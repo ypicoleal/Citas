@@ -89,7 +89,7 @@ class CitaMedica(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
     calendario = models.OneToOneField(CalendarioCita)
     cancelar = models.BooleanField(default=False)
-    
+
     class Meta:
         verbose_name = "Cita médica"
         verbose_name_plural = "Citas medicas"
@@ -146,8 +146,8 @@ class CitaCancelada(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = "Cancerlar cita"
-        verbose_name_plural = "Cancelar cita"
+        verbose_name = "Motivo de cancelación"
+        verbose_name_plural = "Motivo de cancelación"
     # end class
 
     def __unicode__(self):
