@@ -13,6 +13,7 @@ from supra import views as supra
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.contrib.auth import login, logout, authenticate
+import json
 
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
 supra.SupraConf.ACCECC_CONTROL["origin"] = ORIGIN
@@ -105,3 +106,11 @@ def logoutUser(request):
     logout(request)
     return HttpResponse(status=200)
 # end def
+
+@supra.access_control
+def islogin(request):
+    if request.user.is_authenticated():
+        return HttpResponse(json.dumps({"session": request.session.session_key, "username": request.user.username, "nombre": request.user.first_name, "apellido": request.user.last_name, 200)
+    # end if
+    return HttpResponse([], 400)
+# end if
