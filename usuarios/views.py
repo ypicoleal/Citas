@@ -110,7 +110,7 @@ def logoutUser(request):
 @supra.access_control
 def islogin(request):
     if request.user.is_authenticated():
-        return HttpResponse(json.dumps({"session": request.session.session_key, "username": request.user.username, "nombre": request.user.first_name, "apellido": request.user.last_name, 200)
+        return HttpResponse(json.dumps({"session": request.session.session_key, "username": request.user.username, "nombre": request.user.first_name, "apellido": request.user.last_name}), 200)
     # end if
     return HttpResponse([], 400)
 # end if
