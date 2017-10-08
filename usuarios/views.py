@@ -13,6 +13,7 @@ from supra import views as supra
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.contrib.auth import login, logout, authenticate
+from Citas.decorator import check_acount
 import json
 
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
@@ -83,6 +84,7 @@ def generarConfirmacion(request):
 class LoginU(supra.SupraSession):
 
     @method_decorator(csrf_exempt)
+    @check_acount
     def dispatch(self, request, *args, **kwargs):
         a = super(LoginU, self).dispatch(request, *args, **kwargs)
         return a
