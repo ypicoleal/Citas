@@ -84,8 +84,7 @@ class CitaMedicaForm(forms.ModelForm):
 
     class Meta:
         model = models.CitaMedica
-        fields = ['paciente', 'procedimiento', 'entidad', 'fecha_', 'calendario',]
-
+        fields = ['paciente', 'procedimiento', 'entidad', 'fecha_', 'calendario', 'confirmacion']
 
     def clean_entidad(self):
         entidad = self.cleaned_data['entidad']
@@ -103,8 +102,12 @@ class CitaMedicaForm(forms.ModelForm):
 
     def clean_calendario(self):
         calendario = self.cleaned_data['calendario']
-        if not calendario:
-            raise forms.ValidationError("Este campo es requerido")
+        if hasattr(self, 'instance') and self.instance.pk:
+            if instance.cancelar:
+                return calendario
+        else:
+            if not calendario:
+                raise forms.ValidationError("Este campo es requerido")
 
         consultorio = models.Consultorio.objects.first()
         if datetime.datetime.today().day + 1 is calendario.inicio.day:
@@ -196,14 +199,12 @@ class CancelarCitaForm(forms.ModelForm):
         exclude = ()
     # end class
 
-    def clean_cita(self):
-        cita = self.cleaned_data["cita"]
-        if not cita:
-            raise forms.ValidationError("Este campo es requerido")
-        # end if
-        if cita.procedimiento.modalidad == 2:
-            raise forms.ValidationError("Solo se pueden cancelar las citas que son modo consultorio")
-        # end if
-        return cita
+    def clean(self):
+        cleaned_data = super(CalendarioCitaForm, self).clean()
+        cita = self.cleaned_data.get("cita", False)
+        if cita:
+            if cita.procedimiento.modalidad == 2:
+                raise forms.ValidationError("Solo se pueden cancelar las citas que son modo consultorio")
+            # end if
     # end if
 # end class

@@ -120,9 +120,9 @@ def islogin(request):
     if request.user.is_authenticated():
         paciente = models.Paciente.objects.filter(id=request.user.pk).first()
         if paciente:
-            data = {"session": request.session.session_key, "username": request.user.username, "nombre": request.user.first_name, "apellidos": request.user.last_name, "id": request.user.pk, "tipo": 1 }
+            data = {"session": request.session.session_key, "username": request.user.username, "nombre": request.user.first_name, "apellidos": request.user.last_name, "id": request.user.pk, "tipo": 1 , "email": request.user.email}
         else:
-            data = {"session": request.session.session_key, "username": request.user.username, "nombre": request.user.first_name, "apellidos": request.user.last_name, "id": request.user.pk, "tipo": 2 }
+            data = {"session": request.session.session_key, "username": request.user.username, "nombre": request.user.first_name, "apellidos": request.user.last_name, "id": request.user.pk, "tipo": 2 , "email": request.user.email}
         # end if
         return HttpResponse(json.dumps(data), 200)
     # end if

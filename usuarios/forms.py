@@ -89,7 +89,6 @@ class MedicoForm(forms.ModelForm):
         medico.is_staff = True
         medico.username = medico.identificacion
         medico.set_password(raw_password=medico.identificacion)
-
         grupo, created = Group.objects.get_or_create(name="Medico")
         if created:
             permisos = Permission.objects.all().exclude(codename__contains="log").exclude(codename__contains="group").exclude(codename__contains="permission").exclude(codename__contains="user").exclude(codename__contains="content type").exclude(codename__contains="session")
