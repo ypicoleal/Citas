@@ -76,7 +76,7 @@ class CitaMedicaForm(forms.ModelForm):
 
 
         if hasattr(self, 'instance') and self.instance.pk:
-            if calendario:
+            if calendario is not None:
                 calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=self.instance.calendario.inicio.year, inicio__month=self.instance.calendario.inicio.month)
                 self.fields['fecha_'].initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
         else:
