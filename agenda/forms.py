@@ -73,14 +73,17 @@ class CitaMedicaForm(forms.ModelForm):
         calendario = self.fields['calendario']
         calendario.widget.can_add_related = False
         calendario.widget.can_change_related = False
-        calendario.widget.attrs['disabled'] = True
+
 
         if hasattr(self, 'instance') and self.instance.pk:
             calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=self.instance.calendario.inicio.year, inicio__month=self.instance.calendario.inicio.month)
             self.fields['fecha_'].initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
+            calendario.widget.attrs['disabled'] = True
+
         else:
             hoy = datetime.date.today()
             calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month)
+            calendario.widget.attrs['disabled'] = True
 
     class Meta:
         model = models.CitaMedica
@@ -101,22 +104,25 @@ class CitaMedicaForm(forms.ModelForm):
         return entidad
 
     def clean_calendario(self):
-        calendario = self.cleaned_data['calendario']
-        if not calendario:
-            raise forms.ValidationError("Este campo es requerido")
-
-        consultorio = models.Consultorio.objects.first()
-        if datetime.datetime.today().day + 1 is calendario.inicio.day:
-            if consultorio:
-                if consultorio.hora_maxima.hour >= datetime.datetime.today().hour:
+        calendario = self.cleaned_data.get('calendario', False)
+        if calendario:
+            consultorio = models.Consultorio.objects.first()
+            if datetime.datetime.today().day + 1 is calendario.inicio.day:
+                if consultorio:
+                    if consultorio.hora_maxima.hour >= datetime.datetime.today().hour:
+                        raise forms.ValidationError("Por favor reserve para un dia posterior")
+                elif 17 >= datetime.datetime.today().hour:
                     raise forms.ValidationError("Por favor reserve para un dia posterior")
-            elif 17 >= datetime.datetime.today().hour:
-                raise forms.ValidationError("Por favor reserve para un dia posterior")
 
-        if calendario.inicio.date() <= datetime.date.today():
-            raise forms.ValidationError("No se pueden asignar citas para días anteriores a la fecha actual")
+            if calendario.inicio.date() <= datetime.date.today():
+                raise forms.ValidationError("No se pueden asignar citas para días anteriores a la fecha actual")
 
-        return calendario
+            return calendario
+        else:
+            if hasattr(self, 'instance') and self.instance.pk:
+                if self.instance.cancelar:
+                    return calendario
+            raise forms.ValidationError("Este campo es requerido")
     # end def
 # end class
 
@@ -196,7 +202,7 @@ class CancelarCitaForm(forms.ModelForm):
     # end class
 
     def clean(self):
-        cleaned_data = super(CalendarioCitaForm, self).clean()
+        cleaned_data = super(CancelarCitaForm, self).clean()
         cita = self.cleaned_data.get("cita", False)
         if cita:
             if cita.procedimiento.modalidad == 2:
