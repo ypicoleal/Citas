@@ -13,7 +13,6 @@ from supra import views as supra
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.contrib.auth import login, logout, authenticate
-from Citas.decorator import check_acount
 import json
 
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
