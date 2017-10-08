@@ -113,7 +113,7 @@ class CalandarioCitaDelete(supra.SupraDeleteView):
 
 class CitasMedicasList(supra.SupraListView):
     model = models.CitaMedica
-    list_display = ['paciente', 'procedimiento', 'entidad', 'estado', 'confirmacion']
+    list_display = ['paciente', 'procedimiento', 'entidad', 'estado', 'confirmacion', 'cancelar']
     list_filter = ['paciente', 'procedimiento', 'entidad', 'estado', 'confirmacion', 'calendario__inicio__year', 'calendario__inicio__month', 'calendario__inicio__day', 'calendario__inicio__range']
 
     @method_decorator(check_login)
