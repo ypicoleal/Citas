@@ -95,6 +95,14 @@ class PacienteSupraForm(supra.SupraFormView):
     model = models.Paciente
     form_class = forms.PacienteFormService
 
+    def get_form_class(self):
+        if 'pk' in self.http_kwargs:
+            self.form_class = forms.PacienteEdit
+        # end if
+        return self.form_class
+    # end class
+# end class
+
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         a = super(PacienteSupraForm, self).dispatch(request, *args, **kwargs)
@@ -112,7 +120,13 @@ def logoutUser(request):
 @supra.access_control
 def islogin(request):
     if request.user.is_authenticated():
-        return HttpResponse(json.dumps({"session": request.session.session_key, "username": request.user.username, "nombre": request.user.first_name, "apellido": request.user.last_name}), 200)
+        paciente = models.Paciente.objects.filter(id=request.user.pk).first()
+        if paciente:
+            data = {"session": request.session.session_key, "username": request.user.username, "nombre": request.user.first_name, "apellidos": request.user.last_name, "id": request.user.pk, "tipo": 1 }
+        else:
+            data = {"session": request.session.session_key, "username": request.user.username, "nombre": request.user.first_name, "apellidos": request.user.last_name, "id": request.user.pk, "tipo": 2 }
+        # end if
+        return HttpResponse(json.dumps(data), 200)
     # end if
     return HttpResponse([], 400)
 # end if

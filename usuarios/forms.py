@@ -197,3 +197,14 @@ class PacienteFormService(UserCreationForm):
         return paciente
     # end def
 # end class
+
+class PacienteEdit(forms.ModelForm):
+
+    class Meta:
+        model = usuarios.Paciente
+        fields = ['first_name', 'last_name', 'email', 'fecha_nacimiento', 'estado_civil', 'profesion', 'telefono', 'nombre_a', 'cedula_a']
+        widgets = {
+            "telefono": forms.NumberInput()
+        }
+    # end class
+# end class
