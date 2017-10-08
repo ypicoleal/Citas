@@ -200,7 +200,7 @@ class CancelarCitaForm(forms.ModelForm):
     # end class
 
     def clean(self):
-        cleaned_data = super(CalendarioCitaForm, self).clean()
+        cleaned_data = super(CancelarCitaForm, self).clean()
         cita = self.cleaned_data.get("cita", False)
         if cita:
             if cita.procedimiento.modalidad == 2:
