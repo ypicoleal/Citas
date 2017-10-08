@@ -102,10 +102,6 @@ class CitaMedicaForm(forms.ModelForm):
 
     def clean_calendario(self):
         calendario = self.cleaned_data.get('calendario', False)
-        if hasattr(self, 'instance') and self.instance.pk:
-            if self.instance.cancelar:
-                return calendario
-
         if calendario:
             consultorio = models.Consultorio.objects.first()
             if datetime.datetime.today().day + 1 is calendario.inicio.day:
@@ -120,6 +116,9 @@ class CitaMedicaForm(forms.ModelForm):
 
             return calendario
         else:
+            if hasattr(self, 'instance') and self.instance.pk:
+                if self.instance.cancelar:
+                    return calendario
             raise forms.ValidationError("Este campo es requerido")
     # end def
 # end class
