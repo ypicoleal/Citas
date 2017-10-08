@@ -96,7 +96,11 @@ class CitaMedica(models.Model):
     # end class
 
     def __unicode__(self):
-        return u"%s - %s %s - %s %s" % (self.procedimiento.nombre, self.paciente.first_name, self.paciente.last_name, self.calendario.inicio.strftime('%Y-%m-%d %H:%M:%S'), self.calendario.fin.strftime('%H:%M:%S'))
+        if self.cancelar:
+            mensaje = u"%s - %s %s - %s %s" % (self.procedimiento.nombre, self.paciente.first_name, self.paciente.last_name, self.calendario.inicio.strftime('%Y-%m-%d %H:%M:%S'), self.calendario.fin.strftime('%H:%M:%S'))
+        else:
+            mensaje = u"%s - %s %s - Cancelado" % (self.procedimiento.nombre, self.paciente.first_name, self.paciente.last_name)
+        return mensaje
     # end def
 
     def get_entidad(self):
