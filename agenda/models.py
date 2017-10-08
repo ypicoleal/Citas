@@ -156,7 +156,10 @@ class CitaCancelada(models.Model):
 
     def save(self, *args, **kwargs):
         super(CitaCancelada, self).save(*args, **kwargs)
-        self.cita.update(cancelar=True, calendario=None)
+        cita = CitaMedica.objects.filter(id=self.cita.pk).first()
+        cita.cancelar = True
+        cita.calendario = None
+        cita.save()
 # end class
 
 class DuracionCita(models.Model):
