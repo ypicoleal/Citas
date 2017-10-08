@@ -101,9 +101,8 @@ class CitaMedicaForm(forms.ModelForm):
         return entidad
 
     def clean_calendario(self):
-        calendario = self.cleaned_data['calendario']
+        calendario = self.cleaned_data.get('calendario', False)
         if hasattr(self, 'instance') and self.instance.pk:
-            print "###### instance",self.instance.cancelar
             if self.instance.cancelar:
                 return calendario
         else:
