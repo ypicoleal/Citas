@@ -67,12 +67,13 @@ class CitaReprogramadaStack(admin.TabularInline):
 
 class CitaCanceladaStack(admin.TabularInline):
     model = models.CitaCancelada
+    form = forms.CancelarCitaForm
     extra = 1
 
 
 @admin.register(models.CitaMedica)
 class CitaMedica(admin.ModelAdmin):
-    list_display = ['paciente', 'procedimiento', 'entidad', 'estado', 'confirmacion']
+    list_display = ['paciente', 'procedimiento', 'entidad', 'estado', 'confirmacion', 'cancelar']
     list_filter = ['paciente', 'procedimiento', 'entidad', 'estado', 'confirmacion', 'calendario__inicio']
     icon = '<i class="material-icons">insert_invitation</i>'
     inlines = [CitaReprogramadaStack, CitaCanceladaStack]

@@ -30,3 +30,11 @@ urlpatterns += [
 urlpatterns += [
     url(r'^procedimiento/medico/list/$', views.ProcedimientosList.as_view(), name="procedimiento"),
 ]
+
+
+"""
+    Cancelar cita
+"""
+urlpatterns += [
+    url(r'^cancelar/cita/form/$', views.CancelarCitaForm.as_view(), name="cancelar_cita"),
+]

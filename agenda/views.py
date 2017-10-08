@@ -154,3 +154,19 @@ class ProcedimientosList(supra.SupraListView):
     def dispatch(self, request, *args, **kwargs):
         return super(ProcedimientosList, self).dispatch(request, *args, **kwargs)
 # end class
+
+
+"""
+    Cancelar cita
+"""
+
+class CancelarCitaForm(supra.SupraFormView):
+    model = models.CancelarCita
+    form_class = forms.CancelarCitaForm
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(CancelarCitaForm, self).dispatch(request, *args, **kwargs)
+
+# end class

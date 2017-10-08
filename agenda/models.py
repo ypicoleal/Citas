@@ -87,8 +87,8 @@ class CitaMedica(models.Model):
     estado = models.IntegerField("Estado cita", choices=choices2, default=1)
     confirmacion = models.IntegerField("Confirmación de cita", choices=choices3, blank=True, null=True)
     fecha = models.DateTimeField(auto_now_add=True)
-    calendario = models.OneToOneField(CalendarioCita)
-    cancelar = models.BooleanField(default=False)
+    calendario = models.OneToOneField(CalendarioCita, blank=True, null=True)
+    cancelar = models.BooleanField("Cancelada", default=False)
 
     class Meta:
         verbose_name = "Cita médica"
@@ -153,6 +153,10 @@ class CitaCancelada(models.Model):
     def __unicode__(self):
         return u"%s %s" % (self.cita, motivo)
     # end def
+
+    def save(self, *args, **kwargs):
+        super(CitaCancelada, self).save(*args, **kwargs)
+        self.cita.update(cancelar=True, calendario=None)
 # end class
 
 class DuracionCita(models.Model):

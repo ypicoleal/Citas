@@ -84,7 +84,7 @@ class CitaMedicaForm(forms.ModelForm):
 
     class Meta:
         model = models.CitaMedica
-        fields = ['paciente', 'procedimiento', 'entidad', 'fecha_', 'calendario', 'cancelar']
+        fields = ['paciente', 'procedimiento', 'entidad', 'fecha_', 'calendario',]
 
 
     def clean_entidad(self):
@@ -127,7 +127,7 @@ class CitaMedicaFormSupra(forms.ModelForm):
 
     class Meta:
         model = models.CitaMedica
-        fields = ['procedimiento', 'entidad', 'calendario', 'cancelar']
+        fields = ['procedimiento', 'entidad', 'calendario',]
 
 
     def clean(self):
@@ -184,6 +184,26 @@ class CitaMedicaFormSupra(forms.ModelForm):
             paciente = models.Paciente.objects.filter(id=user.id).first()
             cita.paciente = paciente.id
             cita.save()
+        # end if
+        return cita
+    # end if
+# end class
+
+
+class CancelarCitaForm(forms.ModelForm):
+
+    class Meta:
+        model = models.CancelarCita
+        exclude = ()
+    # end class
+
+    def clean_cita(self):
+        cita = self.cleaned_data["cita"]
+        if not cita:
+            raise forms.ValidationError("Este campo es requerido")
+        # end if
+        if cita.procedimiento.modalidad == 2:
+            raise forms.ValidationError("Solo se pueden cancelar las citas que son modo consultorio")
         # end if
         return cita
     # end if
