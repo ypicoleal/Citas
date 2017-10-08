@@ -124,7 +124,6 @@ class CitaMedicaForm(forms.ModelForm):
 
 class CitaMedicaFormSupra(forms.ModelForm):
 
-
     class Meta:
         model = models.CitaMedica
         fields = ['procedimiento', 'entidad', 'calendario',]
@@ -193,7 +192,7 @@ class CitaMedicaFormSupra(forms.ModelForm):
 class CancelarCitaForm(forms.ModelForm):
 
     class Meta:
-        model = models.CancelarCita
+        model = models.CitaCancelada
         exclude = ()
     # end class
 

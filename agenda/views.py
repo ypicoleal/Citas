@@ -161,7 +161,7 @@ class ProcedimientosList(supra.SupraListView):
 """
 
 class CancelarCitaForm(supra.SupraFormView):
-    model = models.CancelarCita
+    model = models.CitaCancelada
     form_class = forms.CancelarCitaForm
 
     @method_decorator(check_login)
