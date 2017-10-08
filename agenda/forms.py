@@ -101,25 +101,22 @@ class CitaMedicaForm(forms.ModelForm):
         return entidad
 
     def clean_calendario(self):
-        calendario = self.cleaned_data.get('calendario', False)
-        if calendario:
-            consultorio = models.Consultorio.objects.first()
-            if datetime.datetime.today().day + 1 is calendario.inicio.day:
-                if consultorio:
-                    if consultorio.hora_maxima.hour >= datetime.datetime.today().hour:
-                        raise forms.ValidationError("Por favor reserve para un dia posterior")
-                elif 17 >= datetime.datetime.today().hour:
-                    raise forms.ValidationError("Por favor reserve para un dia posterior")
-
-            if calendario.inicio.date() <= datetime.date.today():
-                raise forms.ValidationError("No se pueden asignar citas para días anteriores a la fecha actual")
-
-            return calendario
-        else:
-            if hasattr(self, 'instance') and self.instance.pk:
-                if self.instance.cancelar:
-                    return calendario
+        calendario = self.cleaned_data['calendario']
+        if not calendario:
             raise forms.ValidationError("Este campo es requerido")
+
+        consultorio = models.Consultorio.objects.first()
+        if datetime.datetime.today().day + 1 is calendario.inicio.day:
+            if consultorio:
+                if consultorio.hora_maxima.hour >= datetime.datetime.today().hour:
+                    raise forms.ValidationError("Por favor reserve para un dia posterior")
+            elif 17 >= datetime.datetime.today().hour:
+                raise forms.ValidationError("Por favor reserve para un dia posterior")
+
+        if calendario.inicio.date() <= datetime.date.today():
+            raise forms.ValidationError("No se pueden asignar citas para días anteriores a la fecha actual")
+
+        return calendario
     # end def
 # end class
 
@@ -199,7 +196,7 @@ class CancelarCitaForm(forms.ModelForm):
     # end class
 
     def clean(self):
-        cleaned_data = super(CancelarCitaForm, self).clean()
+        cleaned_data = super(CalendarioCitaForm, self).clean()
         cita = self.cleaned_data.get("cita", False)
         if cita:
             if cita.procedimiento.modalidad == 2:
