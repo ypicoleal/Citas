@@ -78,8 +78,6 @@ class CitaMedicaForm(forms.ModelForm):
         if hasattr(self, 'instance') and self.instance.pk:
             calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=self.instance.calendario.inicio.year, inicio__month=self.instance.calendario.inicio.month)
             self.fields['fecha_'].initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
-            calendario.widget.attrs['disabled'] = False
-
         else:
             hoy = datetime.date.today()
             calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month)
