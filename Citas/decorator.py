@@ -33,23 +33,3 @@ def check_login(function):
     # end def
     return check
 # end def
-
-
-def check_acount(function):
-    @supra.access_control
-    def check(request, *args, **kwargs):
-        paciente = Paciente.objects.filter(id=request.user.pk).first()
-        if paciente:
-            if paciente.activado:
-                return function(request, *args, **kwargs)
-            # end if
-        else:
-            medico = Medico.objects.filter(id=request.user.pk).first()
-            if medico:
-                if medico.activado:
-                    return function(request, *args, **kwargs)
-                # end if
-        return HttpResponse(simplejson.dumps({"error": "Debes activar tu cuenta"}), status=400)
-    # end if
-    return check
-# end def

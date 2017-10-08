@@ -84,7 +84,6 @@ def generarConfirmacion(request):
 class LoginU(supra.SupraSession):
 
     @method_decorator(csrf_exempt)
-    @check_acount
     def dispatch(self, request, *args, **kwargs):
         a = super(LoginU, self).dispatch(request, *args, **kwargs)
         return a
