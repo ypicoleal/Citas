@@ -138,7 +138,7 @@ class CitasMedicasList(supra.SupraListView):
 
     def fecha(self, obj, row):
         if obj.calendario:
-            return "%s" % (obj.calendario.inicio..strftime('%Y-%m-%d'))
+            return "%s" % (obj.calendario.inicio.strftime('%Y-%m-%d'))
         # end
         return None
     # end
