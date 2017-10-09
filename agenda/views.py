@@ -113,12 +113,49 @@ class CalandarioCitaDelete(supra.SupraDeleteView):
 
 class CitasMedicasList(supra.SupraListView):
     model = models.CitaMedica
-    list_display = ['paciente', 'procedimiento', 'entidad', 'estado', 'confirmacion', 'cancelar']
+    list_display = ['paciente', 'procedimiento', 'procedimiento__nombre', 'procedimiento__modalidad', 'entidad', 'entidad_nombre', 'estado', 'confirmacion', 'cancelar', 'fecha', 'inicio', 'fin']
     list_filter = ['paciente', 'procedimiento', 'entidad', 'estado', 'confirmacion', 'calendario__inicio__year', 'calendario__inicio__month', 'calendario__inicio__day', 'calendario__inicio__range']
 
     @method_decorator(check_login)
     def dispatch(self, request, *args, **kwargs):
         return super(CitasMedicasList, self).dispatch(request, *args, **kwargs)
+
+    def entidad_nombre(self, obj, row):
+        if obj.entidad == 1:
+            return "Particular"
+        elif obj.entidad == 2:
+            return "Medisanitas"
+        # end if
+        return "Colsanitas"
+    # end def
+
+    def confirmacion(self, obj, row):
+        if obj.confirmacion == 1:
+            return "Confirmado"
+        # end if
+        return "Cancelado"
+    # end def
+
+    def fecha(self, obj, row):
+        if obj.calendario:
+            return "%s" % (obj.calendario.inicio..strftime('%Y-%m-%d'))
+        # end
+        return None
+    # end
+
+    def inicio(self, obj, row):
+        if obj.calendario:
+            return obj.calendario.inicio.strftime('%H:%M:%S')
+        # end if
+        return None
+    # end def
+
+    def fin(self, obj, row):
+        if obj.calendario:
+            return obj.calendario.fin.strftime('%H:%M:%S')
+        # end if
+        return None
+    # end def
 
     def get_queryset(self):
         queryset = super(CitasMedicasList, self).get_queryset()
@@ -146,7 +183,7 @@ class CitaMedicaForm(supra.SupraFormView):
 
 class ProcedimientosList(supra.SupraListView):
     model = models.ProcedimientoMedico
-    list_display = ['nombre', 'precio', 'modalidad']
+    list_display = ['nombre', 'precio', 'modalidad', 'id']
     search_fields = ['nombre', 'precio']
     list_filter = ['modalidad', ]
 
