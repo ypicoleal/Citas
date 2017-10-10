@@ -8,15 +8,15 @@ $(document).ready(function() {
     });
     $("#id_confirmacion").change(function(event) {
         /* Act on the event */
-        console.log(parseInt(this.value));
-        if (parseInt(this.value) !== 2) {
-            $("#id_motivo").prop("disabled", false);
-            $("#id_motivo").prop('required', true);
-            console.log("entro al if");
+        var motivo = $("#id_motivo");
+        if (parseInt(this.value) == 2) {
+            motivo.prop("disabled", false);
+            motivo.prop('required', true);
+            $('select').material_select();
         } else {
-            $("#id_motivo").prop("disabled", true);
-            $("#id_motivo").prop('required', false);
-            console.log("entro al esle");
+            motivo.prop("disabled", true);
+            motivo.prop('required', false);
+            $('select').material_select();
         }
     });
     cargando($("body"));
@@ -48,7 +48,6 @@ function calendarios(fecha) {
         anio = parseInt(formatdate[2]),
         mes = parseInt(formatdate[1]),
         dia = parseInt(formatdate[0]);
-    console.log(anio, mes);
     $(".full-height").show();
 
     $.ajax({
