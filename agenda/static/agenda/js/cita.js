@@ -6,6 +6,8 @@ $(document).ready(function() {
 
         }
     });
+
+    console.log("ready", $("#id_confirmacion"));
     $("#id_confirmacion").change(function(event) {
         /* Act on the event */
         var motivo = $("#id_motivo");
