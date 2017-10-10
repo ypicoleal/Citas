@@ -95,7 +95,7 @@ class CitaMedica(models.Model):
     calendario = models.OneToOneField(CalendarioCita, blank=True, null=True)
     cancelar = models.BooleanField("Cancelada", default=False)
     motivo = models.IntegerField("Motivo de cancelación", choices=choices4, blank=True, null=True)
-    fecha_canelacion = models.DateTimeField(blank=True, null=True)
+    fecha_canelacion = models.DateTimeField("Fecha de cancelación", blank=True, null=True)
 
     class Meta:
         verbose_name = "Cita médica"
