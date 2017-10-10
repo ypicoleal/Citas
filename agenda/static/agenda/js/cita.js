@@ -8,7 +8,7 @@ $(document).ready(function() {
     });
     $("#id_confirmacion").change(function(event) {
         /* Act on the event */
-        if (this.value !== 2) {
+        if (parseInt(this.value) !== 2) {
             $("#id_motivo").prop("disabled", false);
             $("#id_motivo").prop('required', true);
         } else {
