@@ -7,7 +7,6 @@ $(document).ready(function() {
         }
     });
 
-    console.log("ready", $("#id_confirmacion"));
     $("#id_confirmacion").change(function(event) {
         /* Act on the event */
         var motivo = $("#id_motivo");
@@ -24,10 +23,6 @@ $(document).ready(function() {
     cargando($("body"));
 });
 
-$(document).load(function() {
-    console.log("ready", $("#id_confirmacion"));
-
-});
 
 function cargando(query) {
     var loading = `<div class="full-height"><div class="preloader-wrapper big active">
@@ -72,9 +67,14 @@ function calendarios(fecha) {
                 calendario = $("#id_calendario");
             calendario.html("");
             calendario.append('<option value="">---------</option>');
-            events.forEach(function(element) {
-                calendario.append('<option value="' + element.id + '">' + element.name + '</option>');
-            });
+            if (events.length == 0) {
+                alert("No hay espacio disponible para esa fecha");
+            } else {
+                events.forEach(function(element) {
+                    calendario.append('<option value="' + element.id + '">' + element.name + '</option>');
+                });
+            }
+
             calendario.prop("disabled", false);
             $('select').material_select();
             $(".full-height").hide();
