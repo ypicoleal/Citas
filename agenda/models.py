@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from usuarios import models as usuarios
+import datetime
 # Create your models here.
 
 
@@ -80,7 +81,11 @@ class CitaMedica(models.Model):
         (1, 'Confirmado'),
         (2, 'Cancelado')
     )
-
+    choices4 = (
+        (1, "Mejoria"),
+        (2, "Sin tiempo"),
+        (3, "Otro motivo")
+    )
     paciente = models.ForeignKey(usuarios.Paciente)
     procedimiento = models.ForeignKey(ProcedimientoMedico)
     entidad = models.IntegerField(choices=choices)
@@ -89,6 +94,8 @@ class CitaMedica(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
     calendario = models.OneToOneField(CalendarioCita, blank=True, null=True)
     cancelar = models.BooleanField("Cancelada", default=False)
+    motivo = models.IntegerField("Motivo de cancelación", choices=choices, blank=True, null=True)
+    fecha_canelacion = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         verbose_name = "Cita médica"
@@ -113,7 +120,14 @@ class CitaMedica(models.Model):
         # end if
         return entidad
     # end def
-# end def
+
+    def save(self, *args, **kwargs):
+        if self.confirmacion == 2:
+            self.cancelar = True
+            self.calendario = None
+            self.fecha_canelacion = datetime.date.today()
+        super(CitaMedica, self).save(*args, **kwargs)
+# end class
 
 
 class CitaReprogramada(models.Model):
@@ -138,7 +152,7 @@ class CitaReprogramada(models.Model):
         return u"%s %s" % (self.cita, motivo)
     # end def
 # end class
-
+"""
 class CitaCancelada(models.Model):
     choices = (
         (1, "Mejoria"),
@@ -165,7 +179,7 @@ class CitaCancelada(models.Model):
         cita.calendario = None
         cita.save()
 # end class
-
+"""
 class DuracionCita(models.Model):
     cita = models.ForeignKey(CitaMedica)
     duracion_r = models.IntegerField("Minutos restantes")

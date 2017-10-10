@@ -113,7 +113,7 @@ class CalandarioCitaDelete(supra.SupraDeleteView):
 
 class CitasMedicasList(supra.SupraListView):
     model = models.CitaMedica
-    list_display = ['paciente', 'procedimiento', 'procedimiento__nombre', 'procedimiento__modalidad', 'entidad', 'entidad_nombre', 'estado', 'confirmacion', 'cancelar', 'fecha', 'inicio', 'fin']
+    list_display = ['id', 'paciente', 'procedimiento', 'procedimiento__nombre', 'procedimiento__modalidad', 'entidad', 'entidad_nombre', 'estado', 'confirmacion', 'cancelar', 'fecha', 'inicio', 'fin']
     list_filter = ['paciente', 'procedimiento', 'entidad', 'estado', 'confirmacion', 'calendario__inicio__year', 'calendario__inicio__month', 'calendario__inicio__day', 'calendario__inicio__range']
 
     @method_decorator(check_login)
@@ -198,12 +198,11 @@ class ProcedimientosList(supra.SupraListView):
 """
 
 class CancelarCitaForm(supra.SupraFormView):
-    model = models.CitaCancelada
+    model = models.CitaMedica
     form_class = forms.CancelarCitaForm
 
     @method_decorator(check_login)
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
         return super(CancelarCitaForm, self).dispatch(request, *args, **kwargs)
-
 # end class

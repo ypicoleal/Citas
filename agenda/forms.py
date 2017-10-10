@@ -69,11 +69,10 @@ class CitaMedicaForm(forms.ModelForm):
         procedimiento.queryset = models.ProcedimientoMedico.objects.filter(modalidad=1)
         procedimiento.widget.can_add_related = False
         procedimiento.widget.can_change_related = False
-
         calendario = self.fields['calendario']
         calendario.widget.can_add_related = False
         calendario.widget.can_change_related = False
-
+        motivo = self.fields['motivo']
 
         if hasattr(self, 'instance') and self.instance.pk:
             self.fields['fecha_'].required = False
@@ -82,15 +81,19 @@ class CitaMedicaForm(forms.ModelForm):
                 self.fields['fecha_'].initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
             else:
                 hoy = datetime.date.today()
-                calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month)
+                calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month, inicio__day=hoy.day)
+                calendario.widget.attrs['disabled'] = True
+                self.fields["fecha_"].widget.attrs['disabled'] = True
         else:
             hoy = datetime.date.today()
             calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month)
             calendario.widget.attrs['disabled'] = True
+            motivo.widget.attrs['disabled'] = True
 
+    # end def
     class Meta:
         model = models.CitaMedica
-        fields = ['paciente', 'procedimiento', 'entidad', 'fecha_', 'calendario', 'confirmacion']
+        fields = ['paciente', 'procedimiento', 'entidad', 'fecha_', 'calendario', 'confirmacion', 'motivo']
 
     def clean_entidad(self):
         entidad = self.cleaned_data['entidad']
@@ -105,6 +108,7 @@ class CitaMedicaForm(forms.ModelForm):
                 raise forms.ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
 
         return entidad
+    # end def
 
     def clean_calendario(self):
         calendario = self.cleaned_data.get('calendario', False)
@@ -134,7 +138,7 @@ class CitaMedicaFormSupra(forms.ModelForm):
 
     class Meta:
         model = models.CitaMedica
-        fields = ['procedimiento', 'entidad', 'calendario',]
+        fields = ['procedimiento', 'entidad', 'calendario', 'motivo']
 
 
     def clean(self):
@@ -200,16 +204,15 @@ class CitaMedicaFormSupra(forms.ModelForm):
 class CancelarCitaForm(forms.ModelForm):
 
     class Meta:
-        model = models.CitaCancelada
-        exclude = ()
+        model = models.CitaMedica
+        fields = ('motivo', )
     # end class
 
     def clean(self):
         cleaned_data = super(CancelarCitaForm, self).clean()
-        cita = self.cleaned_data.get("cita", False)
-        if cita:
-            if cita.procedimiento.modalidad == 2:
-                raise forms.ValidationError("Solo se pueden cancelar las citas que son modo consultorio")
+        if hasattr(self, 'instance') and self.instance.pk:
+            if self.instance.procedimiento.modalidad == 2:
+                raise forms.ValidationError("Solo se pueden cancelar las citas que son de modalidad consultorio")
             # end if
     # end if
 # end class

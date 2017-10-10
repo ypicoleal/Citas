@@ -36,5 +36,5 @@ urlpatterns += [
     Cancelar cita
 """
 urlpatterns += [
-    url(r'^cancelar/cita/form/$', views.CancelarCitaForm.as_view(), name="cancelar_cita"),
+    url(r'^cancelar/cita/form/(?P<pk>\d+)/$', views.CancelarCitaForm.as_view(), name="cancelar_cita"),
 ]
