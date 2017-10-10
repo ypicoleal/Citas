@@ -65,15 +65,6 @@ class CitaMedicaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(CitaMedicaForm, self).__init__(*args, **kwargs)
-        procedimiento = self.fields['procedimiento']
-        procedimiento.queryset = models.ProcedimientoMedico.objects.filter(modalidad=1)
-        procedimiento.widget.can_add_related = False
-        procedimiento.widget.can_change_related = False
-        calendario = self.fields['calendario']
-        calendario.widget.can_add_related = False
-        calendario.widget.can_change_related = False
-        motivo = self.fields['motivo']
-
         if hasattr(self, 'instance') and self.instance.pk:
             self.fields['fecha_'].required = False
             if self.instance.calendario:
@@ -81,19 +72,20 @@ class CitaMedicaForm(forms.ModelForm):
                 self.fields['fecha_'].initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
                 motivo.widget.attrs['disabled'] = True
 
-            else:
-                hoy = datetime.date.today()
-                calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month, inicio__day=hoy.day)
-                calendario.widget.attrs['disabled'] = True
-                self.fields["fecha_"].widget.attrs['disabled'] = True
-                self.fields["confirmacion"].widget.attrs['disabled'] = True
-                
         else:
             hoy = datetime.date.today()
             calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month)
             calendario.widget.attrs['disabled'] = True
             motivo.widget.attrs['disabled'] = True
 
+            procedimiento = self.fields['procedimiento']
+            procedimiento.queryset = models.ProcedimientoMedico.objects.filter(modalidad=1)
+            procedimiento.widget.can_add_related = False
+            procedimiento.widget.can_change_related = False
+            calendario = self.fields['calendario']
+            calendario.widget.can_add_related = False
+            calendario.widget.can_change_related = False
+            motivo = self.fields['motivo']
     # end def
     class Meta:
         model = models.CitaMedica
