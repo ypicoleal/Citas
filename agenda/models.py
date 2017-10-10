@@ -125,6 +125,7 @@ class CitaMedica(models.Model):
         if self.confirmacion == 2:
             self.cancelar = True
             self.calendario = None
+            self.estado = 2
             self.fecha_canelacion = datetime.date.today()
         super(CitaMedica, self).save(*args, **kwargs)
 # end class

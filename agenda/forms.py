@@ -226,6 +226,7 @@ class CancelarCitaForm(forms.ModelForm):
         obj = models.CitaMedica.objects.filter(id=cita.id).first()
         obj.cancelar = True
         obj.calendario = None
+        obj.estado = 2
         obj.fecha_canelacion = datetime.date.today()
         obj.save()
         return cita
