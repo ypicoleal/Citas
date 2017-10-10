@@ -80,7 +80,7 @@ class CitaMedicaForm(forms.ModelForm):
                 calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=self.instance.calendario.inicio.year, inicio__month=self.instance.calendario.inicio.month)
                 self.fields['fecha_'].initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
                 motivo.widget.attrs['disabled'] = True
-                
+
             else:
                 hoy = datetime.date.today()
                 calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month, inicio__day=hoy.day)
@@ -218,4 +218,13 @@ class CancelarCitaForm(forms.ModelForm):
                 raise forms.ValidationError("Solo se pueden cancelar las citas que son de modalidad consultorio")
             # end if
     # end if
+
+    def save(self, commit=True):
+        cita = super(CancelarCitaForm, self).save(commit)
+        obj = models.CitaMedica.objects.filter(id=cita.id).first()
+        obj.cancelar = True
+        obj.calendario = None
+        obj.fecha_canelacion = datetime.date.today()
+        obj.save()
+        return cita
 # end class
