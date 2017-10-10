@@ -66,12 +66,14 @@ class CitaMedicaForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CitaMedicaForm, self).__init__(*args, **kwargs)
         if hasattr(self, 'instance') and self.instance.pk:
-            self.fields['fecha_'].required = False
+            fecha = self.fields['fecha_']
+            fecha.required = False
             if self.instance.calendario:
                 calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=self.instance.calendario.inicio.year, inicio__month=self.instance.calendario.inicio.month)
-                self.fields['fecha_'].initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
+                fecha.initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
                 motivo.widget.attrs['disabled'] = True
-
+            else:
+                fecha.widget.attrs['disabled'] = True
         else:
             hoy = datetime.date.today()
             calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month)
