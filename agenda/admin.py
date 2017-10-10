@@ -74,6 +74,13 @@ class CitaMedica(admin.ModelAdmin):
     inlines = [CitaReprogramadaStack]
     form = forms.CitaMedicaForm
 
+    def get_readonly_fields(self, request, obj=None):
+         if obj: # editing an existing object
+            if obj.confirmacion == 2:
+                return self.readonly_fields + ('paciente', 'procedimiento', 'entidad', 'fecha_', 'calendario', 'confirmacion', 'motivo')
+        return self.readonly_fields
+    # end if
+
     class Media:
         js = ("agenda/js/cita.js", )
         css = {
