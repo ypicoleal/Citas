@@ -8,12 +8,15 @@ $(document).ready(function() {
     });
     $("#id_confirmacion").change(function(event) {
         /* Act on the event */
+        console.log(parseInt(this.value));
         if (parseInt(this.value) !== 2) {
             $("#id_motivo").prop("disabled", false);
             $("#id_motivo").prop('required', true);
+            console.log("entro al if");
         } else {
             $("#id_motivo").prop("disabled", true);
             $("#id_motivo").prop('required', false);
+            console.log("entro al esle");
         }
     });
     cargando($("body"));
