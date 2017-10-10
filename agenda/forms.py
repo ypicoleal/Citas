@@ -68,26 +68,31 @@ class CitaMedicaForm(forms.ModelForm):
         if hasattr(self, 'instance') and self.instance.pk:
             fecha = self.fields['fecha_']
             fecha.required = False
+            
             if self.instance.calendario:
+                calendario = self.fields['calendario']
                 calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=self.instance.calendario.inicio.year, inicio__month=self.instance.calendario.inicio.month)
+
                 fecha.initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
                 motivo.widget.attrs['disabled'] = True
             else:
                 fecha.widget.attrs['disabled'] = True
         else:
             hoy = datetime.date.today()
+            calendario = self.fields['calendario']
+            calendario.widget.can_add_related = False
+            calendario.widget.can_change_related = False
             calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month)
             calendario.widget.attrs['disabled'] = True
+
+            motivo = self.fields['motivo']
             motivo.widget.attrs['disabled'] = True
 
             procedimiento = self.fields['procedimiento']
             procedimiento.queryset = models.ProcedimientoMedico.objects.filter(modalidad=1)
             procedimiento.widget.can_add_related = False
             procedimiento.widget.can_change_related = False
-            calendario = self.fields['calendario']
-            calendario.widget.can_add_related = False
-            calendario.widget.can_change_related = False
-            motivo = self.fields['motivo']
+
     # end def
     class Meta:
         model = models.CitaMedica
