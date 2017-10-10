@@ -24,6 +24,11 @@ $(document).ready(function() {
     cargando($("body"));
 });
 
+$(document).load(function() {
+    console.log("ready", $("#id_confirmacion"));
+
+});
+
 function cargando(query) {
     var loading = `<div class="full-height"><div class="preloader-wrapper big active">
         <div class="spinner-layer spinner-purple-only">
