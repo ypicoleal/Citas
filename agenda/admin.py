@@ -69,7 +69,6 @@ class CitaReprogramadaStack(admin.TabularInline):
 @admin.register(models.CitaMedica)
 class CitaMedica(admin.ModelAdmin):
     list_display = ['paciente', 'procedimiento', 'entidad', 'confirmacion', 'motivo', 'fecha_canelacion', 'estado']
-    list_editable = ['estado', ]
     list_filter = ['procedimiento', 'entidad', 'estado', 'confirmacion', 'calendario__inicio']
     search_fields = ['paciente__first_name', 'paciente__last_name', 'paciente__identificacion']
     icon = '<i class="material-icons">insert_invitation</i>'
