@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-from django import forms
-from django.db.models import Q
 import models
 import datetime
 import calendar
+from django import forms
+from django.db.models import Q
+from usuarios import models as usuarios
 from cuser.middleware import CuserMiddleware
 
 def getTimeDifference(TimeStart, TimeEnd):
@@ -152,7 +153,7 @@ class CitaMedicaFormSupra(forms.ModelForm):
             return cleaned_data
         else:
             user = CuserMiddleware.get_user()
-            paciente = models.Paciente.objects.filter(id=user.id).first()
+            paciente = usuarios.Paciente.objects.filter(id=user.id).first()
             if not paciente:
                 form.ValidationError("Necesita ser un paciente para crear una cita")
         # end if
@@ -197,7 +198,7 @@ class CitaMedicaFormSupra(forms.ModelForm):
             cita.save()
         else:
             user = CuserMiddleware.get_user()
-            paciente = models.Paciente.objects.filter(id=user.id).first()
+            paciente = usuarios.Paciente.objects.filter(id=user.id).first()
             cita.paciente = paciente.id
             cita.save()
         # end if
