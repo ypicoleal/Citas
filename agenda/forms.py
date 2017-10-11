@@ -147,7 +147,7 @@ class CitaMedicaFormSupra(forms.ModelForm):
 
 
     def clean(self):
-        cleaned_data = super(CalendarioCitaForm, self).clean()
+        cleaned_data = super(CitaMedicaFormSupra, self).clean()
         if hasattr(self, 'instance') and self.instance.pk:
             return cleaned_data
         else:
