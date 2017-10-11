@@ -74,8 +74,7 @@ class CitaMedica(models.Model):
     choices2 = (
         (1, 'Vigente'),
         (2, 'Cancelada'),
-        (3, 'Vencida'),
-        (4, 'Asistida')
+        (3, 'Vencida')
     )
     choices3 = (
         (1, 'Confirmado'),
