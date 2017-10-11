@@ -199,7 +199,7 @@ class CitaMedicaFormSupra(forms.ModelForm):
         else:
             user = CuserMiddleware.get_user()
             paciente = usuarios.Paciente.objects.filter(id=user.id).first()
-            cita.paciente = paciente.id
+            cita.paciente = paciente
             cita.save()
         # end if
         return cita
