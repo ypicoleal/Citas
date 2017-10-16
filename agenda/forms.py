@@ -246,7 +246,7 @@ class ReprogramarCitaForm(forms.ModelForm):
 
     class Meta:
         model = models.CitaReprogramada
-        exclude = ('responsable_cambio')
+        exclude = ('responsable_cambio',)
     # end class
 
     def clean(self):
