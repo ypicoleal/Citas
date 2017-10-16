@@ -58,7 +58,7 @@ class DuracionCitaStack(admin.TabularInline):
     model = models.DuracionCita
     readonly_fields = ('duracion_r',)
     extra = 0
-
+# end class
 
 class CitaReprogramadaStack(admin.TabularInline):
     model = models.CitaReprogramada
@@ -66,6 +66,16 @@ class CitaReprogramadaStack(admin.TabularInline):
     fields = ('motivo', )
     extra = 3
     max_num = 3
+
+    def get_readonly_fields(self, request, obj=None, **kwargs):
+        if obj:
+            if obj.confirmacion == 2:
+                return self.readonly_fields + ('motivo', )
+            # end if
+        # end if
+        return self.readonly_fields
+    # end def
+# end class
 
 
 @admin.register(models.CitaMedica)
@@ -89,4 +99,5 @@ class CitaMedica(admin.ModelAdmin):
         css = {
             "all": ('agenda/css/fullcalendar.min.css', 'agenda/css/style.css')
         }
+    # end class
 # end class
