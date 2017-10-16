@@ -64,6 +64,16 @@ class CalendarioCitaFormEdit(forms.ModelForm):
 class CitaMedicaForm(forms.ModelForm):
     fecha_ = forms.DateField(label="Filtro de fecha")
 
+    def rm_add_and_change_related(self):
+        calendario = self.fields['calendario']
+        calendario.widget.can_add_related = False
+        calendario.widget.can_change_related = False
+
+        procedimiento = self.fields['procedimiento']
+        procedimiento.widget.can_add_related = False
+        procedimiento.widget.can_change_related = False
+    # end def
+
     def __init__(self, *args, **kwargs):
         super(CitaMedicaForm, self).__init__(*args, **kwargs)
         if hasattr(self, 'instance') and self.instance.pk:
@@ -73,7 +83,7 @@ class CitaMedicaForm(forms.ModelForm):
             if self.instance.calendario:
                 calendario = self.fields['calendario']
                 calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=self.instance.calendario.inicio.year, inicio__month=self.instance.calendario.inicio.month, inicio__day=self.instance.calendario.inicio.day)
-
+                self.rm_add_and_change_related()
                 fecha.initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
 
                 motivo = self.fields['motivo']
@@ -83,8 +93,6 @@ class CitaMedicaForm(forms.ModelForm):
         else:
             hoy = datetime.date.today()
             calendario = self.fields['calendario']
-            calendario.widget.can_add_related = False
-            calendario.widget.can_change_related = False
             calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month)
             calendario.widget.attrs['disabled'] = True
 
@@ -93,8 +101,7 @@ class CitaMedicaForm(forms.ModelForm):
 
             procedimiento = self.fields['procedimiento']
             procedimiento.queryset = models.ProcedimientoMedico.objects.filter(modalidad=1)
-            procedimiento.widget.can_add_related = False
-            procedimiento.widget.can_change_related = False
+            self.rm_add_and_change_related()
 
     # end def
     class Meta:
