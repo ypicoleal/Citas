@@ -3,6 +3,9 @@ from __future__ import unicode_literals
 
 from django.db import models
 from usuarios import models as usuarios
+from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
+
 import datetime
 # Create your models here.
 
@@ -139,6 +142,7 @@ class CitaReprogramada(models.Model):
         (RESPONSABLE_PACIENTE, "Paciente")
     )
     cita = models.ForeignKey(CitaMedica)
+    calendario = models.ForeignKey(CalendarioCita)
     motivo = models.TextField()
     responsable_cambio = models.BooleanField("Responsable del cambio", choices=choices, default=False)
     fecha = models.DateTimeField(auto_now_add=True)
@@ -148,9 +152,28 @@ class CitaReprogramada(models.Model):
         verbose_name_plural = "Reprogramar cita"
     # end class
 
+    def clean(self):
+        entidad = self.cita.entidad
+        if self.calendario.inicio.weekday() is 4 and self.calendario.inicio.hour >= 13 and not entidad is 1:
+            raise ValidationError(_("Lo sentimos. Solo hay disponibilidad de citas para particulares"))
+        elif self.calendario.inicio.weekday() is 5 and not entidad is 1:
+            raise ValidationError(_("Lo sentimos. Solo hay disponibilidad de citas para particulares"))
+        # end if
+        cita = CitaMedica.objects.filter(calendario=self.calendario).first()
+        if cita:
+            raise ValidationError(_("Ya este espacio esta ocupado por otra cita"))
+        # end if
+    # end def
+
     def __unicode__(self):
         return u"%s %s" % (self.cita, motivo)
     # end def
+
+    def save(self, *args, **kwargs):
+        super(CitaReprogramada, self).save(*args, **kwargs)
+        cita = CitaMedica.objects.filter(id=self.cita).first()
+        cita.calendario = self.calendario
+        cita.save()
 # end class
 
 

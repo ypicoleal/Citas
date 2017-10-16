@@ -70,7 +70,7 @@ class CitaReprogramadaStack(admin.TabularInline):
     def get_readonly_fields(self, request, obj=None, **kwargs):
         if obj:
             if obj.confirmacion == 2:
-                return self.readonly_fields + ('motivo', )
+                return self.readonly_fields + ('calendario', 'motivo', )
             # end if
         # end if
         return self.readonly_fields
@@ -91,6 +91,9 @@ class CitaMedica(admin.ModelAdmin):
         if obj: # editing an existing object
             if obj.confirmacion == 2:
                 return self.readonly_fields + ('paciente', 'procedimiento', 'entidad', 'calendario', 'confirmacion', 'motivo')
+            # end if
+            return self.readonly_fields + ('paciente', 'calendario', 'entidad')
+        # end if
         return self.readonly_fields
     # end if
 

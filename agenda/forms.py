@@ -79,7 +79,9 @@ class CitaMedicaForm(forms.ModelForm):
         if hasattr(self, 'instance') and self.instance.pk:
             fecha = self.fields['fecha_']
             fecha.required = False
+            fecha.widget.attrs['disabled'] = True
 
+            """
             if self.instance.calendario:
                 calendario = self.fields['calendario']
                 calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=self.instance.calendario.inicio.year, inicio__month=self.instance.calendario.inicio.month, inicio__day=self.instance.calendario.inicio.day)
@@ -88,8 +90,7 @@ class CitaMedicaForm(forms.ModelForm):
 
                 motivo = self.fields['motivo']
                 motivo.widget.attrs['disabled'] = True
-            else:
-                fecha.widget.attrs['disabled'] = True
+            """
         else:
             hoy = datetime.date.today()
             calendario = self.fields['calendario']
@@ -243,11 +244,33 @@ class CancelarCitaForm(forms.ModelForm):
 
 
 class ReprogramarCitaForm(forms.ModelForm):
+    fecha_ = forms.DateField(label="Filtro de fecha")
 
     class Meta:
         model = models.CitaReprogramada
         exclude = ('responsable_cambio',)
     # end class
+
+
+    def __init__(self, *args, **kwargs):
+        super(ReprogramarCitaForm, self).__init__(*args, **kwargs)
+        if hasattr(self, 'instance') and self.instance.pk:
+            fecha = self.fields['fecha_']
+            fecha.required = False
+            fecha.widget.attrs['disabled'] = True
+            if hasattr(self.fields, 'calendario'):
+                calendario = self.fields['calendario']
+                calendario.widget.attrs['disabled'] = True
+                calendario.widget.can_add_related = False
+                calendario.widget.can_change_related = False
+        else:
+            hoy = datetime.date.today()
+            calendario = self.fields['calendario']
+            calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month)
+            calendario.widget.attrs['disabled'] = True
+            calendario.widget.can_add_related = False
+            calendario.widget.can_change_related = False
+
 
     def clean(self):
         cleaned_data = super(CancelarCitaForm, self).clean()
@@ -258,6 +281,28 @@ class ReprogramarCitaForm(forms.ModelForm):
                 raise forms.ValidationError("No se puede reprogramar una cita mas de 3 veces.")
             # end if
         # end if
+    # end def
+
+    def clean_calendario(self):
+        calendario = self.cleaned_data.get('calendario', False)
+        if calendario:
+            consultorio = models.Consultorio.objects.first()
+            if datetime.datetime.today().day + 1 is calendario.inicio.day:
+                if consultorio:
+                    if consultorio.hora_maxima.hour >= datetime.datetime.today().hour:
+                        raise forms.ValidationError("Por favor reserve para un dia posterior")
+                elif 17 >= datetime.datetime.today().hour:
+                    raise forms.ValidationError("Por favor reserve para un dia posterior")
+
+            if calendario.inicio.date() <= datetime.date.today():
+                raise forms.ValidationError("No se pueden asignar citas para días anteriores a la fecha actual")
+
+            return calendario
+        else:
+            if hasattr(self, 'instance') and self.instance.pk:
+                if self.instance.cancelar:
+                    return calendario
+            raise forms.ValidationError("Este campo es requerido")
     # end def
 
     def save(commit=False):
