@@ -140,7 +140,7 @@ class CitaReprogramada(models.Model):
     )
     cita = models.ForeignKey(CitaMedica)
     motivo = models.TextField()
-    responsable_cambio = models.BooleanField("Responsable del cambio", choices=choices)
+    responsable_cambio = models.BooleanField("Responsable del cambio", choices=choices, default=False)
     fecha = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -152,34 +152,8 @@ class CitaReprogramada(models.Model):
         return u"%s %s" % (self.cita, motivo)
     # end def
 # end class
-"""
-class CitaCancelada(models.Model):
-    choices = (
-        (1, "Mejoria"),
-        (2, "Sin tiempo"),
-        (3, "Otro motivo")
-    )
-    cita = models.ForeignKey(CitaMedica)
-    motivo = models.IntegerField(choices=choices)
-    fecha = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        verbose_name = "Motivo de cancelación"
-        verbose_name_plural = "Motivo de cancelación"
-    # end class
 
-    def __unicode__(self):
-        return u"%s %s" % (self.cita, self.motivo)
-    # end def
-
-    def save(self, *args, **kwargs):
-        super(CitaCancelada, self).save(*args, **kwargs)
-        cita = CitaMedica.objects.filter(id=self.cita.pk).first()
-        cita.cancelar = True
-        cita.calendario = None
-        cita.save()
-# end class
-"""
 class DuracionCita(models.Model):
     cita = models.ForeignKey(CitaMedica)
     duracion_r = models.IntegerField("Minutos restantes")

@@ -72,7 +72,7 @@ class CitaMedicaForm(forms.ModelForm):
 
             if self.instance.calendario:
                 calendario = self.fields['calendario']
-                calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=self.instance.calendario.inicio.year, inicio__month=self.instance.calendario.inicio.month)
+                calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=self.instance.calendario.inicio.year, inicio__month=self.instance.calendario.inicio.month, inicio__day=self.instance.calendario.inicio.day)
 
                 fecha.initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
 
@@ -102,7 +102,7 @@ class CitaMedicaForm(forms.ModelForm):
         fields = ['paciente', 'procedimiento', 'entidad', 'fecha_', 'calendario', 'confirmacion', 'motivo', 'estado']
 
     def clean_entidad(self):
-        entidad = self.cleaned_data['entidad']
+        entidad = self.cleaned_data.get('entidad', False)
         calendario = self.cleaned_data.get('calendario', False)
         if not entidad:
             raise forms.ValidationError("Este campo es requerido")
@@ -160,7 +160,7 @@ class CitaMedicaFormSupra(forms.ModelForm):
     # end def
 
     def clean_entidad(self):
-        entidad = self.cleaned_data['entidad']
+        entidad = self.cleaned_data.get('entidad', False)
         calendario = self.cleaned_data.get('calendario', False)
         if not entidad:
             raise forms.ValidationError("Este campo es requerido")
@@ -174,7 +174,7 @@ class CitaMedicaFormSupra(forms.ModelForm):
         return entidad
 
     def clean_calendario(self):
-        calendario = self.cleaned_data['calendario']
+        calendario = self.cleaned_data.get('calendario', False)
         if not calendario:
             raise forms.ValidationError("Este campo es requerido")
 
@@ -231,5 +231,35 @@ class CancelarCitaForm(forms.ModelForm):
         obj.confirmacion = 2
         obj.fecha_canelacion = datetime.date.today()
         obj.save()
+        return cita
+# end class
+
+
+class ReprogramarCitaForm(forms.ModelForm):
+
+    class Meta:
+        model = models.CitaReprogramada
+        exclude = ('responsable_cambio')
+    # end class
+
+    def clean(self):
+        cleaned_data = super(CancelarCitaForm, self).clean()
+        cita = self.cleaned_data.get('cita', False)
+        if cita:
+            reprogramaciones = models.CitaReprogramada.objects.filter(cita=cita).count()
+            if reprogramaciones == 3:
+                raise forms.ValidationError("No se puede reprogramar una cita mas de 3 veces.")
+            # end if
+        # end if
+    # end def
+
+    def save(commit=False):
+        cita = super(ReprogramarCitaForm, self).save(commit)
+        user = CuserMiddleware.get_user()
+        paciente = usuarios.Paciente.objects.filter(id=user.id).first()
+        if paciente:
+            cita.responsable_cambio = True
+        # end if
+        cita.save()
         return cita
 # end class

@@ -21,3 +21,7 @@ def emailConfirmation(email, tipo):
     msg.attach_alternative(html_content, "text/html")
     msg.send()
 # end def
+
+
+def emailComentarios(email, comentarios):
+    pass
