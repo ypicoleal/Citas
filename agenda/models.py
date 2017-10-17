@@ -58,9 +58,9 @@ class CalendarioCita(models.Model):
 
     def __unicode__(self):
         if self.almuerzo:
-            fecha = u"Hora almuerzo %s %s" % (self.inicio.strftime('%Y-%m-%d %H:%M:%S'), self.fin.strftime('%Y-%m-%d %H:%M:%S'))
+            fecha = u"Hora almuerzo %s %s" % (self.inicio.strftime('%Y-%m-%d %H:%M:%S'), self.fin.strftime('%H:%M:%S'))
         else:
-            fecha = u"%s %s" % (self.inicio.strftime('%Y-%m-%d %H:%M:%S'), self.fin.strftime('%Y-%m-%d %H:%M:%S'))
+            fecha = u"%s %s" % (self.inicio.strftime('%Y-%m-%d %H:%M:%S'), self.fin.strftime('%H:%M:%S'))
         return fecha
 # end class
 
