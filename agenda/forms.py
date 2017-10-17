@@ -344,6 +344,7 @@ class ReprogramarCitaFormSupra(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ReprogramarCitaFormSupra, self).__init__(*args, **kwargs)
+        hoy = datetime.date.today()
         calendario = self.fields['calendario']
         calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month, )
     # end def
