@@ -43,8 +43,6 @@ function hideCita(estado) {
 }
 
 function formModal(data, self) {
-    console.log(data);
-    console.log(data.asignacionCita);
     if (data.asignacionCita == null) {
         var formTemplete = `<div class="modal modal-c" id="formModal">
         <div class="modal-content">

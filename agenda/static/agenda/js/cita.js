@@ -48,6 +48,31 @@ function cargando(query) {
     $(".full-height").hide();
 }
 
+function formModal(mensaje) {
+    var formTemplete = `<div class="modal modal-c" id="formModal">
+    <div class="modal-content">
+        <p>${mensaje}</p>
+    </div>
+    </div>`;
+
+    var query = $("#formModal");
+    if (query.length === 0) {
+        $("body").append(formTemplete);
+    } else {
+        query.remove();
+        $("body").append(formTemplete);
+    }
+    $("#formModal").modal({
+        ready: function(modal, trigger) {
+            $('.tooltipped').tooltip({
+                delay: 50,
+                position: 'right'
+            });
+        }
+    });
+    $('#formModal').modal('open');
+}
+
 function calendarios(fecha) {
     var formatdate = fecha.split('/'),
         anio = parseInt(formatdate[2]),
@@ -72,7 +97,7 @@ function calendarios(fecha) {
             calendario.append('<option value="">---------</option>');
             if (events.length == 0) {
                 $(".full-height").hide();
-                alert("No hay espacio disponible para esa fecha");
+                formModal("No hay espacio disponible para esa fecha.");
             } else {
                 events.forEach(function(element) {
                     calendario.append('<option value="' + element.id + '">' + element.name + '</option>');
