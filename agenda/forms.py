@@ -94,7 +94,7 @@ class CitaMedicaForm(forms.ModelForm):
         else:
             hoy = datetime.date.today()
             calendario = self.fields['calendario']
-            calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month)
+            calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month, citamedica=None)
             calendario.widget.attrs['disabled'] = True
 
             motivo = self.fields['motivo']
@@ -268,7 +268,8 @@ class ReprogramarCitaForm(forms.ModelForm):
                 calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=self.instance.calendario.inicio.year, inicio__month=self.instance.calendario.inicio.month, inicio__day=self.instance.calendario.inicio.day)
                 self.rm_add_and_change_related()
                 fecha.initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
-                self.fields["motivo"].widget.attrs['disabled'] = True
+                #
+                #self.fields["motivo"].widget.attrs['disabled'] = True
             # end if
 
             # fecha.widget.attrs['disabled'] = True
@@ -277,7 +278,7 @@ class ReprogramarCitaForm(forms.ModelForm):
             if 'calendario' in self.fields:
                 hoy = datetime.date.today()
                 calendario = self.fields['calendario']
-                calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month, )
+                calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month, citamedica=None)
                 self.rm_add_and_change_related()
             else:
                 fecha.widget.attrs['disabled'] = True
