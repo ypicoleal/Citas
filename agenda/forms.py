@@ -343,13 +343,13 @@ class ReprogramarCitaFormSupra(forms.ModelForm):
 
 
     def __init__(self, *args, **kwargs):
-        super(ReprogramarCitaForm, self).__init__(*args, **kwargs)
+        super(ReprogramarCitaFormSupra, self).__init__(*args, **kwargs)
         calendario = self.fields['calendario']
         calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month, )
     # end def
 
     def clean(self):
-        cleaned_data = super(ReprogramarCitaForm, self).clean()
+        cleaned_data = super(ReprogramarCitaFormSupra, self).clean()
         cita = self.cleaned_data.get('cita', False)
         if cita:
             reprogramaciones = models.CitaReprogramada.objects.filter(cita=cita).count()
@@ -382,7 +382,7 @@ class ReprogramarCitaFormSupra(forms.ModelForm):
     # end def
 
     def save(self, commit=False):
-        programacion = super(ReprogramarCitaForm, self).save(commit)
+        programacion = super(ReprogramarCitaFormSupra, self).save(commit)
         user = CuserMiddleware.get_user()
         paciente = usuarios.Paciente.objects.filter(id=user.id).first()
         if paciente:
