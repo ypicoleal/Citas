@@ -252,14 +252,16 @@ class ReprogramarCitaForm(forms.ModelForm):
     # end class
 
     def calendario_query(self):
-        raise 'calendario' in self.fields
         if 'calendario' in self.fields:
+            raise "Entro"
             hoy = datetime.date.today()
             calendario = self.fields['calendario']
             calendario.widget.attrs['disabled'] = True
             calendario.widget.can_add_related = False
             calendario.widget.can_change_related = False
             calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month)
+        else:
+            raise "no entro, else"
     # end if
 
     def __init__(self, *args, **kwargs):
