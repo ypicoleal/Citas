@@ -244,7 +244,7 @@ class CancelarCitaForm(forms.ModelForm):
 
 
 class ReprogramarCitaForm(forms.ModelForm):
-    fecha_ = forms.DateField(label="Filtro de fecha")
+    fecha_ = forms.DateField(label="Filtro de fecha", required=False)
 
     class Meta:
         model = models.CitaReprogramada
@@ -254,8 +254,6 @@ class ReprogramarCitaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ReprogramarCitaForm, self).__init__(*args, **kwargs)
-        fecha = self.fields['fecha_']
-        fecha.required = False
 
         if hasattr(self.fields, 'calendario'):
             calendario = self.fields['calendario']
