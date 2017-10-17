@@ -127,7 +127,7 @@ class CitaMedica(models.Model):
     def save(self, *args, **kwargs):
         if self.calendario:
             self.fecha_calendario =  "%s %s" % (self.calendario.inicio.strftime('%Y-%m-%d %H:%M:%S'),  self.calendario.fin.strftime('%H:%M:%S'))
-        # end if 
+        # end if
         if self.confirmacion == 2:
             self.cancelar = True
             self.calendario = None
@@ -156,7 +156,8 @@ class CitaReprogramada(models.Model):
         verbose_name_plural = "Reprogramar cita"
     # end class
 
-    def clean(self):
+    def clean_fields(self, exclude=None):
+        super(ArtCitaReprogramadaicle, self).clean_fields(exclude=exclude)
         entidad = self.cita.entidad
         if self.calendario.inicio.weekday() is 4 and self.calendario.inicio.hour >= 13 and not entidad is 1:
             raise ValidationError(_("Lo sentimos. Solo hay disponibilidad de citas para particulares"))
