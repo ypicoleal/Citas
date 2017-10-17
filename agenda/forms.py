@@ -248,9 +248,8 @@ class ReprogramarCitaForm(forms.ModelForm):
 
     class Meta:
         model = models.CitaReprogramada
-        exclude = ('responsable_cambio',)
+        fields = ('fecha_', 'calendario', 'motivo')
     # end class
-
 
     def __init__(self, *args, **kwargs):
         super(ReprogramarCitaForm, self).__init__(*args, **kwargs)

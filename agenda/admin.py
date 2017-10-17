@@ -60,7 +60,7 @@ class DuracionCitaStack(admin.TabularInline):
     extra = 0
 # end class
 
-class CitaReprogramadaStack(admin.TabularInline):
+class CitaReprogramadaStack(admin.StackedInline):
     model = models.CitaReprogramada
     form = forms.ReprogramarCitaForm
     extra = 3
