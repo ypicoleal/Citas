@@ -288,7 +288,7 @@ class ReprogramarCitaForm(forms.ModelForm):
                 raise forms.ValidationError("No se puede reprogramar una cita mas de 3 veces.")
             # end if
         # end if
-        cita = self.data['cita']
+        cita = self.data["cita"]
         if cita:
             entidad = self.cita.entidad
             calendario = self.cleaned_data.get('calendario', False)
