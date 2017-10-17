@@ -156,10 +156,8 @@ class CitaMedicaFormSupra(forms.ModelForm):
 
 
     def clean(self):
-        cleaned_data = super(CitaMedicaFormSupra, self).clean()
-        if hasattr(self, 'instance') and self.instance.pk:
-            return cleaned_data
-        else:
+        super(CitaMedicaFormSupra, self).clean()
+        if not hasattr(self, 'instance'):
             user = CuserMiddleware.get_user()
             paciente = usuarios.Paciente.objects.filter(id=user.id).first()
             if not paciente:
@@ -290,7 +288,21 @@ class ReprogramarCitaForm(forms.ModelForm):
                 raise forms.ValidationError("No se puede reprogramar una cita mas de 3 veces.")
             # end if
         # end if
-    # end def
+        cita = self.data['cita']
+        if cita:
+            entidad = self.cita.entidad
+            calendario = self.cleaned_data.get('calendario', False)
+            if calendario:
+                if calendario.inicio.weekday() is 4 and calendario.inicio.hour >= 13 and not entidad is 1:
+                    raise ValidationError(_("Lo sentimos. Solo hay disponibilidad de citas para particulares"))
+                elif calendario.inicio.weekday() is 5 and not entidad is 1:
+                    raise ValidationError(_("Lo sentimos. Solo hay disponibilidad de citas para particulares"))
+                # end if
+                obj = CitaMedica.objects.filter(calendario=calendario).first()
+                if obj:
+                    raise ValidationError(_("Ya este espacio esta ocupado por otra cita"))
+                # end if
+        # end def
 
     def clean_calendario(self):
         calendario = self.cleaned_data.get('calendario', False)

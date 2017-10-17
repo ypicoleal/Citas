@@ -156,19 +156,6 @@ class CitaReprogramada(models.Model):
         verbose_name_plural = "Reprogramar cita"
     # end class
 
-    def clean_fields(self, exclude=None):
-        super(CitaReprogramada, self).clean_fields(exclude=exclude)
-        entidad = self.cita.entidad
-        if self.calendario.inicio.weekday() is 4 and self.calendario.inicio.hour >= 13 and not entidad is 1:
-            raise ValidationError(_("Lo sentimos. Solo hay disponibilidad de citas para particulares"))
-        elif self.calendario.inicio.weekday() is 5 and not entidad is 1:
-            raise ValidationError(_("Lo sentimos. Solo hay disponibilidad de citas para particulares"))
-        # end if
-        cita = CitaMedica.objects.filter(calendario=self.calendario).first()
-        if cita:
-            raise ValidationError(_("Ya este espacio esta ocupado por otra cita"))
-        # end if
-    # end def
 
     def __unicode__(self):
         return u"%s Reprogramado por  %s" % (self.cita, self.motivo)
