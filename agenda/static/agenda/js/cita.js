@@ -56,22 +56,22 @@ function calendarios(fecha) {
     $(".full-height").show();
 
     $.ajax({
-            url: '/agenda/calendario/list/',
-            type: 'GET',
-            dataType: 'json',
-            data: {
-                inicio__year: anio,
-                inicio__month: mes,
-                inicio__day: dia,
-                almuerzo: 'False'
-            },
-            success: function(response, status, jqXHR) {
-                var events = response.object_list,
-                    calendario = $("#id_calendario");
-                calendario.html("");
-                calendario.append('<option value="">---------</option>');
-                if (events.length == 0)
-                    $(".full-height").hide();
+        url: '/agenda/calendario/list/',
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            inicio__year: anio,
+            inicio__month: mes,
+            inicio__day: dia,
+            almuerzo: 'False'
+        },
+        success: function(response, status, jqXHR) {
+            var events = response.object_list,
+                calendario = $("#id_calendario");
+            calendario.html("");
+            calendario.append('<option value="">---------</option>');
+            if (events.length == 0) {
+                $(".full-height").hide();
                 alert("No hay espacio disponible para esa fecha");
             } else {
                 events.forEach(function(element) {
