@@ -97,7 +97,7 @@ function calendarios(fecha) {
             calendario.append('<option value="">---------</option>');
             if (events.length == 0) {
                 $(".full-height").hide();
-                formModal("No hay espacio disponible para esa fecha.");
+                Materialize.toast('No hay calendarios disponible para esa fecha.', 4000);
             } else {
                 events.forEach(function(element) {
                     calendario.append('<option value="' + element.id + '">' + element.name + '</option>');
@@ -151,7 +151,7 @@ function calendarioRe(fecha, query) {
             calendario.html("");
             calendario.append('<option value="">---------</option>');
             if (events.length == 0) {
-                formModal("No hay espacio disponible para esa fecha.");
+                Materialize.toast('No hay calendarios disponible para esa fecha.', 4000);
             } else {
                 events.forEach(function(element) {
                     calendario.append('<option value="' + element.id + '">' + element.name + '</option>');
