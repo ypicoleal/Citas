@@ -21,6 +21,9 @@ $(document).ready(function() {
         }
     });
     cargando($("body"));
+    cambioFecha(0);
+    cambioFecha(1);
+    cambioFecha(2);
 });
 
 
