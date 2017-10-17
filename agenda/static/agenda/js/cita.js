@@ -104,10 +104,8 @@ function calendarios(fecha) {
                 });
                 calendario.prop("disabled", false);
                 $('select').material_select();
-                $(".full-height").hide();
             }
-
-
+            $(".full-height").hide();
         },
         error: function(response, status, errorThrown) {
             if (response.status == 403) {
@@ -153,15 +151,14 @@ function calendarioRe(fecha, query) {
             calendario.html("");
             calendario.append('<option value="">---------</option>');
             if (events.length == 0) {
-                alert("No hay espacio disponible para esa fecha");
+                formModal("No hay espacio disponible para esa fecha.");
             } else {
                 events.forEach(function(element) {
                     calendario.append('<option value="' + element.id + '">' + element.name + '</option>');
                 });
+                calendario.prop("disabled", false);
+                $('select').material_select();
             }
-
-            calendario.prop("disabled", false);
-            $('select').material_select();
             $(".full-height").hide();
         },
         error: function(response, status, errorThrown) {
