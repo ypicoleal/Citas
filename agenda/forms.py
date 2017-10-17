@@ -294,15 +294,17 @@ class ReprogramarCitaForm(forms.ModelForm):
             calendario = self.cleaned_data.get('calendario', False)
             if calendario:
                 if calendario.inicio.weekday() is 4 and calendario.inicio.hour >= 13 and not entidad is 1:
-                    raise ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
+                    raise forms.ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
                 elif calendario.inicio.weekday() is 5 and not entidad is 1:
-                    raise ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
+                    raise forms.ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
                 # end if
                 obj = CitaMedica.objects.filter(calendario=calendario).first()
                 if obj:
-                    raise ValidationError("Ya este espacio esta ocupado por otra cita")
+                    raise forms.ValidationError("Ya este espacio esta ocupado por otra cita")
                 # end if
             # end if
+        else:
+            raise forms.ValidationError("Cita")
         # ndif
 
     # end def
