@@ -267,7 +267,6 @@ class ReprogramarCitaForm(forms.ModelForm):
                 calendario = self.fields["calendario"]
                 calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=self.instance.calendario.inicio.year, inicio__month=self.instance.calendario.inicio.month, inicio__day=self.instance.calendario.inicio.day)
                 self.rm_add_and_change_related()
-                calendario.widget.attrs['disabled'] = False
                 fecha.initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
                 # self.fields["motivo"].widget.attrs['disabled'] = True
             # end if
@@ -378,8 +377,8 @@ class ReprogramarCitaFormSupra(forms.ModelForm):
             return calendario
         else:
             if hasattr(self, 'instance') and self.instance.pk:
-                if self.instance.cancelar:
-                    return calendario
+                return self.instance.calendario
+            # end if
             raise forms.ValidationError("Este campo es requerido")
     # end def
 
