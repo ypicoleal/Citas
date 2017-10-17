@@ -117,13 +117,13 @@ function calendarios(fecha) {
 }
 
 function cambioFecha(num) {
-    $("#id_citareprogramada_set-" + num + "-fecha_").keyup(function(event) {
+    $("#id_citareprogramada_set-" + num + "-fecha_").change(function(event) {
         /* Act on the event */
         var query = "#id_citareprogramada_set-" + num + "-calendario";
+        console.log(this.value);
         if (this.value !== "") {
             calendarioRe($(this).val(), query);
         }
-
     });
 }
 
