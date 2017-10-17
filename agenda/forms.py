@@ -116,9 +116,9 @@ class CitaMedicaForm(forms.ModelForm):
             raise forms.ValidationError("Este campo es requerido")
 
         if calendario:
-            if calendario.inicio.weekday() is 4 and calendario.inicio.hour >= 13 and entidad !== 1:
+            if calendario.inicio.weekday() is 4 and calendario.inicio.hour >= 13 and entidad != 1:
                 raise forms.ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
-            elif calendario.inicio.weekday() is 5 and entidad !== 1:
+            elif calendario.inicio.weekday() is 5 and entidad != 1:
                 raise forms.ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
 
         return entidad
@@ -172,9 +172,9 @@ class CitaMedicaFormSupra(forms.ModelForm):
             raise forms.ValidationError("Este campo es requerido")
 
         if calendario:
-            if calendario.inicio.weekday() is 4 and calendario.inicio.hour >= 13 and entidad !== 1:
+            if calendario.inicio.weekday() is 4 and calendario.inicio.hour >= 13 and entidad != 1:
                 raise forms.ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
-            elif calendario.inicio.weekday() is 5 and not entidad !== 1:
+            elif calendario.inicio.weekday() is 5 and not entidad != 1:
                 raise forms.ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
 
         return entidad
@@ -296,9 +296,9 @@ class ReprogramarCitaForm(forms.ModelForm):
             cita = self.instance.cita
             if cita:
                 entidad = cita.entidad
-                if calendario.inicio.weekday() is 4 and calendario.inicio.hour >= 13 and entidad !== 1:
+                if calendario.inicio.weekday() is 4 and calendario.inicio.hour >= 13 and entidad != 1:
                     raise forms.ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
-                elif calendario.inicio.weekday() is 5 and not entidad !== 1:
+                elif calendario.inicio.weekday() is 5 and not entidad != 1:
                     raise forms.ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
                 # end if
                 obj = models.CitaMedica.objects.filter(calendario=calendario).first()
