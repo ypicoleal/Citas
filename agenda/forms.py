@@ -315,7 +315,7 @@ class ReprogramarCitaForm(forms.ModelForm):
             raise forms.ValidationError("Este campo es requerido")
     # end def
 
-    def save(commit=False):
+    def save(self, commit=False):
         programacion = super(ReprogramarCitaForm, self).save(commit)
         user = CuserMiddleware.get_user()
         paciente = usuarios.Paciente.objects.filter(id=user.id).first()
