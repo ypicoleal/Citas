@@ -305,9 +305,6 @@ class ReprogramarCitaForm(forms.ModelForm):
                 if obj:
                     raise forms.ValidationError("Ya este espacio esta ocupado por otra cita")
                 # end if
-            else:
-                raise forms.ValidationError("Cita")
-
             return calendario
         else:
             raise forms.ValidationError("Este campo es requerido")
