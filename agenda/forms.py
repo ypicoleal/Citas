@@ -279,36 +279,6 @@ class ReprogramarCitaForm(forms.ModelForm):
         # end if
     # end def
 
-    def clean(self):
-        cleaned_data = super(ReprogramarCitaForm, self).clean()
-        cita = self.cleaned_data.get('cita', False)
-        if cita:
-            reprogramaciones = models.CitaReprogramada.objects.filter(cita=cita).count()
-            if reprogramaciones == 3:
-                raise forms.ValidationError("No se puede reprogramar una cita mas de 3 veces.")
-            # end if
-        # end if
-        cita = self.data.get("cita", False)
-        if cita:
-            entidad = self.cita.entidad
-            calendario = self.cleaned_data.get('calendario', False)
-            if calendario:
-                if calendario.inicio.weekday() is 4 and calendario.inicio.hour >= 13 and not entidad is 1:
-                    raise forms.ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
-                elif calendario.inicio.weekday() is 5 and not entidad is 1:
-                    raise forms.ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
-                # end if
-                obj = CitaMedica.objects.filter(calendario=calendario).first()
-                if obj:
-                    raise forms.ValidationError("Ya este espacio esta ocupado por otra cita")
-                # end if
-            # end if
-        else:
-            raise forms.ValidationError("Cita")
-        # ndif
-
-    # end def
-
     def clean_calendario(self):
         calendario = self.cleaned_data.get('calendario', False)
         if calendario:
@@ -322,6 +292,21 @@ class ReprogramarCitaForm(forms.ModelForm):
 
             if calendario.inicio.date() <= datetime.date.today():
                 raise forms.ValidationError("No se pueden asignar citas para días anteriores a la fecha actual")
+
+            cita = self.data.get("cita", False)
+            if cita:
+                entidad = self.cita.entidad
+                if calendario.inicio.weekday() is 4 and calendario.inicio.hour >= 13 and not entidad is 1:
+                    raise forms.ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
+                elif calendario.inicio.weekday() is 5 and not entidad is 1:
+                    raise forms.ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
+                # end if
+                obj = CitaMedica.objects.filter(calendario=calendario).first()
+                if obj:
+                    raise forms.ValidationError("Ya este espacio esta ocupado por otra cita")
+                # end if
+            else:
+                raise forms.ValidationError("Cita")
 
             return calendario
         else:
