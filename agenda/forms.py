@@ -322,7 +322,7 @@ class ReprogramarCitaForm(forms.ModelForm):
         if paciente:
             programacion.responsable_cambio = True
         # end if
-        cita = models.CitaMedica.objects.filter(id=programacion.cita).first()
+        cita = models.CitaMedica.objects.filter(id=programacion.cita.id).first()
         cita.calendario = programacion.calendario
         cita.save()
         programacion.save()
