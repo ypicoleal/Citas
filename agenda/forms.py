@@ -303,7 +303,8 @@ class ReprogramarCitaForm(forms.ModelForm):
                 # end if
                 obj = models.CitaMedica.objects.filter(calendario=calendario).first()
                 if obj:
-                    raise forms.ValidationError("Ya este espacio esta ocupado por otra cita")
+                    if cita.id != obj.id:
+                        raise forms.ValidationError("Ya este espacio esta ocupado por otra cita")
                 # end if
             return calendario
         else:
