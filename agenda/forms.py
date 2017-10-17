@@ -272,7 +272,7 @@ class ReprogramarCitaForm(forms.ModelForm):
                 #self.fields["motivo"].widget.attrs['disabled'] = True
             # end if
 
-            # fecha.widget.attrs['disabled'] = True
+                fecha.widget.attrs['disabled'] = True
 
         else:
             if 'calendario' in self.fields:
