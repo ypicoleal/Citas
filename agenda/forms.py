@@ -297,7 +297,7 @@ class ReprogramarCitaForm(forms.ModelForm):
         calendario = self.cleaned_data.get('calendario', False)
         if calendario:
             consultorio = models.Consultorio.objects.first()
-            if datetime.datetime.today().day + 1 is calendario.inicio.day:it a
+            if datetime.datetime.today().day + 1 is calendario.inicio.day:
                 if consultorio:
                     if consultorio.hora_maxima.hour >= datetime.datetime.today().hour:
                         raise forms.ValidationError("Por favor reserve para un dia posterior")
