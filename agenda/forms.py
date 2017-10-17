@@ -262,13 +262,16 @@ class ReprogramarCitaForm(forms.ModelForm):
         super(ReprogramarCitaForm, self).__init__(*args, **kwargs)
         fecha = self.fields["fecha_"]
         if hasattr(self, 'instance') and self.instance.pk:
-            fecha.widget.attrs['disabled'] = True
-            if self.instance.calendario:
-                calendario = self.instance.calendario
+
+            if 'calendario' in self.fields:
+                calendario = self.fields["calendario"]
                 calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=self.instance.calendario.inicio.year, inicio__month=self.instance.calendario.inicio.month, inicio__day=self.instance.calendario.inicio.day)
                 self.rm_add_and_change_related()
                 fecha.initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
+                self.fields["motivo"].attrs['disabled'] = True
             # end if
+
+            fecha.widget.attrs['disabled'] = True
 
         else:
             if 'calendario' in self.fields:
