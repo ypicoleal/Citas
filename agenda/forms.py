@@ -272,7 +272,7 @@ class ReprogramarCitaForm(forms.ModelForm):
                 hoy = datetime.date.today()
                 calendario = self.fields['calendario']
                 calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month, citamedica=None)
-                calendario.widget.attrs['disabled'] = True
+                # calendario.widget.attrs['disabled'] = True
                 calendario.widget.can_add_related = False
                 calendario.widget.can_change_related = False
             else:
