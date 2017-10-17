@@ -158,7 +158,7 @@ class CitasMedicasList(supra.SupraListView):
     # end def
 
     def reprogramar(self, obj, row):
-        return models.CitaReprogramada.objects.filter(cita=self.obj.id).count()
+        return models.CitaReprogramada.objects.filter(cita=obj.id).count()
     # end def
 
     def get_queryset(self):
