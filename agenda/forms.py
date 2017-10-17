@@ -270,7 +270,6 @@ class ReprogramarCitaForm(forms.ModelForm):
                 fecha.initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
             # end if
         else:
-            self.calendario_query()
             if 'calendario' in self.fields:
                 calendario = self.fields['calendario']
                 calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month, )
