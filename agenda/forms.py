@@ -258,7 +258,7 @@ class ReprogramarCitaForm(forms.ModelForm):
 
             if 'calendario' in self.fields:
                 calendario = self.fields["calendario"]
-                calendario.queryset = models.CalendarioCita.objects.filter(id=self.instance.calendario.id)
+                calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=self.instance.calendario.inicio.year, inicio__month=self.instance.calendario.inicio.month, inicio__day=self.instance.calendario.inicio.day)
                 calendario.widget.can_add_related = False
                 calendario.widget.can_change_related = False
                 fecha.initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
