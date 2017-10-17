@@ -295,7 +295,7 @@ class ReprogramarCitaForm(forms.ModelForm):
 
             cita = self.instance.cita
             if cita:
-                entidad = self.inst.cita.entidad
+                entidad = cita.entidad
                 if calendario.inicio.weekday() is 4 and calendario.inicio.hour >= 13 and not entidad is 1:
                     raise forms.ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
                 elif calendario.inicio.weekday() is 5 and not entidad is 1:
