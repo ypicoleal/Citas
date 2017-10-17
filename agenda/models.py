@@ -3,9 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import models
 from usuarios import models as usuarios
-from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext_lazy as _
-
 import datetime
 # Create your models here.
 

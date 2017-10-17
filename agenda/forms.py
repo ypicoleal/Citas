@@ -288,21 +288,24 @@ class ReprogramarCitaForm(forms.ModelForm):
                 raise forms.ValidationError("No se puede reprogramar una cita mas de 3 veces.")
             # end if
         # end if
-        cita = self.data["cita"]
+        cita = self.data.get("cita", False)
         if cita:
             entidad = self.cita.entidad
             calendario = self.cleaned_data.get('calendario', False)
             if calendario:
                 if calendario.inicio.weekday() is 4 and calendario.inicio.hour >= 13 and not entidad is 1:
-                    raise ValidationError(_("Lo sentimos. Solo hay disponibilidad de citas para particulares"))
+                    raise ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
                 elif calendario.inicio.weekday() is 5 and not entidad is 1:
-                    raise ValidationError(_("Lo sentimos. Solo hay disponibilidad de citas para particulares"))
+                    raise ValidationError("Lo sentimos. Solo hay disponibilidad de citas para particulares")
                 # end if
                 obj = CitaMedica.objects.filter(calendario=calendario).first()
                 if obj:
-                    raise ValidationError(_("Ya este espacio esta ocupado por otra cita"))
+                    raise ValidationError("Ya este espacio esta ocupado por otra cita")
                 # end if
-        # end def
+            # end if
+        # ndif
+
+    # end def
 
     def clean_calendario(self):
         calendario = self.cleaned_data.get('calendario', False)
