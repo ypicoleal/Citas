@@ -268,7 +268,7 @@ class ReprogramarCitaForm(forms.ModelForm):
                 calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=self.instance.calendario.inicio.year, inicio__month=self.instance.calendario.inicio.month, inicio__day=self.instance.calendario.inicio.day)
                 self.rm_add_and_change_related()
                 fecha.initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
-                self.fields["motivo"].attrs['disabled'] = True
+                self.fields["motivo"].widget.attrs['disabled'] = True
             # end if
 
             fecha.widget.attrs['disabled'] = True
