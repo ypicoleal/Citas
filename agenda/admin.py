@@ -91,7 +91,7 @@ class CitaMedica(admin.ModelAdmin):
             if obj.confirmacion == 2:
                 return self.readonly_fields + ('paciente', 'procedimiento', 'entidad', 'calendario', 'confirmacion', 'motivo')
             # end if
-            return self.readonly_fields + ('paciente', 'calendario', 'entidad')
+            return self.readonly_fields + ('paciente', 'procedimiento', 'calendario', 'entidad')
         # end if
         return self.readonly_fields
     # end if
