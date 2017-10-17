@@ -87,3 +87,10 @@ function calendarios(fecha) {
         }
     });
 }
+
+function cambioFecha(num) {
+    $("#id_citareprogramada_set-" + num + "-fecha_").change(function(event) {
+        /* Act on the event */
+
+    });
+}
