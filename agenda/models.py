@@ -168,12 +168,6 @@ class CitaReprogramada(models.Model):
     def __unicode__(self):
         return u"%s %s" % (self.cita, motivo)
     # end def
-
-    def save(self, *args, **kwargs):
-        super(CitaReprogramada, self).save(*args, **kwargs)
-        cita = CitaMedica.objects.filter(id=self.cita).first()
-        cita.calendario = self.calendario
-        cita.save()
 # end class
 
 

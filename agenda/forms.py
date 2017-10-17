@@ -283,7 +283,7 @@ class ReprogramarCitaForm(forms.ModelForm):
     # end def
 
     def clean(self):
-        cleaned_data = super(CancelarCitaForm, self).clean()
+        cleaned_data = super(ReprogramarCitaForm, self).clean()
         cita = self.cleaned_data.get('cita', False)
         if cita:
             reprogramaciones = models.CitaReprogramada.objects.filter(cita=cita).count()
@@ -297,7 +297,7 @@ class ReprogramarCitaForm(forms.ModelForm):
         calendario = self.cleaned_data.get('calendario', False)
         if calendario:
             consultorio = models.Consultorio.objects.first()
-            if datetime.datetime.today().day + 1 is calendario.inicio.day:
+            if datetime.datetime.today().day + 1 is calendario.inicio.day:it a
                 if consultorio:
                     if consultorio.hora_maxima.hour >= datetime.datetime.today().hour:
                         raise forms.ValidationError("Por favor reserve para un dia posterior")
@@ -316,12 +316,15 @@ class ReprogramarCitaForm(forms.ModelForm):
     # end def
 
     def save(commit=False):
-        cita = super(ReprogramarCitaForm, self).save(commit)
+        programacion = super(ReprogramarCitaForm, self).save(commit)
         user = CuserMiddleware.get_user()
         paciente = usuarios.Paciente.objects.filter(id=user.id).first()
         if paciente:
-            cita.responsable_cambio = True
+            programacion.responsable_cambio = True
         # end if
+        cita = CitaMedica.objects.filter(id=programacion.cita).first()
+        cita.calendario = programacion.calendario
         cita.save()
-        return cita
+        programacion.save()
+        return programacion
 # end class
