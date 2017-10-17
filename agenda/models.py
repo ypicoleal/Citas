@@ -166,7 +166,7 @@ class CitaReprogramada(models.Model):
     # end def
 
     def __unicode__(self):
-        return u"%s %s" % (self.cita, motivo)
+        return u"%s Cancelado por: %s" % (self.cita, self.motivo)
     # end def
 # end class
 
