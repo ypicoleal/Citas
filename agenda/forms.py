@@ -313,8 +313,7 @@ class ReprogramarCitaForm(forms.ModelForm):
             return calendario
         else:
             if hasattr(self, 'instance') and self.instance.pk:
-                if self.instance.cancelar:
-                    return calendario
+                return self.instance.calendario
             raise forms.ValidationError("Este campo es requerido")
     # end def
 
