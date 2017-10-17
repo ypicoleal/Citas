@@ -331,3 +331,66 @@ class ReprogramarCitaForm(forms.ModelForm):
         programacion.save()
         return programacion
 # end class
+
+
+class ReprogramarCitaFormSupra(forms.ModelForm):
+    fecha_ = forms.DateField(label="Filtro de fecha", required=False)
+
+    class Meta:
+        model = models.CitaReprogramada
+        fields = ('fecha_', 'calendario', 'motivo')
+    # end class
+
+
+    def __init__(self, *args, **kwargs):
+        super(ReprogramarCitaForm, self).__init__(*args, **kwargs)
+        calendario = self.fields['calendario']
+        calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month, )
+    # end def
+
+    def clean(self):
+        cleaned_data = super(ReprogramarCitaForm, self).clean()
+        cita = self.cleaned_data.get('cita', False)
+        if cita:
+            reprogramaciones = models.CitaReprogramada.objects.filter(cita=cita).count()
+            if reprogramaciones == 3:
+                raise forms.ValidationError("No se puede reprogramar una cita mas de 3 veces.")
+            # end if
+        # end if
+    # end def
+
+    def clean_calendario(self):
+        calendario = self.cleaned_data.get('calendario', False)
+        if calendario:
+            consultorio = models.Consultorio.objects.first()
+            if datetime.datetime.today().day + 1 is calendario.inicio.day:
+                if consultorio:
+                    if consultorio.hora_maxima.hour >= datetime.datetime.today().hour:
+                        raise forms.ValidationError("Por favor reserve para un dia posterior")
+                elif 17 >= datetime.datetime.today().hour:
+                    raise forms.ValidationError("Por favor reserve para un dia posterior")
+
+            if calendario.inicio.date() <= datetime.date.today():
+                raise forms.ValidationError("No se pueden asignar citas para días anteriores a la fecha actual")
+
+            return calendario
+        else:
+            if hasattr(self, 'instance') and self.instance.pk:
+                if self.instance.cancelar:
+                    return calendario
+            raise forms.ValidationError("Este campo es requerido")
+    # end def
+
+    def save(self, commit=False):
+        programacion = super(ReprogramarCitaForm, self).save(commit)
+        user = CuserMiddleware.get_user()
+        paciente = usuarios.Paciente.objects.filter(id=user.id).first()
+        if paciente:
+            programacion.responsable_cambio = True
+        # end if
+        cita = models.CitaMedica.objects.filter(id=programacion.cita.id).first()
+        cita.calendario = programacion.calendario
+        cita.save()
+        programacion.save()
+        return programacion
+# end class

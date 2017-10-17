@@ -214,7 +214,7 @@ class CancelarCitaForm(supra.SupraFormView):
 
 class ReprogramarCitaSupra(supra.SupraFormView):
     model = models.CitaReprogramada
-    form_class = forms.ReprogramarCitaForm
+    form_class = forms.ReprogramarCitaFormSupra
 
     @method_decorator(check_login)
     @csrf_exempt
