@@ -125,7 +125,9 @@ class CitaMedica(models.Model):
     # end def
 
     def save(self, *args, **kwargs):
-        self.fecha_calendario =  "%s %s" % (self.calendario.inicio.strftime('%Y-%m-%d %H:%M:%S'),  self.calendario.fin.strftime('%H:%M:%S')) 
+        if self.calendario:
+            self.fecha_calendario =  "%s %s" % (self.calendario.inicio.strftime('%Y-%m-%d %H:%M:%S'),  self.calendario.fin.strftime('%H:%M:%S'))
+        # end if 
         if self.confirmacion == 2:
             self.cancelar = True
             self.calendario = None
