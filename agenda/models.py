@@ -157,7 +157,7 @@ class CitaReprogramada(models.Model):
     # end class
 
     def clean_fields(self, exclude=None):
-        super(ArtCitaReprogramadaicle, self).clean_fields(exclude=exclude)
+        super(CitaReprogramada, self).clean_fields(exclude=exclude)
         entidad = self.cita.entidad
         if self.calendario.inicio.weekday() is 4 and self.calendario.inicio.hour >= 13 and not entidad is 1:
             raise ValidationError(_("Lo sentimos. Solo hay disponibilidad de citas para particulares"))
