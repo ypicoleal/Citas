@@ -38,3 +38,11 @@ urlpatterns += [
 urlpatterns += [
     url(r'^cancelar/cita/form/(?P<pk>\d+)/$', views.CancelarCitaForm.as_view(), name="cancelar_cita"),
 ]
+
+
+"""
+    Reprogramar cita
+"""
+urlpatterns += [
+    url(r'^reprogramar/cita/form/$', views.ReprogramarCitaSupra.as_view(), name="reprogramar_cita"),
+]

@@ -63,7 +63,6 @@ class DuracionCitaStack(admin.TabularInline):
 class CitaReprogramadaStack(admin.TabularInline):
     model = models.CitaReprogramada
     form = forms.ReprogramarCitaForm
-    fields = ('motivo', )
     extra = 3
     max_num = 3
 

@@ -206,3 +206,18 @@ class CancelarCitaForm(supra.SupraFormView):
     def dispatch(self, request, *args, **kwargs):
         return super(CancelarCitaForm, self).dispatch(request, *args, **kwargs)
 # end class
+
+
+"""
+    Reprogramar cita
+"""
+
+class ReprogramarCitaSupra(supra.SupraFormView):
+    model = models.CitaReprogramada
+    form_class = forms.ReprogramarCitaForm
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(ReprogramarCitaSupra, self).dispatch(request, *args, **kwargs)
+# end class
