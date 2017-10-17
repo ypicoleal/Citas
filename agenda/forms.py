@@ -251,24 +251,33 @@ class ReprogramarCitaForm(forms.ModelForm):
         fields = ('fecha_', 'calendario', 'motivo')
     # end class
 
-    def calendario_query(self):
-        if 'calendario' in self.fields:
+    def rm_add_and_change_related(self):
             hoy = datetime.date.today()
             calendario = self.fields['calendario']
             calendario.widget.attrs['disabled'] = True
             calendario.widget.can_add_related = False
             calendario.widget.can_change_related = False
-            calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month)
     # end if
 
     def __init__(self, *args, **kwargs):
         super(ReprogramarCitaForm, self).__init__(*args, **kwargs)
         if hasattr(self, 'instance') and self.instance.pk:
             fecha.widget.attrs['disabled'] = True
-            self.calendario_query()
-
+            if self.instance.calendario:
+                calendario = self.instance.calendario
+                calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=self.instance.calendario.inicio.year, inicio__month=self.instance.calendario.inicio.month, inicio__day=self.instance.calendario.inicio.day)
+                self.rm_add_and_change_related()
+                fecha.initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
+            # end if
         else:
             self.calendario_query()
+            if 'calendario' in self.fields:
+                calendario = self.fields['calendario']
+                calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month, )
+                self.rm_add_and_change_related()
+            # end if
+        # end if
+    # end def
 
     def clean(self):
         cleaned_data = super(CancelarCitaForm, self).clean()
