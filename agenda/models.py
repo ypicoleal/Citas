@@ -94,6 +94,7 @@ class CitaMedica(models.Model):
     estado = models.IntegerField("Estado cita", choices=choices2, default=1)
     confirmacion = models.IntegerField("Confirmación de cita", choices=choices3, blank=True, null=True)
     fecha = models.DateTimeField(auto_now_add=True)
+    fecha_calendario = models.CharField(max_length=100, blank=True, null=True)
     calendario = models.OneToOneField(CalendarioCita, blank=True, null=True)
     cancelar = models.BooleanField("Cancelada", default=False)
     motivo = models.IntegerField("Motivo de cancelación", choices=choices4, blank=True, null=True)

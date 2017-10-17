@@ -113,7 +113,7 @@ class CalandarioCitaDelete(supra.SupraDeleteView):
 
 class CitasMedicasList(supra.SupraListView):
     model = models.CitaMedica
-    list_display = ['id', 'paciente', 'procedimiento', 'procedimiento__nombre', 'procedimiento__modalidad', 'entidad', 'entidad_nombre', 'estado', 'confirmacion', 'cancelar', 'fecha', 'inicio', 'fin', 'reprogramar']
+    list_display = ['id', 'paciente', 'procedimiento', 'procedimiento__nombre', 'procedimiento__modalidad', 'entidad', 'entidad_nombre', 'estado', 'confirmacion', 'cancelar', 'fecha', 'inicio', 'fin', 'reprogramar', 'estado_nombre']
     list_filter = ['paciente', 'procedimiento', 'entidad', 'estado', 'confirmacion', 'calendario__inicio__year', 'calendario__inicio__month', 'calendario__inicio__day', 'calendario__inicio__range']
 
     @method_decorator(check_login)
@@ -127,6 +127,15 @@ class CitasMedicasList(supra.SupraListView):
             return "Medisanitas"
         # end if
         return "Colsanitas"
+    # end def
+
+    def estado_nombre(self, obj, row):
+        if obj.estado == 1:
+            return "Vigente"
+        elif obj.estado == 2:
+            return "Cancelado"
+        # end if
+        return "Vencida"
     # end def
 
     def confirmacion(self, obj, row):
