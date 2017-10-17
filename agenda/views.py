@@ -113,7 +113,7 @@ class CalandarioCitaDelete(supra.SupraDeleteView):
 
 class CitasMedicasList(supra.SupraListView):
     model = models.CitaMedica
-    list_display = ['id', 'paciente', 'procedimiento', 'procedimiento__nombre', 'procedimiento__modalidad', 'entidad', 'entidad_nombre', 'estado', 'confirmacion', 'cancelar', 'fecha', 'inicio', 'fin']
+    list_display = ['id', 'paciente', 'procedimiento', 'procedimiento__nombre', 'procedimiento__modalidad', 'entidad', 'entidad_nombre', 'estado', 'confirmacion', 'cancelar', 'fecha', 'inicio', 'fin', 'reprogramar']
     list_filter = ['paciente', 'procedimiento', 'entidad', 'estado', 'confirmacion', 'calendario__inicio__year', 'calendario__inicio__month', 'calendario__inicio__day', 'calendario__inicio__range']
 
     @method_decorator(check_login)
@@ -155,6 +155,10 @@ class CitasMedicasList(supra.SupraListView):
             return obj.calendario.fin.strftime('%H:%M:%S')
         # end if
         return None
+    # end def
+
+    def reprogramar(self, obj, row):
+        return models.CitaReprogramada.objects.filter(cita=self.obj.id).count()
     # end def
 
     def get_queryset(self):
