@@ -210,7 +210,7 @@ class PacienteEdit(forms.ModelForm):
 
 class ComentarioForm(forms.Form):
     email = forms.EmailField(label="Email")
-    comentario = forms.TextField()
+    comentario = forms.CharField(widget=forms.Textarea)
 # end class
 
 class ChangePasswordForm(forms.Form):
