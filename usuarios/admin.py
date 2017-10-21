@@ -37,7 +37,7 @@ class MedicoAdmin(admin.ModelAdmin):
 
 @admin.register(usuarios.Paciente)
 class PacienteAdmin(admin.ModelAdmin):
-    list_display = ('identificacion', 'first_name', 'last_name', '_tipo', 'email', 'fecha_nacimiento', 'estado_civil', 'profesion', 'telefono', 'eliminado')
+    list_display = ('identificacion', 'first_name', 'last_name', '_tipo', 'email', 'fecha_nacimiento', 'estado_civil', 'profesion', 'telefono')
     search_fields = ('username', 'email', 'first_name', 'last_name', 'identificacion', 'cedula_a', 'telefono')
     icon = '<i class="material-icons">person_outline</i>'
     form = forms.PacienteAdmin
@@ -51,6 +51,20 @@ class PacienteAdmin(admin.ModelAdmin):
         return False
     # end def
 
+    def get_list_display(self, request):
+        if self.request.user.is_superuser:
+            return self.list_display + ('eliminado',)
+        # end if
+        return self.list_display
+    # end def
+
+    def get_queryset(self, request):
+        queryset = super(PacienteAdmin, self).get_queryset(request)
+        if not request.user.is_superuser:
+            return queryset.exclude(eliminado=True)
+        # end if
+    # end def
+
     def eliminar_paciente(self, request, queryset):
         rows_updated = queryset.update(eliminado=True)
         if rows_updated == 1:
@@ -60,6 +74,7 @@ class PacienteAdmin(admin.ModelAdmin):
         self.message_user(request, "%s" % message_bit)
     # end def
 
+    def
     eliminar_paciente.short_description = "Eliminar pacientes seleccionados"
 
     def get_actions(self, request):
