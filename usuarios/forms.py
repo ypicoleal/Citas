@@ -207,3 +207,40 @@ class PacienteEdit(forms.ModelForm):
         }
     # end class
 # end class
+
+
+class ChangePasswordForm(forms.Form):
+    username = forms.CharField(label="Username")
+    mail = forms.EmailField(label="Email")
+    newPassword1 = forms.CharField(label="Nueva Contraseña", widget=forms.PasswordInput(render_value=False))
+    newPassword2 = forms.CharField(label="Vuelve a escribir la contraseña nueva",
+                                   widget=forms.PasswordInput(render_value=False))
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        u = User.objects.filter(username=username).first()
+        if not u:
+            raise forms.ValidationError('No existe un usuario con ese Username')
+        return username
+        #end if
+    #end def
+
+    def clean_mail(self):
+        mail = self.cleaned_data['mail']
+        u = User.objects.filter(email=mail).first()
+        if not u:
+            raise forms.ValidationError('No existe un usuario con ese Email')
+        return mail
+        #end if
+    #end def
+
+    def clean_newPassword2(self):
+        password1 = self.cleaned_data['newPassword1']
+        password2 = self.cleaned_data['newPassword2']
+        if password1 == password2:
+            return password2
+        else:
+            raise forms.ValidationError('Las contraseñas no coiciden')
+        #end if
+     #end def
+#end class

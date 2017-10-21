@@ -8,6 +8,7 @@ import models
 import forms
 from forms import ConfirmacionForm
 from emails import emailConfirmation
+from Citas.decorator import check_login
 from Citas.settings import ORIGIN
 from supra import views as supra
 from django.views.decorators.csrf import csrf_exempt
@@ -147,4 +148,27 @@ def change_password(request):
     form = PasswordChangeForm(request.user)
     return render(request, 'usuarios/change_password.html', {'form': form})
     #end if
+# end def
+
+"""
+    Forget Password
+"""
+
+@check_login
+def forget_password(request):
+    if request.method == "POST":
+        form = ChangePasswordForm(request.POST)
+        if form.is_valid():
+            email = request.POST.get('mail')
+            password = request.POST.get('newPassword2')
+            u = User.objects.get(email=email)
+            u.set_password(raw_password=password)
+            u.save()
+            return HttpResponse(status=200)
+        # end if
+        errors = form.errors.items()
+        return HttpResponse(json.dumps(errors), status=400, content_type='application/json')
+    # end if
+    form = ChangePasswordForm()
+    return render(request, 'usuarios/change_password.html', {'form': form})
 # end def
