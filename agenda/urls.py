@@ -46,3 +46,11 @@ urlpatterns += [
 urlpatterns += [
     url(r'^reprogramar/cita/form/$', views.ReprogramarCitaSupra.as_view(), name="reprogramar_cita"),
 ]
+
+"""
+    Minutos restantes
+"""
+urlpatterns += [
+    url(r'^minustos/restante/form/$', views.MinutosRestanteSupra.as_view(), name="MinutosRestanteSupra"),
+    url(r'^minustos/restante/cita/(?P<pk>\d+)/$', views.minutosRestanteCita, name="minutosRestanteCita"),
+]

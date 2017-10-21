@@ -234,3 +234,28 @@ class ReprogramarCitaSupra(supra.SupraFormView):
     def dispatch(self, request, *args, **kwargs):
         return super(ReprogramarCitaSupra, self).dispatch(request, *args, **kwargs)
 # end class
+
+
+"""
+    Minutos restantes
+"""
+
+class MinutosRestanteSupra(supra.SupraFormView):
+    model = models.DuracionCita
+
+    @method_decorator(check_login)
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(MinutosRestanteSupra, self).dispatch(request, *args, **kwargs)
+# end class
+
+
+def minutosRestanteCita(request, pk):
+    minutos = models.DuracionCita.objects.filter(cita__id=pk).last()
+    if munutos:
+        restante = minutos.duracion_r
+    else:
+        restante = 0
+    # end if
+    return HttpResponse({"minutos": minutos.duracion_r}, status=200, contentType="application/json")
+# end def
