@@ -106,7 +106,7 @@ class CalendarioCita(admin.ModelAdmin):
     # end def
 
     def get_actions(self, request):
-        actions = super(CitaMedica, self).get_actions(request)
+        actions = super(CalendarioCita, self).get_actions(request)
         if 'delete_selected' in actions:
             del actions['delete_selected']
         # end if
