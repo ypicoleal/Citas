@@ -72,6 +72,7 @@ class Paciente(User):
     cedula_a = models.CharField("Cedula acudiente", max_length=120, blank=True, null=True)
     telefono = models.CharField("Teléfono celular", max_length=15, blank=True, null=True)
     activado = models.BooleanField(default=False)
+    eliminado = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Paciente"

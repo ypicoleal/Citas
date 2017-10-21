@@ -32,6 +32,7 @@ class ProcedimientoMedico(models.Model):
     nombre = models.CharField(max_length=120)
     precio = models.IntegerField(default=0, blank=True)
     modalidad = models.IntegerField(choices=choices)
+    eliminado = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Procedimiento médico"
@@ -96,6 +97,7 @@ class CitaMedica(models.Model):
     cancelar = models.BooleanField("Cancelada", default=False)
     motivo = models.IntegerField("Motivo de cancelación", choices=choices4, blank=True, null=True)
     fecha_canelacion = models.DateTimeField("Fecha de cancelación", blank=True, null=True)
+    eliminado = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Cita médica"
