@@ -21,6 +21,10 @@ class MedicoAdmin(admin.ModelAdmin):
             return False
         return True
     # end def
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+    # end def
 # end class
 
 @admin.register(usuarios.Paciente)
@@ -33,3 +37,5 @@ class PacienteAdmin(admin.ModelAdmin):
     class Media:
         js = ("usuarios/paciente.js", )
 # end class
+
+admin.site.disable_action('delete_selected')
