@@ -163,7 +163,7 @@ class PacienteAdmin(forms.ModelForm):
     class Meta:
         model = usuarios.Paciente
         fields = ['first_name', 'last_name', 'email', 'tipo', 'identificacion', 'identificacion2',
-                  'fecha_nacimiento', 'estado_civil', 'profesion', 'telefono', 'nombre_a', 'cedula_a', 'eliminado']
+                  'fecha_nacimiento', 'estado_civil', 'profesion', 'telefono', 'nombre_a', 'cedula_a']
         widgets = {
             'identificacion': forms.NumberInput(),
             'telefono': forms.NumberInput()

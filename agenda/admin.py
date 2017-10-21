@@ -26,13 +26,58 @@ class ProcedimientoMedico(admin.ModelAdmin):
     list_display = ['nombre', 'precio', 'modalidad']
     search_fields = ['nombre', ]
     icon = '<i class="material-icons">local_pharmacy</i>'
+    actions = ['eliminar', 'recuperar']
 
     def has_delete_permission(self, request, obj=None):
         return False
     # end def
 
+    def get_list_display(self, request):
+        if request.user.is_superuser:
+            return self.list_display + ('eliminado',)
+        # end if
+        return self.list_display
+    # end def
+
+    def get_queryset(self, request):
+        queryset = super(ProcedimientoMedico, self).get_queryset(request)
+        if request.user.is_superuser:
+            return queryset
+        # end if
+        return queryset.exclude(eliminado=True)
+    # end def
+
+    def eliminar(self, request, queryset):
+        rows_updated = queryset.update(eliminado=True)
+        if rows_updated == 1:
+            message_bit = "1 procedimiento fue correctamente eliminado"
+        else:
+            message_bit = "%s procedimientos fueron correctamente elimindos" % rows_updated
+        self.message_user(request, "%s" % message_bit)
+    # end def
+
+
+    eliminar.short_description = "Eliminar procedimientos seleccionados"
+
+    def recuperar(self, request, queryset):
+        rows_updated = queryset.update(eliminado=False)
+        if rows_updated == 1:
+            message_bit = "1 procedimiento fue correctamente recuperado"
+        else:
+            message_bit = "%s procedimientos fueron correctamente recuperados" % rows_updated
+        self.message_user(request, "%s" % message_bit)
+    # end def
+
+
+    recuperar.short_description = "Recuperar procedimientos seleccionados"
+
     def get_actions(self, request):
         actions = super(ProcedimientoMedico, self).get_actions(request)
+        if not request.user.is_superuser:
+            if 'recuperar' in actions:
+                del actions['recuperar']
+            # end if
+        # end if
         if 'delete_selected' in actions:
             del actions['delete_selected']
         # end if
@@ -97,6 +142,7 @@ class CitaMedica(admin.ModelAdmin):
     icon = '<i class="material-icons">insert_invitation</i>'
     inlines = [CitaReprogramadaStack]
     form = forms.CitaMedicaForm
+    actions = ['eliminar', 'recuperar']
 
     def get_readonly_fields(self, request, obj=None):
         if obj: # editing an existing object
@@ -112,8 +158,52 @@ class CitaMedica(admin.ModelAdmin):
         return False
     # end def
 
+    def get_list_display(self, request):
+        if request.user.is_superuser:
+            return self.list_display + ('eliminado',)
+        # end if
+        return self.list_display
+    # end def
+
+    def get_queryset(self, request):
+        queryset = super(CitaMedica, self).get_queryset(request)
+        if request.user.is_superuser:
+            return queryset
+        # end if
+        return queryset.exclude(eliminado=True)
+    # end def
+
+    def eliminar(self, request, queryset):
+        rows_updated = queryset.update(eliminado=True)
+        if rows_updated == 1:
+            message_bit = "1 cita fue correctamente eliminada"
+        else:
+            message_bit = "%s citas fueron correctamente elimindas" % rows_updated
+        self.message_user(request, "%s" % message_bit)
+    # end def
+
+
+    eliminar.short_description = "Eliminar citas seleccionadas"
+
+    def recuperar(self, request, queryset):
+        rows_updated = queryset.update(eliminado=False)
+        if rows_updated == 1:
+            message_bit = "1 cita fue correctamente recuperada"
+        else:
+            message_bit = "%s citas fueron correctamente recuperadas" % rows_updated
+        self.message_user(request, "%s" % message_bit)
+    # end def
+
+
+    recuperar.short_description = "Recuperar citas seleccionadas"
+
     def get_actions(self, request):
         actions = super(CitaMedica, self).get_actions(request)
+        if not request.user.is_superuser:
+            if 'recuperar' in actions:
+                del actions['recuperar']
+            # end if
+        # end if
         if 'delete_selected' in actions:
             del actions['delete_selected']
         # end if
