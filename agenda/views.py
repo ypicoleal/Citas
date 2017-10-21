@@ -257,5 +257,5 @@ def minutosRestanteCita(request, pk):
     else:
         restante = 0
     # end if
-    return HttpResponse({"minutos": restante}, status=200, contentType="application/json")
+    return HttpResponse({"minutos": restante}, status=200, content_type="application/json")
 # end def
