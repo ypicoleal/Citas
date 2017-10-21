@@ -252,10 +252,10 @@ class MinutosRestanteSupra(supra.SupraFormView):
 
 def minutosRestanteCita(request, pk):
     minutos = models.DuracionCita.objects.filter(cita__id=pk).last()
-    if munutos:
+    if minutos:
         restante = minutos.duracion_r
     else:
         restante = 0
     # end if
-    return HttpResponse({"minutos": minutos.duracion_r}, status=200, contentType="application/json")
+    return HttpResponse({"minutos": restante}, status=200, contentType="application/json")
 # end def
