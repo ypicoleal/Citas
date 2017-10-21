@@ -32,12 +32,14 @@ class MedicoForm(forms.ModelForm):
             user = User.objects.filter(username=identificacion).first()
             medico = usuarios.Medico.objects.filter(identificacion=identificacion).first()
             if hasattr(self, 'instance') and self.instance.pk:
-                if user.id != self.instance.id:
-                    raise forms.ValidationError('Ya existe un usuario con este username')
-                # end if
-                if medico != self.instance:
-                    raise forms.ValidationError('Ya existe un usuario con esta identificación')
-                # end if
+                if user:
+                    if user.id != self.instance.id:
+                        raise forms.ValidationError('Ya existe un usuario con este username')
+                    # end if
+                if medico:
+                    if medico != self.instance:
+                        raise forms.ValidationError('Ya existe un usuario con esta identificación')
+                    # end if
                 return identificacion
             else:
                 if user:

@@ -9,11 +9,18 @@ admin.site.site_url = None
 
 @admin.register(usuarios.Medico)
 class MedicoAdmin(admin.ModelAdmin):
-    list_display = ('identificacion', 'first_name', 'last_name', '_Tipo', 'email', 'fecha_nacimiento', 'numero_registro', 'nombre_u', 'telefono', 'especialidad')
+    list_display = ('identificacion', 'first_name', 'last_name', '_tipo', 'email', 'fecha_nacimiento', 'numero_registro', 'nombre_u', 'telefono', )
     search_fields = ('username', 'email', 'first_name',
                      'last_name', 'identificacion')
     icon = '<i class="material-icons">person_outline</i>'
     form = forms.MedicoForm
+
+    def has_add_permission(self, request):
+        medico = usuarios.Medico.objects.first()
+        if medico:
+            return False
+        return True
+    # end def
 # end class
 
 @admin.register(usuarios.Paciente)
