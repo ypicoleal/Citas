@@ -9,6 +9,7 @@ from Citas.decorator import check_login
 from django.views.decorators.csrf import csrf_exempt
 from usuarios.models import Paciente
 import models
+import json
 import forms
 supra.SupraConf.body = True
 # Create your views here.
@@ -257,5 +258,5 @@ def minutosRestanteCita(request, pk):
     else:
         restante = 0
     # end if
-    return HttpResponse(json.dumps({"minutos": restante}), status=200, content_type="application/json")
+    return HttpResponse(json.dumps({"minutos": restante}), status=200)
 # end def
