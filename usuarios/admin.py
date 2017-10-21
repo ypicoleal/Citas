@@ -25,6 +25,14 @@ class MedicoAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
     # end def
+
+    def get_actions(self, request):
+        actions = super(CompraAdmin, self).get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        # end if
+        return actions
+    # end def
 # end class
 
 @admin.register(usuarios.Paciente)
@@ -37,5 +45,3 @@ class PacienteAdmin(admin.ModelAdmin):
     class Media:
         js = ("usuarios/paciente.js", )
 # end class
-
-admin.site.disable_action('delete_selected')
