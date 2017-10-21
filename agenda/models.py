@@ -170,7 +170,7 @@ class DuracionCita(models.Model):
     # end class
 
     def __unicode__(self):
-        return u"%s Minutos restantes %d" % (self.cita, duracion_r)
+        return u"%s Minutos restantes %d" % (self.cita, self.duracion_r)
     # end def
 # end class
 
