@@ -19,6 +19,14 @@ class Consultorio(admin.ModelAdmin):
             return False
         return True
     # end def
+
+    def get_actions(self, request):
+        actions = super(Consultorio, self).get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        # end if
+        return actions
+    # end def
 # end class
 
 @admin.register(models.ProcedimientoMedico)
