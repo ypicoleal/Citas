@@ -13,6 +13,7 @@ from supra import views as supra
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import PasswordChangeForm
 import json
 
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
@@ -128,3 +129,22 @@ def islogin(request):
     # end if
     return HttpResponse([], 400)
 # end if
+
+"""
+    PasswordChange
+"""
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            return HttpResponse(status=200)
+        # end if
+        errors = form.errors.items()
+        return HttpResponse(json.dumps(errors), status=400, content_type='application/json')
+    form = PasswordChangeForm(request.user)
+    return render(request, 'usuarios/change_password.html', {'form': form})
+    #end if
+# end def
