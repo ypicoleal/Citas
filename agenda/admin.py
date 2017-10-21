@@ -26,6 +26,18 @@ class ProcedimientoMedico(admin.ModelAdmin):
     list_display = ['nombre', 'precio', 'modalidad']
     search_fields = ['nombre', ]
     icon = '<i class="material-icons">local_pharmacy</i>'
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+    # end def
+
+    def get_actions(self, request):
+        actions = super(ProcedimientoMedico, self).get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        # end if
+        return actions
+    # end def
 # end class
 
 @admin.register(models.CalendarioCita)
@@ -95,6 +107,18 @@ class CitaMedica(admin.ModelAdmin):
         # end if
         return self.readonly_fields
     # end if
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+    # end def
+
+    def get_actions(self, request):
+        actions = super(CitaMedica, self).get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        # end if
+        return actions
+    # end def
 
     class Media:
         js = ("agenda/js/cita.js", )

@@ -37,11 +37,36 @@ class MedicoAdmin(admin.ModelAdmin):
 
 @admin.register(usuarios.Paciente)
 class PacienteAdmin(admin.ModelAdmin):
-    list_display = ('identificacion', 'first_name', 'last_name', '_tipo', 'email', 'fecha_nacimiento', 'estado_civil', 'profesion', 'telefono',)
+    list_display = ('identificacion', 'first_name', 'last_name', '_tipo', 'email', 'fecha_nacimiento', 'estado_civil', 'profesion', 'telefono', 'eliminado')
     search_fields = ('username', 'email', 'first_name', 'last_name', 'identificacion', 'cedula_a', 'telefono')
     icon = '<i class="material-icons">person_outline</i>'
     form = forms.PacienteAdmin
+    actions = ['eliminar_paciente']
 
     class Media:
         js = ("usuarios/paciente.js", )
+    # end class
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+    # end def
+
+    def eliminar_paciente(self, request, queryset):
+        rows_updated = queryset.update(eliminado=True)
+        if rows_updated == 1:
+            message_bit = "1 paciente fue correctamente eliminado"
+        else:
+            message_bit = "%s pacientes fueron correctamente elimindos" % rows_updated
+        self.message_user(request, "%s" % message_bit)
+    # end def
+
+    eliminar_paciente.short_description = "Eliminar pacientes seleccionados"
+
+    def get_actions(self, request):
+        actions = super(PacienteAdmin, self).get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        # end if
+        return actions
+    # end def
 # end class
