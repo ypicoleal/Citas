@@ -176,7 +176,7 @@ class CitasMedicasList(supra.SupraListView):
         paciente = Paciente.objects.filter(id=self.request.user.pk).first()
         if paciente:
             queryset = queryset.filter(paciente=paciente.id)
-        return queryset
+        return queryset.filter(eliminado=False)
     # end def
 # end class
 
@@ -201,6 +201,11 @@ class ProcedimientosList(supra.SupraListView):
     search_fields = ['nombre', 'precio']
     list_filter = ['modalidad', ]
 
+    def get_queryset(self):
+        queryset = super(ProcedimientosList, self).get_queryset()
+        return queryset.filter(eliminado=False)
+    # end def
+    
     @method_decorator(check_login)
     def dispatch(self, request, *args, **kwargs):
         return super(ProcedimientosList, self).dispatch(request, *args, **kwargs)

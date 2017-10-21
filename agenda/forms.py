@@ -101,7 +101,9 @@ class CitaMedicaForm(forms.ModelForm):
             motivo.widget.attrs['disabled'] = True
 
             procedimiento = self.fields['procedimiento']
-            procedimiento.queryset = models.ProcedimientoMedico.objects.filter(modalidad=1)
+            procedimiento.queryset = models.ProcedimientoMedico.objects.filter(modalidad=1, eliminado=False)
+            paciente = self.fields['paciente']
+            paciente.queryset = usuarios.Paciente.objects.filter(eliminado=False)
             self.rm_add_and_change_related()
 
     # end def
