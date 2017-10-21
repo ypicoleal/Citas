@@ -51,6 +51,6 @@ urlpatterns += [
     Minutos restantes
 """
 urlpatterns += [
-    url(r'^minustos/restante/form/$', views.MinutosRestanteSupra.as_view(), name="MinutosRestanteSupra"),
-    url(r'^minustos/restante/cita/(?P<pk>\d+)/$', views.minutosRestanteCita, name="minutosRestanteCita"),
+    url(r'^minutos/restante/form/$', views.MinutosRestanteSupra.as_view(), name="MinutosRestanteSupra"),
+    url(r'^minutos/restante/cita/(?P<pk>\d+)/$', views.minutosRestanteCita, name="minutosRestanteCita"),
 ]
