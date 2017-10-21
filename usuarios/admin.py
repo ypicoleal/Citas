@@ -29,7 +29,7 @@ class MedicoAdmin(admin.ModelAdmin):
 
 @admin.register(usuarios.Paciente)
 class PacienteAdmin(admin.ModelAdmin):
-    list_display = ('identificacion', 'first_name', 'last_name', '_Tipo', 'email', 'fecha_nacimiento', 'estado_civil', 'profesion', 'telefono',)
+    list_display = ('identificacion', 'first_name', 'last_name', '_tipo', 'email', 'fecha_nacimiento', 'estado_civil', 'profesion', 'telefono',)
     search_fields = ('username', 'email', 'first_name', 'last_name', 'identificacion', 'cedula_a', 'telefono')
     icon = '<i class="material-icons">person_outline</i>'
     form = forms.PacienteAdmin
