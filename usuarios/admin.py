@@ -41,7 +41,7 @@ class PacienteAdmin(admin.ModelAdmin):
     search_fields = ('username', 'email', 'first_name', 'last_name', 'identificacion', 'cedula_a', 'telefono')
     icon = '<i class="material-icons">person_outline</i>'
     form = forms.PacienteAdmin
-    actions = ['eliminar_paciente']
+    actions = ['eliminar_paciente', 'recuperar_paciente']
 
     class Media:
         js = ("usuarios/paciente.js", )
@@ -62,7 +62,7 @@ class PacienteAdmin(admin.ModelAdmin):
         queryset = super(PacienteAdmin, self).get_queryset(request)
         if not request.user.is_superuser:
             return queryset.exclude(eliminado=True)
-        # end if
+
     # end def
 
     def eliminar_paciente(self, request, queryset):
@@ -74,11 +74,28 @@ class PacienteAdmin(admin.ModelAdmin):
         self.message_user(request, "%s" % message_bit)
     # end def
 
-    def
+
     eliminar_paciente.short_description = "Eliminar pacientes seleccionados"
+
+    def recuperar_paciente(self, request, queryset):
+        rows_updated = queryset.update(eliminado=False)
+        if rows_updated == 1:
+            message_bit = "1 paciente fue correctamente recuperado"
+        else:
+            message_bit = "%s pacientes fueron correctamente recuperados" % rows_updated
+        self.message_user(request, "%s" % message_bit)
+    # end def
+
+
+    recuperar_paciente.short_description = "Recuperar pacientes seleccionados"
 
     def get_actions(self, request):
         actions = super(PacienteAdmin, self).get_actions(request)
+        if not request.user.is_superuser:
+            if 'recuperar_paciente' in actions:
+                del actions['recuperar_paciente']
+            # end if
+        # end if
         if 'delete_selected' in actions:
             del actions['delete_selected']
         # end if
