@@ -23,5 +23,25 @@ def emailConfirmation(email, tipo):
 # end def
 
 
-def emailComentarios(email, comentarios):
-    pass
+def emailComentarios(email, comentario):
+    medicos = models.Medico.objects.all()
+    paciente = models.Paciente.objects.filter(email=email).first()
+    if paciente:
+        nombre = "%s %s" % (paciente.first_name, paciente.last_name)
+    else:
+        nombre = "Anónimo"
+    # end def
+    emails = []
+    for m in medicos:
+        emails.append(m.email)
+    # end for
+    if not len(emails):
+        emails.append("info@dranilsaarias.com")
+    # end if
+    subject, from_email, to = "Comentarios", 'info@dranilsaarias.com', emails
+    text_content = "Comentario enviado %s" % (nombre)
+    html_content = "<p>Correo del emisor: %s</p><p>%s</p>" % (email, comentario)
+    msg = EmailMultiAlternatives(subject, text_content, from_email, to)
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+# end def

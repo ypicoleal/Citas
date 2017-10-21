@@ -208,10 +208,14 @@ class PacienteEdit(forms.ModelForm):
     # end class
 # end class
 
+class ComentarioForm(forms.Form):
+    email = forms.EmailField(label="Email")
+    comentario = forms.TextField()
+# end class
 
 class ChangePasswordForm(forms.Form):
     username = forms.CharField(label="Username")
-    mail = forms.EmailField(label="Email")
+    email = forms.EmailField(label="Email")
     newPassword1 = forms.CharField(label="Nueva Contraseña", widget=forms.PasswordInput(render_value=False))
     newPassword2 = forms.CharField(label="Vuelve a escribir la contraseña nueva",
                                    widget=forms.PasswordInput(render_value=False))
@@ -225,8 +229,8 @@ class ChangePasswordForm(forms.Form):
         #end if
     #end def
 
-    def clean_mail(self):
-        mail = self.cleaned_data['mail']
+    def clean_email(self):
+        mail = self.cleaned_data['email']
         u = User.objects.filter(email=mail).first()
         if not u:
             raise forms.ValidationError('No existe un usuario con ese Email')

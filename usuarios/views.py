@@ -7,7 +7,7 @@ from django.http import HttpResponseNotFound, HttpResponse
 import models
 import forms
 from forms import ConfirmacionForm
-from emails import emailConfirmation
+from emails import emailConfirmation, emailComentarios
 from Citas.decorator import check_login
 from Citas.settings import ORIGIN
 from supra import views as supra
@@ -160,7 +160,7 @@ def forget_password(request):
     if request.method == "POST":
         form = forms.ChangePasswordForm(request.POST)
         if form.is_valid():
-            email = request.POST.get('mail')
+            email = request.POST.get('email')
             password = request.POST.get('newPassword2')
             u = User.objects.get(email=email)
             u.set_password(raw_password=password)
@@ -172,4 +172,24 @@ def forget_password(request):
     # end if
     form = forms.ChangePasswordForm()
     return render(request, 'usuarios/change_password.html', {'form': form})
+# end def
+
+
+"""
+    Comentarios
+"""
+def comentarios(request):
+    if request.method == "POST":
+        form = forms.ComentarioForm(request.POST)
+        if form.is_valid():
+            email = request.POST.get('email')
+            comentario = request.POST.get('comentario')
+            emailComentarios(email, comentario)
+            return HttpResponse(status=200)
+        # end if
+        errors = form.errors.items()
+        return HttpResponse(json.dumps(errors), status=400, content_type='application/json')
+    # end if
+    form = forms.ComentarioForm()
+    return render(request, 'usuarios/comentarios.html', {'form': form})
 # end def
