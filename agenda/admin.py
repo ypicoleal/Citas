@@ -34,7 +34,7 @@ class ProcedimientoMedico(admin.ModelAdmin):
 
     def get_list_display(self, request):
         if request.user.is_superuser:
-            return self.list_display + ('eliminado',)
+            return self.list_display + ['eliminado',]
         # end if
         return self.list_display
     # end def
@@ -105,6 +105,14 @@ class CalendarioCita(admin.ModelAdmin):
         return False
     # end def
 
+    def get_actions(self, request):
+        actions = super(CitaMedica, self).get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        # end if
+        return actions
+    # end def
+
     def get_queryset(self, request):
         queryset = super(CalendarioCita, self).get_queryset(request)
         return queryset.exclude(admin=False)
@@ -160,7 +168,7 @@ class CitaMedica(admin.ModelAdmin):
 
     def get_list_display(self, request):
         if request.user.is_superuser:
-            return self.list_display + ('eliminado',)
+            return self.list_display + ['eliminado',]
         # end if
         return self.list_display
     # end def
