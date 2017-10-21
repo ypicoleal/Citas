@@ -135,7 +135,7 @@ def islogin(request):
 """
     PasswordChange
 """
-
+@check_login
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
@@ -155,7 +155,7 @@ def change_password(request):
     Forget Password
 """
 
-@check_login
+
 def forget_password(request):
     if request.method == "POST":
         form = forms.ChangePasswordForm(request.POST)
