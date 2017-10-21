@@ -27,7 +27,7 @@ class MedicoAdmin(admin.ModelAdmin):
     # end def
 
     def get_actions(self, request):
-        actions = super(CompraAdmin, self).get_actions(request)
+        actions = super(MedicoAdmin, self).get_actions(request)
         if 'delete_selected' in actions:
             del actions['delete_selected']
         # end if
