@@ -52,7 +52,7 @@ class PacienteAdmin(admin.ModelAdmin):
     # end def
 
     def get_list_display(self, request):
-        if self.request.user.is_superuser:
+        if request.user.is_superuser:
             return self.list_display + ('eliminado',)
         # end if
         return self.list_display
