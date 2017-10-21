@@ -15,6 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.models import User
 import json
 
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
@@ -157,7 +158,7 @@ def change_password(request):
 @check_login
 def forget_password(request):
     if request.method == "POST":
-        form = ChangePasswordForm(request.POST)
+        form = forms.ChangePasswordForm(request.POST)
         if form.is_valid():
             email = request.POST.get('mail')
             password = request.POST.get('newPassword2')
@@ -169,6 +170,6 @@ def forget_password(request):
         errors = form.errors.items()
         return HttpResponse(json.dumps(errors), status=400, content_type='application/json')
     # end if
-    form = ChangePasswordForm()
+    form = forms.ChangePasswordForm()
     return render(request, 'usuarios/change_password.html', {'form': form})
 # end def
