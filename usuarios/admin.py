@@ -60,9 +60,10 @@ class PacienteAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         queryset = super(PacienteAdmin, self).get_queryset(request)
-        if not request.user.is_superuser:
-            return queryset.exclude(eliminado=True)
-
+        if request.user.is_superuser:
+            return queryset
+        # end if
+        return queryset.exclude(eliminado=True)
     # end def
 
     def eliminar_paciente(self, request, queryset):
