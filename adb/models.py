@@ -13,9 +13,9 @@ class PublicidadMovil(models.Model):
         verbose_name = "Publicidad móvil"
         verbose_name_plural = "Publicidad móvil"
     # end class
-    
+
     def image(self):
-        return '<img src="/media/%s" />' % (self.imagen)
+        return '<img width="100px" src="/media/%s" />' % (self.imagen)
     # end def
 
     image.allow_tags = True

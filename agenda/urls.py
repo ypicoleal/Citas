@@ -21,3 +21,36 @@ urlpatterns += [
     url(r'^cita/form/$', views.CitaMedicaForm.as_view(), name="cita_form"),
     url(r'^cita/form/(?P<pk>\d+)/$', views.CitaMedicaForm.as_view(), name="cita_edit"),
 ]
+
+
+"""
+    Procedimiento Medico
+"""
+
+urlpatterns += [
+    url(r'^procedimiento/medico/list/$', views.ProcedimientosList.as_view(), name="procedimiento"),
+]
+
+
+"""
+    Cancelar cita
+"""
+urlpatterns += [
+    url(r'^cancelar/cita/form/(?P<pk>\d+)/$', views.CancelarCitaForm.as_view(), name="cancelar_cita"),
+]
+
+
+"""
+    Reprogramar cita
+"""
+urlpatterns += [
+    url(r'^reprogramar/cita/form/$', views.ReprogramarCitaSupra.as_view(), name="reprogramar_cita"),
+]
+
+"""
+    Minutos restantes
+"""
+urlpatterns += [
+    url(r'^minutos/restante/form/$', views.MinutosRestanteSupra.as_view(), name="MinutosRestanteSupra"),
+    url(r'^minutos/restante/cita/(?P<pk>\d+)/$', views.minutosRestanteCita, name="minutosRestanteCita"),
+]

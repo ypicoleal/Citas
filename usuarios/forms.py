@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django import forms
 import models as usuarios
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Permission, Group
+from emails import emailConfirmation
 
 
 class ConfirmacionForm(forms.Form):
@@ -30,12 +32,14 @@ class MedicoForm(forms.ModelForm):
             user = User.objects.filter(username=identificacion).first()
             medico = usuarios.Medico.objects.filter(identificacion=identificacion).first()
             if hasattr(self, 'instance') and self.instance.pk:
-                if user.id != self.instance.id:
-                    raise forms.ValidationError('Ya existe un usuario con este username')
-                # end if
-                if medico != self.instance:
-                    raise forms.ValidationError('Ya existe un usuario con esta identificación')
-                # end if
+                if user:
+                    if user.id != self.instance.id:
+                        raise forms.ValidationError('Ya existe un usuario con este username')
+                    # end if
+                if medico:
+                    if medico != self.instance:
+                        raise forms.ValidationError('Ya existe un usuario con esta identificación')
+                    # end if
                 return identificacion
             else:
                 if user:
@@ -82,6 +86,8 @@ class MedicoForm(forms.ModelForm):
 
     def save(self, commit=False):
         medico = super(MedicoForm, self).save(commit)
+        emailConfirmation(medico.email, 1)
+        # end if
         medico.is_staff = True
         medico.username = medico.identificacion
         medico.set_password(raw_password=medico.identificacion)
@@ -186,10 +192,61 @@ class PacienteFormService(UserCreationForm):
             'telefono': forms.NumberInput()
         }
 
-    def save(self, commit=False):
-        paciente = super(PacienteAdmin, self).save(commit)
-        paciente.activado = True
-        paciente.save()
+    def save(self, commit=True):
+        paciente = super(PacienteFormService, self).save(commit)
+        emailConfirmation(paciente.email, 2)
         return paciente
     # end def
 # end class
+
+class PacienteEdit(forms.ModelForm):
+
+    class Meta:
+        model = usuarios.Paciente
+        fields = ['first_name', 'last_name', 'email', 'fecha_nacimiento', 'estado_civil', 'profesion', 'telefono', 'nombre_a', 'cedula_a']
+        widgets = {
+            "telefono": forms.NumberInput()
+        }
+    # end class
+# end class
+
+class ComentarioForm(forms.Form):
+    email = forms.EmailField(label="Email")
+    comentario = forms.CharField(widget=forms.Textarea)
+# end class
+
+class ChangePasswordForm(forms.Form):
+    username = forms.CharField(label="Username")
+    email = forms.EmailField(label="Email")
+    newPassword1 = forms.CharField(label="Nueva Contraseña", widget=forms.PasswordInput(render_value=False))
+    newPassword2 = forms.CharField(label="Vuelve a escribir la contraseña nueva",
+                                   widget=forms.PasswordInput(render_value=False))
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        u = User.objects.filter(username=username).first()
+        if not u:
+            raise forms.ValidationError('No existe un usuario con ese Username')
+        return username
+        #end if
+    #end def
+
+    def clean_email(self):
+        mail = self.cleaned_data['email']
+        u = User.objects.filter(email=mail).first()
+        if not u:
+            raise forms.ValidationError('No existe un usuario con ese Email')
+        return mail
+        #end if
+    #end def
+
+    def clean_newPassword2(self):
+        password1 = self.cleaned_data['newPassword1']
+        password2 = self.cleaned_data['newPassword2']
+        if password1 == password2:
+            return password2
+        else:
+            raise forms.ValidationError('Las contraseñas no coiciden')
+        #end if
+     #end def
+#end class

@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'usuarios.apps.UsuariosConfig',
     'agenda.apps.AgendaConfig',
     'adb.apps.AdbConfig',
-    'supra'
+    'supra',
+    'cuser'
 ]
 
 MIDDLEWARE = [
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'cuser.middleware.CuserMiddleware'
 ]
 
 ROOT_URLCONF = 'Citas.urls'
@@ -83,11 +85,15 @@ WSGI_APPLICATION = 'Citas.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'HOST': 'postgres',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'dranilsa_citas',
+        'USER': 'dranilsa_user',
+        'PASSWORD': 'Citas96522569',
+        'HOST': 'localhost',
+        'PORT': '',
+        'OPTIONS': {
+           'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
     }
 }
 
@@ -129,16 +135,54 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = '/home2/dranilsa/public_html/app/static/'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = '/home2/dranilsa/public_html/app/media/'
 
 # Email settings
+ADMINS = [('Mario', 'mariobarrpach@gmail.com')]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'mariobarrpach@gmail.com'
-EMAIL_HOST_PASSWORD = 'yrjsjwmgcepehhlb'
+EMAIL_USE_TLS = False
+#EMAIL_HOST = 'box5027.bluehost.com'
+#EMAIL_PORT = 465
+EMAIL_HOST_USER = 'info@dranilsaarias.com'
+EMAIL_HOST_PASSWORD = 'nilsaArias2017@'
+
+
+# Logging
+LOGGING = {
+ 'version': 1,
+ 'disable_existing_loggers': False,
+ 'formatters': {
+     'verbose': {
+         'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+     },
+     'simple': {
+         'format': '%(levelname)s %(message)s'
+     },
+ },
+ 'handlers': {
+     'console': {
+         'level': 'INFO',
+         'class': 'logging.StreamHandler',
+         'formatter': 'simple'
+     },
+     'mail_admins': {
+         'level': 'ERROR',
+         'class': 'django.utils.log.AdminEmailHandler',
+     }
+ },
+ 'loggers': {
+     'django': {
+         'handlers': ['console'],
+         'propagate': True,
+     },
+     'django.request': {
+         'handlers': ['mail_admins'],
+         'level': 'ERROR',
+         'propagate': True,
+     }
+ }
+}

@@ -7,12 +7,16 @@ from django.http import HttpResponseNotFound, HttpResponse
 import models
 import forms
 from forms import ConfirmacionForm
-from emails import emailConfirmation
+from emails import emailConfirmation, emailComentarios
+from Citas.decorator import check_login
 from Citas.settings import ORIGIN
 from supra import views as supra
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.models import User
+import json
 
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
 supra.SupraConf.ACCECC_CONTROL["origin"] = ORIGIN
@@ -92,6 +96,14 @@ class PacienteSupraForm(supra.SupraFormView):
     model = models.Paciente
     form_class = forms.PacienteFormService
 
+    def get_form_class(self):
+        if 'pk' in self.http_kwargs:
+            self.form_class = forms.PacienteEdit
+        # end if
+        return self.form_class
+    # end class
+# end class
+
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         a = super(PacienteSupraForm, self).dispatch(request, *args, **kwargs)
@@ -104,4 +116,80 @@ class PacienteSupraForm(supra.SupraFormView):
 def logoutUser(request):
     logout(request)
     return HttpResponse(status=200)
+# end def
+
+@supra.access_control
+def islogin(request):
+    if request.user.is_authenticated():
+        paciente = models.Paciente.objects.filter(id=request.user.pk).first()
+        if paciente:
+            data = {"session": request.session.session_key, "username": request.user.username, "nombre": request.user.first_name, "apellidos": request.user.last_name, "id": request.user.pk, "tipo": 1 , "email": request.user.email}
+        else:
+            data = {"session": request.session.session_key, "username": request.user.username, "nombre": request.user.first_name, "apellidos": request.user.last_name, "id": request.user.pk, "tipo": 2 , "email": request.user.email}
+        # end if
+        return HttpResponse(json.dumps(data), 200)
+    # end if
+    return HttpResponse([], 400)
+# end if
+
+"""
+    PasswordChange
+"""
+@check_login
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            return HttpResponse(status=200)
+        # end if
+        errors = form.errors.items()
+        return HttpResponse(json.dumps(errors), status=400, content_type='application/json')
+    form = PasswordChangeForm(request.user)
+    return render(request, 'usuarios/change_password.html', {'form': form})
+    #end if
+# end def
+
+"""
+    Forget Password
+"""
+
+
+def forget_password(request):
+    if request.method == "POST":
+        form = forms.ChangePasswordForm(request.POST)
+        if form.is_valid():
+            email = request.POST.get('email')
+            password = request.POST.get('newPassword2')
+            u = User.objects.get(email=email)
+            u.set_password(raw_password=password)
+            u.save()
+            return HttpResponse(status=200)
+        # end if
+        errors = form.errors.items()
+        return HttpResponse(json.dumps(errors), status=400, content_type='application/json')
+    # end if
+    form = forms.ChangePasswordForm()
+    return render(request, 'usuarios/change_password.html', {'form': form})
+# end def
+
+
+"""
+    Comentarios
+"""
+def comentarios(request):
+    if request.method == "POST":
+        form = forms.ComentarioForm(request.POST)
+        if form.is_valid():
+            email = request.POST.get('email')
+            comentario = request.POST.get('comentario')
+            emailComentarios(email, comentario)
+            return HttpResponse(status=200)
+        # end if
+        errors = form.errors.items()
+        return HttpResponse(json.dumps(errors), status=400, content_type='application/json')
+    # end if
+    form = forms.ComentarioForm()
+    return render(request, 'usuarios/comentarios.html', {'form': form})
 # end def

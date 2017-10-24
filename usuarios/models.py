@@ -38,7 +38,7 @@ class Medico(User):
         return u"%s %s"%(self.first_name, self.last_name)
     # end def
 
-    def _Tipo(self):
+    def _tipo(self):
         if self.tipo == self.CEDULA:
             tipo = "Cédula"
         elif self.tipo == self.PASAPORTE:
@@ -72,6 +72,7 @@ class Paciente(User):
     cedula_a = models.CharField("Cedula acudiente", max_length=120, blank=True, null=True)
     telefono = models.CharField("Teléfono celular", max_length=15, blank=True, null=True)
     activado = models.BooleanField(default=False)
+    eliminado = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Paciente"
@@ -83,7 +84,7 @@ class Paciente(User):
         return u"%s %s"%(self.first_name, self.last_name)
     # end def
 
-    def _Tipo(self):
+    def _tipo(self):
         if self.tipo == self.CEDULA:
             tipo = "Cédula"
         elif self.tipo == self.T_IDENTIDAD:
