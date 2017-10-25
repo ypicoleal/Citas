@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from usuarios import models as usuarios
+from djcelery.models import PeriodicTask, CrontabSchedule
 import datetime
 # Create your models here.
 
@@ -133,6 +134,24 @@ class CitaMedica(models.Model):
             self.estado = 2
             self.fecha_canelacion = datetime.date.today()
         super(CitaMedica, self).save(*args, **kwargs)
+        obj  = PeriodicTask.objects.filter(
+            name= "Prueba crontab %d" % (self.pk),
+            task= "notificacion",
+        )
+        print "#######",self.pk, obj
+        if not obj:
+            crontab = CrontabSchedule(minute=1)
+            crontab.save()
+            obj  = PeriodicTask.objects.create(
+                name= "Prueba crontab %d" % (self.pk),
+                task= "notificacion",
+                crontab= crontab,
+                args = [self.pk]
+            )
+        else:
+            obj.args = [self.pk]
+            obj.save()
+        print obj
 # end class
 
 

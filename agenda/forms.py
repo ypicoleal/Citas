@@ -94,7 +94,7 @@ class CitaMedicaForm(forms.ModelForm):
         else:
             hoy = datetime.date.today()
             calendario = self.fields['calendario']
-            calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month, citamedica=None)
+            calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=hoy.year, inicio__month=hoy.month, citamedica=None, almuerzo=False)
             calendario.widget.attrs['disabled'] = True
 
             motivo = self.fields['motivo']
@@ -130,14 +130,15 @@ class CitaMedicaForm(forms.ModelForm):
         calendario = self.cleaned_data.get('calendario', False)
         if calendario:
             consultorio = models.Consultorio.objects.first()
-            if datetime.datetime.today().day + 1 is calendario.inicio.day:
+            if (datetime.datetime.today().day + 1) == calendario.inicio.day:
                 if consultorio:
                     if consultorio.hora_maxima.hour >= datetime.datetime.today().hour:
                         raise forms.ValidationError("Por favor reserve para un dia posterior")
                 elif 17 >= datetime.datetime.today().hour:
+
                     raise forms.ValidationError("Por favor reserve para un dia posterior")
 
-            if calendario.inicio.date() <= datetime.date.today():
+            elif calendario.inicio.date() <= datetime.date.today():
                 raise forms.ValidationError("No se pueden asignar citas para días anteriores a la fecha actual")
 
             return calendario

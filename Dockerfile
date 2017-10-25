@@ -1,6 +1,7 @@
 # Use an official Python runtime as a parent image
 FROM ksketo/python-pillow
 ENV PYTHONUNBUFFERED 1
+ENV REDIS_HOST "redis"
 #   ENV POSTGRES_HOST "postgres"
 RUN mkdir /citas
 # Set the working directory to /citas

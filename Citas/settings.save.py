@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'usuarios.apps.UsuariosConfig',
     'agenda.apps.AgendaConfig',
     'adb.apps.AdbConfig',
-    'supra'
+    'supra',
+    'cuser'
 ]
 
 MIDDLEWARE = [
