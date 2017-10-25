@@ -9,10 +9,14 @@ $(document).ready(function() {
             cedulad_a = $("#id_cedula_a");
         if (edad < 18) {
             nombre_a.prop('disabled', false);
+            nombre_a.prop('required', false);
             cedulad_a.prop('disabled', false);
+            cedulad_a.prop('required', false);
         } else {
             nombre_a.prop('disabled', true);
+            nombre_a.prop('required', true);
             cedulad_a.prop('disabled', true);
+            cedulad_a.prop('required', true);
             nombre_a.val('');
             cedulad_a.val('');
         }

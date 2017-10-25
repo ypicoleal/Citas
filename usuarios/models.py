@@ -62,11 +62,15 @@ class Paciente(User):
         (C_EXTRANJERIA, 'Cédula de extranjeria'),
         (REGISTROCIVIL, 'Registro Civil'),
     )
+    choices2 = (
+        ("Soltero/a", "Soltero/a"),
+        ("Casado/a", "Casado/a")
+    )
     tipo = models.IntegerField("Tipo de identificación", choices=choices)
     identificacion = models.CharField(
         "Número de indentificación", max_length=120, unique=True)
     fecha_nacimiento = models.DateField()
-    estado_civil = models.CharField(max_length=120)
+    estado_civil = models.CharField(max_length=120, choices=choices2)
     profesion = models.CharField("Profesión", max_length=120, blank=True, null=True)
     nombre_a = models.CharField("Nombre completo acudiente", max_length=120, blank=True, null=True)
     cedula_a = models.CharField("Cedula acudiente", max_length=120, blank=True, null=True)

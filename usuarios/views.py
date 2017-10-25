@@ -51,7 +51,7 @@ def confirmacion(request):
                 # end if
                 mensaje = "Cuenta Activada"
             except:
-                mensaje = "Esta URL a expirado"
+                mensaje = "No pudo verificar sus datos de confirmación por lo tanto Ud deberá volver a generar una nueva confirmación"
             # end try
             activador.delete()
             return render(request, 'usuarios/confirmacion.html', {'mensaje': mensaje, 'nuevo': False})

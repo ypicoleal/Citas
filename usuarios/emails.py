@@ -16,7 +16,7 @@ def emailConfirmation(email, tipo):
     activacionkey.save()
     subject, from_email, to = "Confirmar cuenta", 'info@dranilsaarias.com', [email]
     text_content = "Confirmación de cuenta"
-    html_content = "Enlace de confirmacion: http://app.dranilsaarias.com/usuarios/confirmacion/?code=%s&k2=%s" % (key1, key2)
+    html_content = "Requiere que Ud ingrese al siguiente vínculo de verificación para confirmar la cuenta: http://app.dranilsaarias.com/usuarios/confirmacion/?code=%s&k2=%s" % (key1, key2)
     msg = EmailMultiAlternatives(subject, text_content, from_email, to)
     msg.attach_alternative(html_content, "text/html")
     msg.send()

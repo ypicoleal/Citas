@@ -3,7 +3,6 @@ $(document).ready(function() {
         /* Act on the event */
         if (this.value !== "") {
             calendarios($(this).val());
-
         }
     });
 
