@@ -80,7 +80,7 @@ class CitaMedicaForm(forms.ModelForm):
             fecha = self.fields['fecha_']
             fecha.required = False
             fecha.widget.attrs['disabled'] = True
-            if self.instance.confirmacion = 2:
+            if self.instance.confirmacion == 2:
                 self.fields["motivo"].widget.attrs['disabled'] = True
             # end if
             """
