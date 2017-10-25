@@ -56,7 +56,7 @@ def confirmacion(request):
             activador.delete()
             return render(request, 'usuarios/confirmacion.html', {'mensaje': mensaje, 'nuevo': False})
         # end if
-        mensaje = "Esta URL a expirado"
+        mensaje = "No pudo verificar sus datos de confirmación por lo tanto Ud deberá volver a generar una nueva confirmación"
         return render(request, 'usuarios/confirmacion.html', {'mensaje': mensaje, 'nuevo': True})
     # end if
     return HttpResponseNotFound('<h1>Pagina no encontrada</h1>')
