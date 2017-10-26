@@ -49,17 +49,17 @@ def confirmacion(request):
                         paciente.activado = True
                         paciente.save()
                 # end if
-                mensaje = "Cuenta Activada"
+                mensaje = "Cuenta correctamente activada"
             except:
-                mensaje = "No pudo verificar sus datos de confirmación por lo tanto Ud deberá volver a generar una nueva confirmación"
+                mensaje = "No pudo verificar sus datos de confirmación por lo tanto Ud deberá volver a generar una nueva confirmación."
             # end try
             activador.delete()
             return render(request, 'usuarios/confirmacion.html', {'mensaje': mensaje, 'nuevo': False})
         # end if
-        mensaje = "No pudo verificar sus datos de confirmación por lo tanto Ud deberá volver a generar una nueva confirmación"
+        mensaje = "No pudo verificar sus datos de confirmación por lo tanto Ud deberá volver a generar una nueva confirmación."
         return render(request, 'usuarios/confirmacion.html', {'mensaje': mensaje, 'nuevo': True})
     # end if
-    return HttpResponseNotFound('<h1>Pagina no encontrada</h1>')
+    return HttpResponseNotFound('<h1>Pagina no encontrada.</h1>')
 # end def
 
 def generarConfirmacion(request):
