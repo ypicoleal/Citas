@@ -32,13 +32,12 @@ body {
   margin: 0 auto;
 }
 
-.nav-wrapper{
-  min-height: 114px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+.justify {
+    text-align: justify;
 }
 
 .brand-logo img{
-  width: 220px;
+  width: 150px;
   padding-top: 8px;
 }
 

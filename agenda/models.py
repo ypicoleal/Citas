@@ -98,6 +98,8 @@ class CitaMedica(models.Model):
     motivo = models.IntegerField("Motivo de cancelación", choices=choices4, blank=True, null=True)
     fecha_canelacion = models.DateTimeField("Fecha de cancelación", blank=True, null=True)
     eliminado = models.BooleanField(default=False)
+    virtual = models.BooleanField(default=False)
+    pago = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Cita médica"

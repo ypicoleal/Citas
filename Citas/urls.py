@@ -25,6 +25,8 @@ urlpatterns = [
     url(r'^publicidad/', include('adb.urls')),
     url(r'^agenda/', include('agenda.urls')),
     url(r'^$', RedirectView.as_view(url='/dashboard', permanent=True)),
+    url(r'favicon\.ico$', RedirectView.as_view(
+        url='/media/favicon.png', permanent=True)),
 ]
 
 if settings.DEBUG:

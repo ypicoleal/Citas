@@ -1,51 +1,44 @@
-{% extends 'base.html' %}
-{% block css %}
-{% endblock %}
-
-{% block body %}
+{% extends 'base.html' %} {% block css %} {% endblock %} {% block body %}
 <style>
-.parent {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-    height: 500px;
-}
+    .parent {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        height: 500px;
+    }
 </style>
 <div class="row parent">
     {% if exito %}
-        <div class="col s12 m6 l6">
-            <div class="card">
-                <div class="card-content">
-                    <h5 class="center-align">Se ha enviado un correo de confirmación, Muchas Gracias.</h5>
-                </div>
+    <div class="col s12 m6 l6">
+        <div class="card">
+            <div class="card-content">
+                <h5 class="center-align">Se ha enviado un correo de confirmación, Muchas Gracias.</h5>
             </div>
         </div>
+    </div>
     {% else %}
-        <div class="col s12 m6 l6">
-            <div class="card">
-                <div class="card-content">
-                    <form action="" method="post">
-                        <h5 class="center-align">Nueva confirmación</h5>
-                        {% csrf_token %}
-                        {% for field in form %}
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    {{ field }}{{ field.label_tag }}
-                                    {% if field.help_text %}
-                                    <p class="green">{{ field.help_text|safe }}</p>
-                                    {% endif %}
-                                    <p class="red">{{ field.errors }}</p>
-                                </div>
-                            </div>
-                        {% endfor %}
-                        <button class="btn waves-effect waves-light" style="width:100%;" type="submit" name="action">Enviar
+    <div class="col s12 m6 l6">
+        <div class="card">
+            <div class="card-content">
+                <form action="" method="post">
+                    <h5 class="center-align">Nueva confirmación</h5> {% csrf_token %} {% for field in form %}
+                    <div class="row">
+                        <div class="input-field col s12">
+                            {{ field }}{{ field.label_tag }} {% if field.help_text %}
+                            <p class="green">{{ field.help_text|safe }}</p>
+                            {% endif %}
+                            <p class="red">{{ field.errors }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <button class="btn red waves-effect waves-light" style="width:100%;" type="submit" name="action">Enviar
                           <i class="material-icons right">send</i>
                         </button>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
+    </div>
 
     {% endif %}
 </div>
