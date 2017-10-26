@@ -54,3 +54,12 @@ urlpatterns += [
     url(r'^minutos/restante/form/$', views.MinutosRestanteSupra.as_view(), name="MinutosRestanteSupra"),
     url(r'^minutos/restante/cita/(?P<pk>\d+)/$', views.minutosRestanteCita, name="minutosRestanteCita"),
 ]
+
+
+"""
+ Payu
+"""
+
+urlpatterns += [
+    url(r'^comprar/$', views.comprar, name="comprar"),
+]

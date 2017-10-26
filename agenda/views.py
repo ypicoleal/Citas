@@ -205,7 +205,7 @@ class ProcedimientosList(supra.SupraListView):
         queryset = super(ProcedimientosList, self).get_queryset()
         return queryset.filter(eliminado=False)
     # end def
-    
+
     @method_decorator(check_login)
     def dispatch(self, request, *args, **kwargs):
         return super(ProcedimientosList, self).dispatch(request, *args, **kwargs)
@@ -264,4 +264,8 @@ def minutosRestanteCita(request, pk):
         restante = 0
     # end if
     return HttpResponse(json.dumps({"minutos": restante}), status=200, content_type="application/json")
+# end def
+
+def comprar(request):
+    return render(request, 'agenda/compra.html', {})
 # end def
