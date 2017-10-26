@@ -1,4 +1,7 @@
-{% extends 'base.html' %} {% block css %} {% endblock %} {% block body %}
+{% extends 'base.html' %}
+{% block css %}
+{% endblock %}
+{% block body %}
 <style>
     .parent {
         display: flex;
@@ -22,10 +25,14 @@
         <div class="card">
             <div class="card-content">
                 <form action="" method="post">
-                    <h5 class="center-align">Nueva confirmación</h5> {% csrf_token %} {% for field in form %}
+                    <h5 class="center-align">Nueva confirmación</h5>
+                    {% csrf_token %}
+                     {% for field in form %}
                     <div class="row">
                         <div class="input-field col s12">
-                            {{ field }}{{ field.label_tag }} {% if field.help_text %}
+                            {{ field }}
+                            {{ field.label_tag }}
+                            {% if field.help_text %}
                             <p class="green">{{ field.help_text|safe }}</p>
                             {% endif %}
                             <p class="red">{{ field.errors }}</p>

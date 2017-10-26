@@ -1,4 +1,7 @@
-{% extends 'base.html' %} {% block css %} {% endblock %} {% block body %}
+{% extends 'base.html' %}
+{% block css %}
+{% endblock %}
+{% block body %}
 <style>
     .parent {
         display: flex;
@@ -14,8 +17,10 @@
             <div class="card-content">
                 {% if nuevo %}
                 <h5 class="justify">{{mensaje}}</h5>
-                <a href="/usuarios/nueva/confirmacion/" class="btn red">Generar nueva confirmación</a> {% else %}
-                <h5 class="justify">{{mensaje}}</h5> {% endif %}
+                <a href="/usuarios/nueva/confirmacion/" class="btn red">Generar nueva confirmación</a>
+                {% else %}
+                <h5 class="justify">{{mensaje}}</h5>
+                {% endif %}
             </div>
         </div>
     </div>
