@@ -16,7 +16,10 @@
         <div class="card">
             <div class="card-image">
               <img src="/media/payu.jpeg">
-              <span class="card-title">Procedimientos</span>
+            </div>
+            <div class="card-content">
+              <h2>Procedimiento</h2>
+              <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
               <form method="post" action="https://sandbox.gateway.payulatam.com/ppp-web-gateway/">
                   <input name="merchantId"    type="hidden"  value="508029"   >
                   <input name="accountId"     type="hidden"  value="512321" >
@@ -30,14 +33,29 @@
                   <input name="test"          type="hidden"  value="1" >
                   <input name="buyerEmail"    type="hidden"  value="test@test.com" >
                   <input name="confirmationUrl"  type="hidden"  value="http://www.test.com/confirmation" >
-                  <button class="btn-floating halfway-fab waves-effect waves-light red" type="submit" name="button">
-                      <i class="material-icons">shop</i>
-                  </button>
+                  <button class="btn waves-effect waves-light red" type="submit" name="action">Pagar
+                     <i class="material-icons right">send</i>
+                   </button>
                 </form>
-              <a class="btn-floating halfway-fab waves-effect waves-light red"></a>
             </div>
-            <div class="card-content">
-              <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+            <div class="card-action">
+                <form method="post" action="https://sandbox.gateway.payulatam.com/ppp-web-gateway/">
+                    <input name="merchantId"    type="hidden"  value="508029"   >
+                    <input name="accountId"     type="hidden"  value="512321" >
+                    <input name="description"   type="hidden"  value="Test PAYU"  >
+                    <input name="referenceCode" type="hidden"  value="TestPayU" >
+                    <input name="amount"        type="hidden"  value="20000"   >
+                    <input name="tax"           type="hidden"  value="3193"  >
+                    <input name="taxReturnBase" type="hidden"  value="16806" >
+                    <input name="currency"      type="hidden"  value="COP" >
+                    <input name="signature"     type="hidden"  value="7ee7cf808ce6a39b17481c54f2c57acc"  >
+                    <input name="test"          type="hidden"  value="1" >
+                    <input name="buyerEmail"    type="hidden"  value="test@test.com" >
+                    <input name="confirmationUrl"  type="hidden"  value="http://www.test.com/confirmation" >
+                    <button class="btn waves-effect waves-light" type="submit" name="action">Pagar
+                       <i class="material-icons right">send</i>
+                     </button>
+                  </form>
             </div>
         </div>
     </div>
