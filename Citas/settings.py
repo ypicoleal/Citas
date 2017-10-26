@@ -135,10 +135,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home2/dranilsa/public_html/app/static/'
+STATIC_ROOT = '/home2/dranilsa/public_html/app/Citas/static/'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/home2/dranilsa/public_html/app/media/'
+MEDIA_ROOT = '/home2/dranilsa/public_html/app/Citas/media/'
 
 # Email settings
 ADMINS = [('Mario', 'mariobarrpach@gmail.com')]

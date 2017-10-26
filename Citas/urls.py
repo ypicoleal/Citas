@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^agenda/', include('agenda.urls')),
     url(r'^$', RedirectView.as_view(url='/dashboard', permanent=True)),
     url(r'favicon\.ico$', RedirectView.as_view(
-        url='/media/favicon.png', permanent=True)),
+        url='/media/favicon.ico', permanent=True)),
 ]
 
 if settings.DEBUG:
