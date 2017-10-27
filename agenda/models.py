@@ -214,7 +214,7 @@ class PagoCita(models.Model):
     phone = models.CharField(max_length=20, blank=True, null=True)
     office_phone = models.CharField(max_length=20, blank=True, null=True)
     account_number_ach = models.CharField("Identificador de la transacción.", max_length=36, blank=True, null=True)
-    account_type_ach  models.CharField("Identificador de la transacción.", max_length=36, blank=True, null=True)
+    account_type_ach = models.CharField("Identificador de la transacción.", max_length=36, blank=True, null=True)
     administrative_fee  = models.DecimalField("Valor de la tarifa administrativa", max_digits=19, decimal_places=2)
     administrative_fee_base = models.DecimalField("Valor base de la tarifa administrativa", max_digits=19, decimal_places=2)
     administrative_fee_tax = models.DecimalField("Valor del impuesto de la tarifa administrativa", max_digits=19, decimal_places=2)
