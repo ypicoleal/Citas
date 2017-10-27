@@ -286,7 +286,7 @@ def comprar(request):
                 amount = cita.procedimiento.precio
             signature = "%s~%d~%s~%d~%s" % (apikey, merchantId, referenceCode, amount, currency)
             signatureMD5 = md5.new(signature)
-            return render(request, 'agenda/compra.html', {"merchantId", merchantId, "accountId":accountId, "referenceCode":referenceCode ,"buyerFullName":buyerFullName, "description": description, "currency": currency, "amount": amount, "buyerEmail": buyerEmail, "signature":signatureMD5.hexdigest()})
+            return render(request, 'agenda/compra.html', {"merchantId": merchantId, "accountId":accountId, "referenceCode":referenceCode ,"buyerFullName":buyerFullName, "description": description, "currency": currency, "amount": amount, "buyerEmail": buyerEmail, "signature":signatureMD5.hexdigest()})
         # end if
     # end if
     return HttpResponseNotFound('<h1>Pagina no encontrada.</h1>')
