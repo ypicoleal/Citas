@@ -166,9 +166,12 @@ class CitaMedica(admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         if obj: # editing an existing object
-            if obj.confirmacion == 2:
+            if obj.procedimiento.modalidad == 2:
                 return self.readonly_fields + ('paciente', 'procedimiento', 'entidad', 'calendario', 'confirmacion', 'motivo')
-            # end if
+            else:
+                if obj.confirmacion == 2:
+                    return self.readonly_fields + ('paciente', 'procedimiento', 'entidad', 'calendario', 'confirmacion', 'motivo', 'estado')
+                # end if
             return self.readonly_fields + ('paciente', 'procedimiento', 'calendario', 'entidad')
         # end if
         return self.readonly_fields

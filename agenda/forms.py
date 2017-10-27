@@ -80,19 +80,17 @@ class CitaMedicaForm(forms.ModelForm):
             fecha = self.fields['fecha_']
             fecha.required = False
             fecha.widget.attrs['disabled'] = True
-            if self.instance.confirmacion == 2:
-                self.fields["motivo"].widget.attrs['disabled'] = True
+            if self.instance.procedimiento.modalidad == 2:
+                CHOICES = (
+                    (1, 'Vigente'),
+                    (3, 'Vencida')
+                )
+                self.fields["estado"].widgets = forms.Select(choices=CHOICES)
+            else:
+                if self.instance.confirmacion != 2:
+                    self.fields["motivo"].widget.attrs['disabled'] = True
+                # end if
             # end if
-            """
-            if self.instance.calendario:
-                calendario = self.fields['calendario']
-                calendario.queryset = models.CalendarioCita.objects.filter(inicio__year=self.instance.calendario.inicio.year, inicio__month=self.instance.calendario.inicio.month, inicio__day=self.instance.calendario.inicio.day)
-                self.rm_add_and_change_related()
-                fecha.initial = self.instance.calendario.inicio.strftime('%d/%m/%Y')
-
-                motivo = self.fields['motivo']
-                motivo.widget.attrs['disabled'] = True
-            """
         else:
             hoy = datetime.date.today()
             calendario = self.fields['calendario']

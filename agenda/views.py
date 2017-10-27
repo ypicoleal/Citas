@@ -11,6 +11,7 @@ from usuarios.models import Paciente
 import models
 import json
 import forms
+import md5
 supra.SupraConf.body = True
 # Create your views here.
 
@@ -267,5 +268,26 @@ def minutosRestanteCita(request, pk):
 # end def
 
 def comprar(request):
-    return render(request, 'agenda/compra.html', {})
+    cita_id = request.GET.get('id_cita', False)
+    currency = request.GET.get('currency', 'COP')
+    if cita_id:
+        cita = models.CitaMedica.objects.filter(id=cita_id).first()
+        if cita:
+            merchantId = 673242
+            accountId = 675923
+            referenceCode = "TestPayU"
+            apikey = "isbFMRz3wZTwp22bGV2POnAFrM"
+            description = cita.procedimiento.nombre
+            buyerEmail = cita.paciente.email
+            buyerFullName = "%s %s" % (cita.paciente.first_name, cita.paciente.last_name)
+            if currency == "USD":
+                amount = cita.procedimiento.precio_usd
+            else:
+                amount = cita.procedimiento.precio
+            signature = "%s~%d~%s~%d~%s" % (apikey, merchantId, referenceCode, amount, currency)
+            signatureMD5 = md5.new(signature)
+            return render(request, 'agenda/compra.html', {"merchantId", merchantId, "accountId":accountId, "referenceCode":referenceCode ,"buyerFullName":buyerFullName, "description": description, "currency": currency, "amount": amount, "buyerEmail": buyerEmail, "signature":signatureMD5.hexdigest()})
+        # end if
+    # end if
+    return HttpResponseNotFound('<h1>Pagina no encontrada.</h1>')
 # end def

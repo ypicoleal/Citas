@@ -178,6 +178,8 @@ def forget_password(request):
 """
     Comentarios
 """
+
+@csrf_exempt
 def comentarios(request):
     if request.method == "POST":
         form = forms.ComentarioForm(request.POST)
