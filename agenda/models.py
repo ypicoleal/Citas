@@ -219,7 +219,7 @@ class PagoCita(models.Model):
     administrative_fee_base = models.DecimalField("Valor base de la tarifa administrativa", max_digits=19, decimal_places=2)
     administrative_fee_tax = models.DecimalField("Valor del impuesto de la tarifa administrativa", max_digits=19, decimal_places=2)
     airline_code = models.CharField("Código de la aerolínea", max_length=4, blank=True, null=True)
-    attempts = model.IntegerField("Numero de intentos del envío de la confirmación.")
+    attempts = models.IntegerField("Numero de intentos del envío de la confirmación.")
     authorization_code = models.CharField("Código de autorización de la venta", max_length=12, blank=True, null=True)
     bank_id = models.CharField("Identificador del banco", max_length=255)
     billing_city = models.CharField("La ciudad de facturación.", max_length=255)
