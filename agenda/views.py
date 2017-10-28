@@ -329,6 +329,10 @@ def confirmacion(request, pk):
             else:
                 con.validacion = False
             # end if
+            if con.state_pol == '4':
+                cita.pago = True
+                cita.save()
+            # end if
             con.cita = cita
             con.save()
             return HttpResponse(status=200)

@@ -157,7 +157,7 @@ class CitaReprogramadaStack(admin.StackedInline):
 @admin.register(models.CitaMedica)
 class CitaMedica(admin.ModelAdmin):
     list_display = ['paciente', 'procedimiento', 'modalidad', 'entidad', 'confirmacion', 'motivo', 'fecha_canelacion', 'estado']
-    list_filter = ['procedimiento', 'entidad', 'estado', 'confirmacion', 'calendario__inicio']
+    list_filter = ['procedimiento', 'procedimiento__modalidad', 'entidad', 'estado', 'confirmacion', 'calendario__inicio']
     search_fields = ['paciente__first_name', 'paciente__last_name', 'paciente__identificacion']
     icon = '<i class="material-icons">insert_invitation</i>'
     inlines = [CitaReprogramadaStack]
@@ -193,7 +193,8 @@ class CitaMedica(admin.ModelAdmin):
         if request.user.is_superuser:
             return queryset
         # end if
-        return queryset.exclude(eliminado=True)
+        queryset = queryset.exclude(eliminado=True)
+        return queryset.exclude(virtual=True, pago=False)
     # end def
 
     def eliminar(self, request, queryset):

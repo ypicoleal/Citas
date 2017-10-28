@@ -139,6 +139,7 @@ class CitaMedica(models.Model):
         # end if
         if self.procedimiento.modalidad == 2:
             self.confirmacion = 1
+            self.virtual = True
         else:
             if self.confirmacion == 2:
                 self.cancelar = True
