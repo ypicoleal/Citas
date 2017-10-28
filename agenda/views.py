@@ -283,7 +283,7 @@ def pagar(request, pk):
             amount = cita.procedimiento.precio_usd
         else:
             amount = cita.procedimiento.precio
-        signature = "%s~%d~%s~%d~%s" % (APIKEY, merchantId, referenceCode, amount, currency)
+        signature = "%s~%d~%s~%d~%s" % (APIKEY, MERCHANTID, referenceCode, amount, currency)
         signatureMD5 = md5.new(signature)
         confirmationUrl = "http://app.dranilsaarias.com/agenda/confirmacion/%d/pago/" % (cita.id)
         return render(request, 'agenda/compra.html', {"merchantId": MERCHANTID, "accountId":ACCOUNTID, "referenceCode":referenceCode ,"buyerFullName":buyerFullName, "description": description, "currency": currency, "amount": amount, "buyerEmail": buyerEmail, "signature":signatureMD5.hexdigest(), "confirmationUrl": confirmationUrl})
