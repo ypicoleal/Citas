@@ -155,7 +155,7 @@ def change_password(request):
     Forget Password
 """
 
-
+@csrf_exempt
 def forget_password(request):
     if request.method == "POST":
         form = forms.ChangePasswordForm(request.POST)
