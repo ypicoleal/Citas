@@ -154,7 +154,7 @@ class CitaMedicaFormSupra(forms.ModelForm):
 
     class Meta:
         model = models.CitaMedica
-        fields = ['procedimiento', 'entidad', 'calendario', 'motivo']
+        fields = ['procedimiento', 'entidad', 'calendario',]
 
 
     def clean(self):
