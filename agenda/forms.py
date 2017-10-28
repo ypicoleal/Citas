@@ -163,7 +163,7 @@ class CitaMedicaFormSupra(forms.ModelForm):
             user = CuserMiddleware.get_user()
             paciente = usuarios.Paciente.objects.filter(id=user.id).first()
             if not paciente:
-                form.ValidationError("Necesita ser un paciente para crear una cita")
+                raise form.ValidationError("Necesita ser un paciente para crear una cita")
         # end if
     # end def
 
