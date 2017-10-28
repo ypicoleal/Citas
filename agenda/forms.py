@@ -158,13 +158,12 @@ class CitaMedicaFormSupra(forms.ModelForm):
 
 
     def clean(self):
-        super(CitaMedicaFormSupra, self).clean()
-        if not hasattr(self, 'instance'):
-            user = CuserMiddleware.get_user()
-            paciente = usuarios.Paciente.objects.filter(id=user.id).first()
-            if not paciente:
-                raise form.ValidationError("Necesita ser un paciente para crear una cita")
-        # end if
+        cleaned_data = super(CitaMedicaFormSupra, self).clean()
+        user = CuserMiddleware.get_user()
+        paciente = usuarios.Paciente.objects.filter(id=user.id).first()
+        if not paciente:
+            raise form.ValidationError("Necesita ser un paciente para crear una cita")
+    # end if
     # end def
 
     def clean_entidad(self):
@@ -346,7 +345,7 @@ class ReprogramarCitaFormSupra(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(ReprogramarCitaFormSupra, self).clean()
-        cita = self.cleaned_data.get('cita', False)
+        cita = cleaned_data.get('cita', False)
         if cita:
             reprogramaciones = models.CitaReprogramada.objects.filter(cita=cita).count()
             if reprogramaciones == 3:
