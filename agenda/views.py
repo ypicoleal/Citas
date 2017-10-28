@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 from Citas.decorator import check_login
 from django.views.decorators.csrf import csrf_exempt
 from usuarios.models import Paciente
-from Citas.settings import APIKEY, ORIGIN
+from Citas.settings import APIKEY, ORIGIN, MERCHANTID, ACCOUNTID
 import models, json, forms, md5, random
 supra.SupraConf.body = True
 # Create your views here.
@@ -275,8 +275,6 @@ def pagar(request, pk):
     currency = request.GET.get('currency', 'COP')
     cita = models.CitaMedica.objects.filter(id=pk).first()
     if cita:
-        merchantId = 673242
-        accountId = 675923
         referenceCode = "%s%s00%d%d" % (random.choice(cita.paciente.first_name), random.choice(cita.paciente.last_name), cita.procedimiento.id, cita.id)
         description = cita.procedimiento.nombre
         buyerEmail = cita.paciente.email
@@ -288,7 +286,7 @@ def pagar(request, pk):
         signature = "%s~%d~%s~%d~%s" % (APIKEY, merchantId, referenceCode, amount, currency)
         signatureMD5 = md5.new(signature)
         confirmationUrl = "http://app.dranilsaarias.com/agenda/confirmacion/%d/pago/" % (cita.id)
-        return render(request, 'agenda/compra.html', {"merchantId": merchantId, "accountId":accountId, "referenceCode":referenceCode ,"buyerFullName":buyerFullName, "description": description, "currency": currency, "amount": amount, "buyerEmail": buyerEmail, "signature":signatureMD5.hexdigest(), "confirmationUrl": confirmationUrl})
+        return render(request, 'agenda/compra.html', {"merchantId": MERCHANTID, "accountId":ACCOUNTID, "referenceCode":referenceCode ,"buyerFullName":buyerFullName, "description": description, "currency": currency, "amount": amount, "buyerEmail": buyerEmail, "signature":signatureMD5.hexdigest(), "confirmationUrl": confirmationUrl})
     # end if
     # end if
     return HttpResponseNotFound('<h1>Pagina no encontrada.</h1>')
