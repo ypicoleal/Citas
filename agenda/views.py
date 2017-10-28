@@ -12,6 +12,12 @@ from django.conf import settings
 import models, json, forms, md5, random
 supra.SupraConf.body = True
 # Create your views here.
+supra.SupraConf.ACCECC_CONTROL["allow"] = True
+supra.SupraConf.ACCECC_CONTROL["origin"] = settings.ORIGIN
+supra.SupraConf.ACCECC_CONTROL["credentials"] = "true"
+supra.SupraConf.ACCECC_CONTROL["headers"] = "origin, content-type, accept"
+supra.SupraConf.ACCECC_CONTROL["methods"] = "POST, GET, PUT, DELETE ,OPTIONS"
+
 
 """
     CalendarioCita
@@ -304,6 +310,7 @@ def new_value(value):
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+@supra.access_control
 @csrf_exempt
 def confirmacion(request, pk):
     if request.method == "POST":
