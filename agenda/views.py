@@ -8,12 +8,12 @@ from django.utils.decorators import method_decorator
 from Citas.decorator import check_login
 from django.views.decorators.csrf import csrf_exempt
 from usuarios.models import Paciente
-from django.conf import settings
+from Citas.settings import APIKEY, ORIGIN
 import models, json, forms, md5, random
 supra.SupraConf.body = True
 # Create your views here.
 supra.SupraConf.ACCECC_CONTROL["allow"] = True
-supra.SupraConf.ACCECC_CONTROL["origin"] = settings.ORIGIN
+supra.SupraConf.ACCECC_CONTROL["origin"] = ORIGIN
 supra.SupraConf.ACCECC_CONTROL["credentials"] = "true"
 supra.SupraConf.ACCECC_CONTROL["headers"] = "origin, content-type, accept"
 supra.SupraConf.ACCECC_CONTROL["methods"] = "POST, GET, PUT, DELETE ,OPTIONS"
@@ -280,13 +280,12 @@ def pagar(request, pk):
         referenceCode = "%s%s00%d%d" % (random.choice(cita.paciente.first_name), random.choice(cita.paciente.last_name), cita.procedimiento.id, cita.id)
         description = cita.procedimiento.nombre
         buyerEmail = cita.paciente.email
-        apikey = settings.apikey
         buyerFullName = "%s %s" % (cita.paciente.first_name, cita.paciente.last_name)
         if currency == "USD":
             amount = cita.procedimiento.precio_usd
         else:
             amount = cita.procedimiento.precio
-        signature = "%s~%d~%s~%d~%s" % (apikey, merchantId, referenceCode, amount, currency)
+        signature = "%s~%d~%s~%d~%s" % (APIKEY, merchantId, referenceCode, amount, currency)
         signatureMD5 = md5.new(signature)
         confirmationUrl = "http://app.dranilsaarias.com/agenda/confirmacion/%d/pago/" % (cita.id)
         return render(request, 'agenda/compra.html', {"merchantId": merchantId, "accountId":accountId, "referenceCode":referenceCode ,"buyerFullName":buyerFullName, "description": description, "currency": currency, "amount": amount, "buyerEmail": buyerEmail, "signature":signatureMD5.hexdigest()})
@@ -322,7 +321,7 @@ def confirmacion(request, pk):
         if form.is_valid():
             con = form.save(commit=False)
             value = new_value(con.value)
-            validacion = "%s~%d-%s~%s~%s~%s" % (settings.apikey, con.merchantId, con.reference_sale, value, con.currency, con.state_pol)
+            validacion = "%s~%d-%s~%s~%s~%s" % (APIKEY, con.merchantId, con.reference_sale, value, con.currency, con.state_pol)
             validacionMD5 = md5.new(validacion)
             if sign == validacionMD5:
                 con.validacion = True
