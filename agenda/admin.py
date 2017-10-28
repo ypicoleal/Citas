@@ -156,7 +156,7 @@ class CitaReprogramadaStack(admin.StackedInline):
 
 @admin.register(models.CitaMedica)
 class CitaMedica(admin.ModelAdmin):
-    list_display = ['paciente', 'procedimiento', 'entidad', 'confirmacion', 'motivo', 'fecha_canelacion', 'estado']
+    list_display = ['paciente', 'procedimiento', 'modalidad', 'entidad', 'confirmacion', 'motivo', 'fecha_canelacion', 'estado']
     list_filter = ['procedimiento', 'entidad', 'estado', 'confirmacion', 'calendario__inicio']
     search_fields = ['paciente__first_name', 'paciente__last_name', 'paciente__identificacion']
     icon = '<i class="material-icons">insert_invitation</i>'
@@ -239,4 +239,36 @@ class CitaMedica(admin.ModelAdmin):
             "all": ('agenda/css/fullcalendar.min.css', 'agenda/css/style.css')
         }
     # end class
+# end class
+
+@admin.register(models.PagoCita)
+class PagoCitaAdmin(admin.ModelAdmin):
+    list_display = ('cita', 'merchantId', 'state_pol', 'reference_sale', 'value', 'currency', 'fecha')
+    icon = '<i class="material-icons">insert_invitation</i>'
+
+    def get_readonly_fields(self, request, obj=None):
+        # make all fields readonly
+        readonly_fields = list(set(
+            [field.name for field in self.opts.local_fields] +
+            [field.name for field in self.opts.local_many_to_many]
+        ))
+        if 'is_submitted' in readonly_fields:
+            readonly_fields.remove('is_submitted')
+        return readonly_fields
+
+    def has_add_permission(self, request):
+        return False
+    # end def
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+    # end def
+
+    def get_actions(self, request):
+        actions = super(PagoCitaAdmin, self).get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        # end if
+        return actions
+    # end def
 # end class

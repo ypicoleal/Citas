@@ -390,3 +390,12 @@ class ReprogramarCitaFormSupra(forms.ModelForm):
         programacion.save()
         return programacion
 # end class
+
+
+class ConfirmacionPago(forms.ModelForm):
+
+    class Meta:
+        model = models.PagoCita
+        exclude = ('cita', )
+    # end class
+# end class

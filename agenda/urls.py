@@ -61,5 +61,6 @@ urlpatterns += [
 """
 
 urlpatterns += [
-    url(r'^comprar/$', views.comprar, name="comprar"),
+    url(r'^pagar/(?P<pk>\d+)/$', views.pagar, name="pagar"),
+    url(r'^confirmacion/(?P<pk>\d+)/pago/$', views.confirmacion, name="confirmacion"),
 ]

@@ -8,10 +8,8 @@ from django.utils.decorators import method_decorator
 from Citas.decorator import check_login
 from django.views.decorators.csrf import csrf_exempt
 from usuarios.models import Paciente
-import models
-import json
-import forms
-import md5
+from django.conf import settings
+import models, json, forms, md5, random
 supra.SupraConf.body = True
 # Create your views here.
 
@@ -267,27 +265,66 @@ def minutosRestanteCita(request, pk):
     return HttpResponse(json.dumps({"minutos": restante}), status=200, content_type="application/json")
 # end def
 
-def comprar(request):
-    cita_id = request.GET.get('id_cita', False)
+def pagar(request, pk):
     currency = request.GET.get('currency', 'COP')
-    if cita_id:
-        cita = models.CitaMedica.objects.filter(id=cita_id).first()
-        if cita:
-            merchantId = 673242
-            accountId = 675923
-            referenceCode = "TestPayU"
-            apikey = "isbFMRz3wZTwp22bGV2POnAFrM"
-            description = cita.procedimiento.nombre
-            buyerEmail = cita.paciente.email
-            buyerFullName = "%s %s" % (cita.paciente.first_name, cita.paciente.last_name)
-            if currency == "USD":
-                amount = cita.procedimiento.precio_usd
-            else:
-                amount = cita.procedimiento.precio
-            signature = "%s~%d~%s~%d~%s" % (apikey, merchantId, referenceCode, amount, currency)
-            signatureMD5 = md5.new(signature)
-            return render(request, 'agenda/compra.html', {"merchantId": merchantId, "accountId":accountId, "referenceCode":referenceCode ,"buyerFullName":buyerFullName, "description": description, "currency": currency, "amount": amount, "buyerEmail": buyerEmail, "signature":signatureMD5.hexdigest()})
-        # end if
+    cita = models.CitaMedica.objects.filter(id=pk).first()
+    if cita:
+        merchantId = 673242
+        accountId = 675923
+        referenceCode = "%s%s00%d%d" % (random.choice(cita.paciente.first_name), random.choice(cita.paciente.last_name), cita.procedimiento.id, cita.id)
+        description = cita.procedimiento.nombre
+        buyerEmail = cita.paciente.email
+        apikey = settings.apikey
+        buyerFullName = "%s %s" % (cita.paciente.first_name, cita.paciente.last_name)
+        if currency == "USD":
+            amount = cita.procedimiento.precio_usd
+        else:
+            amount = cita.procedimiento.precio
+        signature = "%s~%d~%s~%d~%s" % (apikey, merchantId, referenceCode, amount, currency)
+        signatureMD5 = md5.new(signature)
+        confirmationUrl = "http://app.dranilsaarias.com/agenda/confirmacion/%d/pago/" % (cita.id)
+        return render(request, 'agenda/compra.html', {"merchantId": merchantId, "accountId":accountId, "referenceCode":referenceCode ,"buyerFullName":buyerFullName, "description": description, "currency": currency, "amount": amount, "buyerEmail": buyerEmail, "signature":signatureMD5.hexdigest()})
+    # end if
     # end if
     return HttpResponseNotFound('<h1>Pagina no encontrada.</h1>')
+# end def
+
+def new_value(value):
+    val = value.split(".")
+    try:
+        if val[1] == "00":
+            num = val[0]+".0"
+        else:
+            num = value
+        return num
+    except:
+        return value
+# end if
+
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+@csrf_exemp
+def confirmacion(request, pk):
+    if request.method == "POST":
+        file = open(os.path.join(BASE_DIR, "confirmacion.txt"), "w+")
+        file.write(str(request.POST))
+        file.close()
+        cita = models.CitaMedica.objects.filter(id=pk).first()
+        form = forms.ConfirmacionPago(request.POST)
+        if form.is_valid():
+            con = form.save(commit=False)
+            value = new_value(con.value)
+            validacion = "%s~%d-%s~%s~%s~%s" % (settings.apikey, con.merchantId, con.reference_sale, value, con.currency, con.state_pol)
+            validacionMD5 = md5.new(validacion)
+            if sign == validacionMD5:
+                con.validacion = True
+            else:
+                con.validacion = False
+            # end if
+            con.cita = cita
+            con.save()
+            return HttpResponse(status=200)
+        # end if
+    return HttpResponse(status=400)
 # end def
