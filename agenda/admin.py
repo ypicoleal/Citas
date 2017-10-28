@@ -35,7 +35,7 @@ class Consultorio(admin.ModelAdmin):
 
 @admin.register(models.ProcedimientoMedico)
 class ProcedimientoMedico(admin.ModelAdmin):
-    list_display = ['nombre', 'precio', 'modalidad']
+    list_display = ['nombre', 'precio', 'precio_usd', 'modalidad']
     search_fields = ['nombre', ]
     icon = '<i class="material-icons">local_pharmacy</i>'
     actions = ['eliminar', 'recuperar']

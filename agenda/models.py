@@ -41,7 +41,12 @@ class ProcedimientoMedico(models.Model):
     # end class
 
     def __unicode__(self):
-        return u"%s" % self.nombre
+        if self.modalidad == 1:
+            modalidad = "Consultorio"
+        else:
+            modalidad = "Virtual"
+        # end if
+        return u"%s - %s" % (self.nombre, modalidad)
     # end def
 # end class
 
