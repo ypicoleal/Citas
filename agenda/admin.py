@@ -244,7 +244,7 @@ class CitaMedica(admin.ModelAdmin):
 @admin.register(models.PagoCita)
 class PagoCitaAdmin(admin.ModelAdmin):
     list_display = ('cita', 'merchantId', 'state_pol', 'reference_sale', 'value', 'currency', 'fecha')
-    icon = '<i class="material-icons">insert_invitation</i>'
+    icon = '<i class="material-icons">payment</i>'
 
     def get_readonly_fields(self, request, obj=None):
         # make all fields readonly
